@@ -1,4 +1,6 @@
 :root {
+  color-scheme: light dark;
+  
   /*Colors*/
   --bg: #010005;
   --white: #FFFEFE;
@@ -53,12 +55,5 @@ ul, ol { list-style: none; }
     transition-duration: 0.01ms !important; 
     scroll-behavior: auto !important;
     transition: none; 
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #FFFEFE;
-    --white: #010005;
   }
 }
