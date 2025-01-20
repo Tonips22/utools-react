@@ -1,0 +1,30 @@
+.circle{
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    background: linear-gradient( var(--pink) 40%, var(--blue) 70%);
+    z-index: 100;
+    pointer-events: none;
+
+    transition: height 0.3s ease, width 0.3s ease, background 0.3s ease;
+
+    animation: rotate 5s linear infinite;
+}
+
+.circle.active-circle{
+    height: 100px;
+    width: 100px;
+    background: hsl(from var(--pink) h s l / .5);
+    /* background: linear-gradient( hsl(from var(--pink) h s l / .5) 40%, hsl(from var(--blue) h s l / .5) 70%); */
+    /* mix-blend-mode:exclusion; */
+
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
