@@ -1,12 +1,16 @@
 import { useState } from 'react'
-import '@styles/App.css'
+import Hero from '@sections/Hero.jsx'
+import Cursor from '@components/Cursor.jsx'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <h1>Utools Baby</h1>
+      <Cursor/>
+      <Hero/>
+
+      <div className=" min-h-[300vh]" ></div>
     </>
   )
 }
