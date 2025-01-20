@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import '@styles/Cursor.css';
+import '@styles/components/Cursor.css';
 
 export default function Cursor() {
     const [position, setPosition] = useState({ x: 0, y: 0 });
