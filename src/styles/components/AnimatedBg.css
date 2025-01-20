@@ -1,0 +1,75 @@
+.bg-bubble{
+    position: absolute;
+    border-radius: 50%;
+    width: 400px;
+    height: 400px;
+    filter: blur(300px);
+}
+
+.bg-bubble:nth-child(1){
+    background-color: var(--blue);
+    top: 0px;
+    left: 0px;
+
+    animation: bubble1 20s infinite alternate;
+}
+
+.bg-bubble:nth-child(2){
+    background-color: var(--pink);
+    right: 0px;
+    top: 0px;
+
+    animation: bubble2 20s infinite alternate;
+}
+
+.bg-bubble:nth-child(3){
+    background-color: var(--purple);
+    top: 25%;
+    left: 25%;
+
+    animation: bubble3 20s infinite alternate;
+}
+
+.bg-bubble:nth-child(4){
+    background-color: var(--light-blue);
+    right: 0px;
+    bottom: 0px;
+
+    animation: bubble2 20s infinite alternate;
+}
+
+@keyframes bubble1{
+    0%{
+        transform: translateY(0) translateX(0) scale(1);
+    }
+    50%{
+        transform: translateY(300px) translateX(400px) scale(.8);
+    }
+    100%{
+        transform: translateY(0) translateX(0) scale(1);
+    }
+}
+
+@keyframes bubble2{
+    0%{
+        transform: translateY(0) translateX(0) scale(1);
+    }
+    50%{
+        transform: translateY(200px) translateX(-500px) scale(1.8);
+    }
+    100%{
+        transform: translateY(0) translateX(0) scale(1);
+    }
+}
+
+@keyframes bubble3{
+    0%{
+        transform: translateY(0) translateX(0) scale(1);
+    }
+    50%{
+        transform: translateY(50px) translateX(+200px) scale(1.5);
+    }
+    100%{
+        transform: translateY(0) translateX(0) scale(1);
+    }
+}
