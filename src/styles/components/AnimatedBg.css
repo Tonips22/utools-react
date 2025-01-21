@@ -32,10 +32,10 @@
 
 .bg-bubble:nth-child(4){
     background-color: var(--light-blue);
-    right: 0px;
+    right: 25%;
     bottom: 0px;
 
-    animation: bubble2 30s infinite alternate;
+    animation: bubble4 30s infinite alternate;
 }
 
 @keyframes bubble1{
@@ -108,5 +108,29 @@
     100%{
         transform: translateY(0) translateX(0) scale(1);
         border-radius: 85% 15% 59% 8% / 38% 19% 12% 31%;
+    }
+}
+
+@keyframes bubble4{
+    0%{
+        transform: translateY(0) translateX(0) scale(1);
+        border-radius: 13% 70% 25% 43% / 16% 19% 65% 31%;
+    }
+
+    25%{
+        border-radius: 85% 15% 79% 21% / 18% 75% 25% 82%;
+    }
+
+    50%{
+        transform: translateY(200px) translateX(-500px) scale(1.8);
+    }
+
+    75%{
+        border-radius: 51% 25% 20% 49% / 35% 45% 25% 25%;
+    }
+
+    100%{
+        transform: translateY(0) translateX(0) scale(1);
+        border-radius: 13% 70% 25% 43% / 16% 19% 65% 31%;
     }
 }
