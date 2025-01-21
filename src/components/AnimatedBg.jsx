@@ -5,6 +5,7 @@ export default function AnimatedBg() {
             <div className="bg-bubble"></div>
             <div className="bg-bubble"></div>
             <div className="bg-bubble"></div>
+            <div className="bg-bubble"></div>
         </div>
     )
 }
