@@ -11,7 +11,7 @@
     top: 0px;
     left: 0px;
 
-    animation: bubble1 20s infinite alternate;
+    animation: bubble1 30s infinite alternate;
 }
 
 .bg-bubble:nth-child(2){
@@ -19,7 +19,7 @@
     right: 0px;
     top: 0px;
 
-    animation: bubble2 20s infinite alternate;
+    animation: bubble2 30s infinite alternate;
 }
 
 .bg-bubble:nth-child(3){
@@ -27,7 +27,7 @@
     top: 25%;
     left: 25%;
 
-    animation: bubble3 20s infinite alternate;
+    animation: bubble3 30s infinite alternate;
 }
 
 .bg-bubble:nth-child(4){
@@ -35,7 +35,7 @@
     right: 0px;
     bottom: 0px;
 
-    animation: bubble2 20s infinite alternate;
+    animation: bubble2 30s infinite alternate;
 }
 
 @keyframes bubble1{
