@@ -4,6 +4,7 @@
     width: 400px;
     height: 400px;
     filter: blur(300px);
+    mix-blend-mode: exclusion;
 }
 
 .bg-bubble:nth-child(1){
