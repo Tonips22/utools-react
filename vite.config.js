@@ -11,6 +11,8 @@ export default defineConfig({
       '@sections': path.resolve(__dirname, 'src/sections'),
       '@styles': path.resolve(__dirname, 'src/styles'),
       '@assets': path.resolve(__dirname, 'src/assets'),
+      '@data': path.resolve(__dirname, 'src/data'),
+      '@logic': path.resolve(__dirname, 'src/logic'),
     },
   },
 });
