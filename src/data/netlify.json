@@ -1,0 +1,8 @@
+{
+    "title": "Netlify",
+    "description": "Netlify is a web developer platform that multiplies productivity. By unifying the elements of the modern decoupled web, from local development to advanced edge logic, Netlify enables a 10x faster path to much more performant, secure, and scalable websites and apps.",
+    "image": "/posts/netlify.webp",
+    "link": "https://www.netlify.com/",
+    "categories": ["Deployment", "Hosting"]
+    
+}

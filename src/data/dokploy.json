@@ -1,0 +1,8 @@
+{
+    "title": "Dokploy",
+    "description": "Dokploy is a platform that allows you to deploy your applications to the cloud with ease. It supports multiple languages and frameworks, and provides a simple and intuitive interface for managing your deployments.",
+    "image": "/posts/dokploy.webp",
+    "link": "https://dokploy.com/",
+    "categories": ["Deployment", "Hosting"]
+    
+}

@@ -1,0 +1,8 @@
+{
+    "title": "Heroku",
+    "description": "Heroku is a cloud platform that lets companies build, deliver, monitor and scale apps — we're the fastest way to go from idea to URL, bypassing all those infrastructure headaches.",
+    "image": "/posts/heroku.webp",
+    "link": "https://www.heroku.com/",
+    "categories": ["Deployment", "Hosting"]
+    
+}
