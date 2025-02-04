@@ -3,7 +3,7 @@ import Header from '@sections/Header.jsx';
 import NavBar from '@components/NavBar.jsx';
 import Cursor from '@components/Cursor.jsx';
 import Hero from '@sections/Hero.jsx';
-import { getAllPosts } from '@logic/posts.js';
+import { getAllPosts, getPostsByTitle } from '@logic/posts.js';
 import Post from '@components/Post.jsx';
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
       <Cursor />
       <Hero />
 
-      <main className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8'>
+      <main className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20'>
         {posts.length > 0 ? (
           posts.map((post, index) => (
             <Post

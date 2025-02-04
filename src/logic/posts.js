@@ -7,3 +7,8 @@ export async function getAllPosts() {
 
     return posts;
 }
+
+export async function getPostsByTitle({title}){
+    const posts = await getAllPosts();
+    return posts.filter(post => post.title === title);
+}
