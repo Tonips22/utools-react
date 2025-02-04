@@ -1,0 +1,8 @@
+{
+    "title": "FlexBox Labs",
+    "description": "A visual tool for experimenting with flexbox layouts",
+    "image": "/posts/flexBoxLabs.webp",
+    "link": "https://flexboxlabs.netlify.app/",
+    "categories": ["Frontend"]
+    
+}
