@@ -1,7 +1,6 @@
 import Label from "@components/Label.jsx";
 
 export default function Post({ title, link, children, image, categories = ["non-stablished"] }) {
-    console.log(title, categories);
     
     return (
         <a target="_blank" href={link} className="hoverable flex flex-col justify-start rounded-2xl bg-dark hover:opacity-80 transition-opacity duration-200 ease-in-out overflow-hidden cursor-pointer h-[425px]">
