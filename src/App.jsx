@@ -9,22 +9,27 @@ import Post from '@components/Post.jsx';
 function App() {
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const PAGINATION = 12;
 
   useEffect(() => {
     const fetchPosts = async () => {
       // Si el campo de búsqueda está vacío, mostramos todos los posts.
       if (searchTerm.trim() === '') {
         const newPosts = await getAllPosts();
-        setPosts(newPosts);
+        setPosts(newPosts.slice(0, PAGINATION * page));
       } else {
-        // Si hay término de búsqueda, filtramos por título.
         const newPosts = await getPostsByTitle(searchTerm);
-        setPosts(newPosts);
+        setPosts(newPosts.slice(0, PAGINATION * page));
       }
     };
 
     fetchPosts();
-  }, [searchTerm]);
+  }, [searchTerm, page]);
+
+  const handleLoadMore = () => {
+    setPage(prevPage => prevPage + 1);
+  };
 
   return (
     <>
@@ -50,6 +55,15 @@ function App() {
           <p>Not Founded Results</p>
         )}
       </main>
+      
+      <div className='flex justify-center'>
+        <button
+          className='px-8 py-4 backdrop-blur-md bg-slate-50/20 text-white rounded-xl cursor-pointer my-8 hover:bg-slate-50/50 transition-colors z-[999]'
+          onClick={handleLoadMore}>
+            Load more ...
+        </button>
+      </div>
+      
     </>
   );
 }
