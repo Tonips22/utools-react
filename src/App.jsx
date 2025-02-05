@@ -5,22 +5,34 @@ import Cursor from '@components/Cursor.jsx';
 import Hero from '@sections/Hero.jsx';
 import { getAllPosts, getPostsByTitle } from '@logic/posts.js';
 import Post from '@components/Post.jsx';
+import Loader from '@components/Loader.jsx';
 
 function App() {
   const [posts, setPosts] = useState([]);
+  const [totalPosts, setTotalPosts] = useState(0); // Total number of posts
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const PAGINATION = 12;
 
   useEffect(() => {
     const fetchPosts = async () => {
-      // Si el campo de búsqueda está vacío, mostramos todos los posts.
-      if (searchTerm.trim() === '') {
-        const newPosts = await getAllPosts();
+      setLoading(true);
+      try {
+        let newPosts;
+        if (searchTerm.trim() === '') {
+          newPosts = await getAllPosts();
+        }else {
+          newPosts = await getPostsByTitle(searchTerm);
+        }
+        setTotalPosts(newPosts.length);
         setPosts(newPosts.slice(0, PAGINATION * page));
-      } else {
-        const newPosts = await getPostsByTitle(searchTerm);
-        setPosts(newPosts.slice(0, PAGINATION * page));
+
+      }catch (error) {
+        console.error('Error fetching posts:', error);
+
+      }finally {
+        setLoading(false);
       }
     };
 
@@ -39,7 +51,9 @@ function App() {
       <Hero searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
       <main className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20'>
-        {posts.length > 0 ? (
+        {loading ? (
+          <Loader />
+        ) : posts.length > 0 ? (
           posts.map((post, index) => (
             <Post
               key={index}
@@ -52,18 +66,23 @@ function App() {
             </Post>
           ))
         ) : (
-          <p>Not Founded Results</p>
+          <p>No results found</p>
         )}
       </main>
-      
+
       <div className='flex justify-center'>
-        <button
-          className='px-8 py-4 backdrop-blur-md bg-slate-50/20 text-white rounded-xl cursor-pointer my-8 hover:bg-slate-50/50 transition-colors z-[999]'
-          onClick={handleLoadMore}>
-            Load more ...
-        </button>
+        {posts.length < totalPosts && (
+          <button
+            className="hoverable bg-gradient-to-r from-blue to-pink hover:opacity-80 text-white font-semibold py-3 px-6 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out z-10"
+            onClick={handleLoadMore}
+            disabled={loading}
+          >
+            {loading ? 'Loading...' : 'Load more ...'}
+          </button>
+        )}
       </div>
-      
+
+
     </>
   );
 }

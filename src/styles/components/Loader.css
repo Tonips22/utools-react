@@ -1,0 +1,45 @@
+.loader {
+    width: 31.4px;
+    height: 31.4px;
+    border-radius: 50%;
+    background: var(--pink);
+    transform-origin: top;
+    display: grid;
+    animation: loader-3vgb5t 1s infinite linear;
+}
+
+.loader::before,
+.loader::after {
+    content: "";
+    grid-area: 1/1;
+    background: var(--purple);
+    border-radius: 50%;
+    transform-origin: top;
+    animation: inherit;
+    animation-name: loader-k94uub;
+}
+
+.loader::after {
+    background: var(--blue);
+    --s: 180deg;
+}
+
+@keyframes loader-3vgb5t {
+    0%, 20% {
+        transform: rotate(0);
+    }
+
+100% {
+    transform: rotate(360deg);
+}
+}
+
+@keyframes loader-k94uub {
+    50% {
+        transform: rotate(var(--s,90deg));
+    }
+
+    100% {
+        transform: rotate(0);
+    }
+}
