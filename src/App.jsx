@@ -3,7 +3,7 @@ import Header from '@sections/Header.jsx';
 import NavBar from '@components/NavBar.jsx';
 import Cursor from '@components/Cursor.jsx';
 import Hero from '@sections/Hero.jsx';
-import { getAllPosts, getPostsByTitle } from '@logic/posts.js';
+import { getAllPosts } from '@logic/posts.js';
 import Post from '@components/Post.jsx';
 
 function App() {
