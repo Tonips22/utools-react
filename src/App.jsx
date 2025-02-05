@@ -3,28 +3,35 @@ import Header from '@sections/Header.jsx';
 import NavBar from '@components/NavBar.jsx';
 import Cursor from '@components/Cursor.jsx';
 import Hero from '@sections/Hero.jsx';
-import { getAllPosts } from '@logic/posts.js';
+import { getAllPosts, getPostsByTitle } from '@logic/posts.js';
 import Post from '@components/Post.jsx';
 
 function App() {
   const [posts, setPosts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchPosts = async () => {
-      // Obtener los posts y almacenarlos en el estado
-      const newPosts = await getAllPosts();
-      setPosts(newPosts);
+      // Si el campo de búsqueda está vacío, mostramos todos los posts.
+      if (searchTerm.trim() === '') {
+        const newPosts = await getAllPosts();
+        setPosts(newPosts);
+      } else {
+        // Si hay término de búsqueda, filtramos por título.
+        const newPosts = await getPostsByTitle(searchTerm);
+        setPosts(newPosts);
+      }
     };
 
     fetchPosts();
-  }, []);
+  }, [searchTerm]);
 
   return (
     <>
       <Header />
       <NavBar />
       <Cursor />
-      <Hero />
+      <Hero searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
       <main className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20'>
         {posts.length > 0 ? (
@@ -40,7 +47,7 @@ function App() {
             </Post>
           ))
         ) : (
-          <p>No hay posts disponibles.</p>
+          <p>Not Founded Results</p>
         )}
       </main>
     </>
