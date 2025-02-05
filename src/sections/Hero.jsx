@@ -11,7 +11,7 @@ export default function Hero({ searchTerm, setSearchTerm }) {
 
       <div className="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center">
         <h1 className='hoverable text-6xl text-white font-bold cursor-default'>Utools</h1>
-        <p className='hoverable cursor-default italic'>iThe best websites-tools reference in all web</p>
+        <p className='hoverable cursor-default italic'>The best websites-tools reference in all web</p>
         <input
           type="text"
           value={searchTerm}
