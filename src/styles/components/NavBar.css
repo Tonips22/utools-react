@@ -1,7 +1,7 @@
 .nav-bar{
     position: fixed;
-    width: 100vw;
-    bottom: 0;
+    height: 100vh;
+    top: 0;
     left: 0;
 
     display: grid;
@@ -11,14 +11,14 @@
 
     animation: fade-up ease both;
     animation-timeline: scroll(root);
-    animation-range: 90px 110px;
+    animation-range: 520px 575px;
 
-    z-index: 1000;
+    z-index: 990;
 }
 
 .nav-bar nav{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 20px;
     align-items: center;
     justify-content: center;
@@ -33,12 +33,12 @@
 
     transition: opacity 0.3s ease, transform 0.3s ease;
 
-    transform: translateY(75%);
+    transform: translateX(-75%);
 }
 
 .nav-bar nav:hover{
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
 }
 
 .nav-bar nav img{
@@ -56,9 +56,9 @@
 
 @keyframes fade-up{
     from{
-        transform: translateY(100%);
+        transform: translateX(-100%);
     }
     to{
-        transform: translateY(0);
+        transform: translateX(0);
     }
 }
