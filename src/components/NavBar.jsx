@@ -1,6 +1,5 @@
 import { FaArrowTurnUp } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa";
-import Logo from '@assets/logou.png';
 import '@styles/components/NavBar.css';
 
 export default function NavBar(){
@@ -12,7 +11,7 @@ export default function NavBar(){
                 </a>
 
                 <a className="nav-bar-link" href="/">
-                    <img src={Logo} alt="Utools logo" className="Utools Logo"/>
+                    <img src='/logou.png' alt="Utools logo" className="Utools Logo"/>
                 </a>
 
                 <a className="nav-bar-link" href="#header">
