@@ -11,7 +11,7 @@ export default function NavBar(){
                 </a>
 
                 <a className="nav-bar-link" href="/">
-                    <img src='/logou.png' alt="Utools logo" className="Utools Logo"/>
+                    <img src='/logou.webp' alt="Utools logo" className="Utools Logo"/>
                 </a>
 
                 <a className="nav-bar-link" href="#header">
