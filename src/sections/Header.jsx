@@ -9,8 +9,9 @@ export default function Header(){
                 <img src={Logo} alt="Utools Logo" className=" -z-10 w-12 h-12 blur-md absolute top-0 left-0" />
             </a>
             <nav className='flex items-center space-x-8'>
-                <a href="https://buymeacoffee.com/tonigt" className='hoverable hover:scale-110 transition-transform max-w-6' target='_blank' rel='noreferrer'>
+                <a href="https://buymeacoffee.com/tonigt" className='hoverable hover:scale-110 transition-transform max-w-6 relative' target='_blank' rel='noreferrer'>
                     <img src={Coffee} alt="BuyMeACoffee Logo" />
+                    <img src={Coffee} alt="BuyMeACoffee Logo" className=" -z-10 w-12 h-12 blur-md absolute top-0 left-0" />
                 </a>
             </nav>
         </header>
