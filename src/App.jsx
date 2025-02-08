@@ -6,6 +6,8 @@ import Hero from '@sections/Hero.jsx';
 import { getAllPosts, getPostsByTitle } from '@logic/posts.js';
 import Post from '@components/Post.jsx';
 import Loader from '@components/Loader.jsx';
+import Footer from '@sections/Footer.jsx';
+import '@styles/components/ColoredButton.css';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -73,7 +75,7 @@ function App() {
       <div className='flex justify-center'>
         {posts.length < totalPosts && (
           <button
-            className="hoverable bg-gradient-to-r from-blue to-pink hover:opacity-80 text-white font-semibold py-3 px-6 rounded-full shadow-lg transform hover:scale-105 transition duration-300 ease-in-out z-10"
+            className="coloredButton hoverable "
             onClick={handleLoadMore}
             disabled={loading}
           >
@@ -82,7 +84,7 @@ function App() {
         )}
       </div>
 
-
+      <Footer />
     </>
   );
 }

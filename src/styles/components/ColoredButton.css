@@ -1,0 +1,53 @@
+.coloredButton{
+    /* background: linear-gradient(90deg, var(--blue), var(--pink)); */
+    background-color: var(--white);
+    color: var(--white);
+    scale: 1;
+    border: none;
+    outline: none;
+    border-radius: 9999px;
+    padding: .75rem 1.5rem;
+    z-index: 90;
+    position: relative;
+
+    transition: .2s scale ease;   
+}
+
+.coloredButton:hover{
+    scale: 1.05;
+}
+
+@property --angle{
+    syntax: "<angle>"   ;
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.coloredButton::after, .coloredButton::before{
+    content: '';
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    background: conic-gradient(from var(--angle), var(--blue), var(--pink), var(--blue));
+    z-index: -10;
+    border-radius: 999px;
+    transition: .2s opacity ease;
+    animation: spin 10s linear infinite;
+}
+
+.coloredButton::before{
+    filter: blur(15px);
+}
+
+@keyframes spin{
+    from{
+        --angle: 0deg;
+    }
+    100%{
+        --angle: 360deg;
+    }
+}
