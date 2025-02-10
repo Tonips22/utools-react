@@ -1,21 +1,22 @@
-import { FaArrowTurnUp } from "react-icons/fa6";
+import { FaArrowTurnUp, FaArrowTurnDown } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa";
 import '@styles/components/NavBar.css';
 
 export default function NavBar(){
     return (
-        <aside className="nav-bar">
+        <aside className="hoverable nav-bar">
             <nav>
-                <a className="nav-bar-link" href="https://github.com/Tonips22" target="_blank">
-                    <FaGithub />
+                <a className="nav-bar-link" href="#header">
+                    <FaArrowTurnUp />
+
                 </a>
 
                 <a className="nav-bar-link" href="/">
                     <img src='/logo.webp' alt="Utools logo" className="Utools Logo"/>
                 </a>
 
-                <a className="nav-bar-link" href="#header">
-                    <FaArrowTurnUp />
+                <a className="nav-bar-link" href="#footer">
+                    <FaArrowTurnDown />
                 </a>
             </nav>
         </aside>
