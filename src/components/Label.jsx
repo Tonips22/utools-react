@@ -11,6 +11,7 @@ export default function Label({ text }) {
         if(text === "Typography") return "bg-yellow-500/80";
         if(text === "Icons") return "bg-teal-500/80";
         if(text === "Mockups") return "bg-rose-300/80";
+        if(text === "API") return "bg-fuchsia-500/80";
 
     }
     return (
