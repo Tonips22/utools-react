@@ -15,3 +15,7 @@
 * Corregir favicon
 
 * Añadir tags como Database, Courses, etc...
+
+https://ryanmulligan.dev/blog/pixel-canvas/
+https://database.build/
+https://www.patterns.dev/
