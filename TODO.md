@@ -13,3 +13,5 @@
 * Añadir labels
 
 * Corregir favicon
+
+* Añadir tags como Database, Courses, etc...
