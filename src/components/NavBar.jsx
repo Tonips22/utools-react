@@ -1,5 +1,4 @@
 import { FaArrowTurnUp, FaArrowTurnDown } from "react-icons/fa6";
-import { FaGithub } from "react-icons/fa";
 import '@styles/components/NavBar.css';
 
 export default function NavBar(){
