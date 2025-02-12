@@ -1,8 +1,66 @@
-# React + Vite
+# Utools
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Authors
 
-Currently, two official plugins are available:
+- [Antonio García Torres](https://www.github.com/Tonips22)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Technologies
+
+[![My Skills](https://skillicons.dev/icons?i=html,css,js,react,tailwind)](https://skillicons.dev)
+
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone git@github.com:Tonips22/utools-react.git
+```
+
+Go to the project directory
+
+```bash
+  cd utools-react
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run dev
+```
+
+## Features
+
+- Responsive
+- Interactive
+- Searching
+
+## Color Reference
+
+| Color      | Hex                                                                |
+| ---------- | ------------------------------------------------------------------ |
+| Background | ![#010005](https://via.placeholder.com/10/010005?text=+) #010005  |
+| White      | ![#FFFEFE](https://via.placeholder.com/10/FFFEFE?text=+) #FFFEFE  |
+| Dark       | ![#141319](https://via.placeholder.com/10/141319?text=+) #141319  |
+| Blue       | ![#173EF2](https://via.placeholder.com/10/173EF2?text=+) #173EF2  |
+| Pink       | ![#FE4BA5](https://via.placeholder.com/10/FE4BA5?text=+) #FE4BA5  |
+| Purple     | ![#901BCA](https://via.placeholder.com/10/901BCA?text=+) #901BCA  |
+| Light-Blue | ![#00EEF3](https://via.placeholder.com/10/00EEF3?text=+) #00EEF3  |
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+
+## Screenshots
+
+![App Screenshot](/wallpaper.webp)
+
