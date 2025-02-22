@@ -19,3 +19,7 @@
 https://ryanmulligan.dev/blog/pixel-canvas/
 https://database.build/
 https://www.patterns.dev/
+https://authjs.dev/
+https://layoutsfortailwind.lalokalabs.dev/
+https://pdfslick.dev/
+https://resend.com/
