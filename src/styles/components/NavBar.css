@@ -13,7 +13,7 @@
     animation-timeline: scroll(root);
     animation-range: 90px 110px;
 
-    z-index: 990;
+    z-index: 900;
 }
 
 .nav-bar nav{
