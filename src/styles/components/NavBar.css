@@ -1,8 +1,9 @@
 .nav-bar{
     position: fixed;
-    width: 100vw;
     bottom: 0;
-    left: 0;
+    left: 45%;
+    transform: translateX(-50%);
+    margin: 0 auto;
 
     display: grid;
     place-items: center;
