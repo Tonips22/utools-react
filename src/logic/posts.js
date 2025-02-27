@@ -14,7 +14,7 @@ export async function getPostsByTitle(title){
 }
 
 
-export async function getPostByCategories(categories = ["uncategorized"]) {
+export async function getPostByCategories(categories = []) {
     const posts = await getAllPosts();
-    return posts.filter(post => categories.some(category => post.categories.includes(category)));
+    return posts.filter(post => categories.every(category => post.categories.includes(category)));  // every --> AND some --> OR
 }
