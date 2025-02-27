@@ -4,7 +4,7 @@ import Header from "@sections/Header.jsx";
 import NavBar from "@components/NavBar.jsx";
 import Cursor from "@components/Cursor.jsx";
 import Hero from "@sections/Hero.jsx";
-import { getAllPosts, getPostsByTitle, getPostByCategories } from "@logic/posts.js";
+import { getAllPosts, getPostsByTitle, getPostByCategories, getPostByCategoriesAndTitle } from "@logic/posts.js";
 import Post from "@components/Post.jsx";
 import Loader from "@components/Loader.jsx";
 import Footer from "@sections/Footer.jsx";
@@ -26,10 +26,13 @@ function App() {
       try {
         let newPosts = [];
 
-        if (categories.length > 0) {
+        if (categories.length > 0 && searchTerm.trim() === "") {
           // Si hay al menos una categoría, priorizamos la llamada a getPostByCategories
           newPosts = await getPostByCategories(categories);
-        } else if (searchTerm.trim() === "") {
+        } else if (categories.length > 0 && searchTerm.trim() !== "") {
+          // Si hay categorías y el searchTerm no está vacío, obtenemos los posts que coincidan con ambas
+          newPosts = await getPostByCategoriesAndTitle(categories, searchTerm);
+        } else if (categories.length === 0 && searchTerm.trim() === "") {
           // Si no hay categorías y el searchTerm está vacío, obtenemos todos los posts
           newPosts = await getAllPosts();
         } else {
