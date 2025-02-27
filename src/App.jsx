@@ -1,48 +1,59 @@
-import { useState, useEffect } from 'react';
-import Header from '@sections/Header.jsx';
-import NavBar from '@components/NavBar.jsx';
-import Cursor from '@components/Cursor.jsx';
-import Hero from '@sections/Hero.jsx';
-import { getAllPosts, getPostsByTitle } from '@logic/posts.js';
-import Post from '@components/Post.jsx';
-import Loader from '@components/Loader.jsx';
-import Footer from '@sections/Footer.jsx';
-import '@styles/components/ColoredButton.css';
+// App.jsx
+import { useState, useEffect } from "react";
+import Header from "@sections/Header.jsx";
+import NavBar from "@components/NavBar.jsx";
+import Cursor from "@components/Cursor.jsx";
+import Hero from "@sections/Hero.jsx";
+import { getAllPosts, getPostsByTitle, getPostByCategories } from "@logic/posts.js";
+import Post from "@components/Post.jsx";
+import Loader from "@components/Loader.jsx";
+import Footer from "@sections/Footer.jsx";
+import "@styles/components/ColoredButton.css";
 
 function App() {
   const [posts, setPosts] = useState([]);
-  const [totalPosts, setTotalPosts] = useState(0); // Total number of posts
-  const [searchTerm, setSearchTerm] = useState('');
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+
   const PAGINATION = 12;
 
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        let newPosts;
-        if (searchTerm.trim() === '') {
+        let newPosts = [];
+
+        if (categories.length > 0) {
+          // Si hay al menos una categoría, priorizamos la llamada a getPostByCategories
+          newPosts = await getPostByCategories(categories);
+        } else if (searchTerm.trim() === "") {
+          // Si no hay categorías y el searchTerm está vacío, obtenemos todos los posts
           newPosts = await getAllPosts();
-        }else {
+        } else {
+          // Si no hay categorías y el searchTerm no está vacío, buscamos por título
           newPosts = await getPostsByTitle(searchTerm);
         }
+
         setTotalPosts(newPosts.length);
+        // Controlamos la paginación
         setPosts(newPosts.slice(0, PAGINATION * page));
-
-      }catch (error) {
-        console.error('Error fetching posts:', error);
-
-      }finally {
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchPosts();
-  }, [searchTerm, page]);
+    // Se vuelve a ejecutar cuando cambian estas dependencias:
+  }, [searchTerm, page, categories]);
 
+  // Se usa para cargar más páginas
   const handleLoadMore = () => {
-    setPage(prevPage => prevPage + 1);
+    setPage((prevPage) => prevPage + 1);
   };
 
   return (
@@ -50,9 +61,19 @@ function App() {
       <Header />
       <NavBar />
       <Cursor />
-      <Hero searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      <main className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20'>
+      {/* 
+        Pasamos las categories y la función setCategories al Hero 
+        para que los checkboxes (Labels) añadan o quiten categorías.
+      */}
+      <Hero
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        categories={categories}
+        setCategories={setCategories}
+      />
+
+      <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20">
         {loading ? (
           <Loader />
         ) : posts.length > 0 ? (
@@ -72,14 +93,18 @@ function App() {
         )}
       </main>
 
-      <div className='flex justify-center'>
+      <div className="flex justify-center">
+        {/* 
+          Si el número de posts renderizados < total, 
+          mostramos el botón de "Load more"
+        */}
         {posts.length < totalPosts && (
           <button
-            className="coloredButton hoverable "
+            className="coloredButton hoverable"
             onClick={handleLoadMore}
             disabled={loading}
           >
-            {loading ? 'Loading...' : 'Load more ...'}
+            {loading ? "Loading..." : "Load more ..."}
           </button>
         )}
       </div>
