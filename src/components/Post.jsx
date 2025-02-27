@@ -7,14 +7,14 @@ export default function Post({ title, link, children, image, categories = ["non-
             <img className=" w-full h-1/3 object-cover object-center rounded-tl-2xl rounded-tr-2xl" src={image} alt={title} />
 
             <div className="flex flex-col justify-between p-4 h-2/3">
-                <div class="flex flex-col gap-4">
+                <div className="flex flex-col gap-4">
                     <h3 className="font-primary-font text-3xl font-bold"> {title} </h3>
                     <p className="font-secondary-font text-sm"> {children} </p>
                 </div>
 
-                <div class="labels flex flex-row gap-2 flex-wrap">
+                <div className="labels flex flex-row gap-2 flex-wrap">
                     {categories.map((category, index) => (
-                        <Label index={index} text={category}/>
+                        <Label key={index} text={category}/>
                     ))}
                 </div>
             </div>
