@@ -17,6 +17,12 @@
     z-index: 900;
 }
 
+@media (width <= 1200px) {
+    .nav-bar{
+        display: none;
+    }
+}
+
 .nav-bar nav{
     display: flex;
     flex-direction: row;
