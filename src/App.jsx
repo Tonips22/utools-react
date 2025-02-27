@@ -92,7 +92,7 @@ function App() {
             </Post>
           ))
         ) : (
-          <p>No results found</p>
+          <p className="text-lg font-primary-font">No results found</p>
         )}
       </main>
 
