@@ -61,6 +61,10 @@
     scale: 1.1;
 }
 
+.nav-bar-link:active{
+    scale: 0.95;
+}
+
 @keyframes fade-up{
     from{
         transform: translateY(100%);

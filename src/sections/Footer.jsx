@@ -11,12 +11,12 @@ export default function Footer() {
                 <h2 className=' text-lg font-primary-font'>&copy;Utools {year}</h2>
 
                 <div className='flex flex-row items-center justify-center gap-4 *:transition-all *:duration-200 *:ease'>
-                    <a href='https://github.com/Tonips22/utools-react' target='_blank' rel='noreferrer' className='hoverable hover:scale-110'>
+                    <a href='https://github.com/Tonips22/utools-react' target='_blank' rel='noreferrer' className='hoverable hover:scale-110 active:scale-95'>
                         <FaGithub className=' text-xl' />
                     </a>
 
                     <a href='https://buymeacoffee.com/tonigt' target='_blank' rel='noreferrer' className='hoverable'>
-                        <SiBuymeacoffee className=' text-xl hover:scale-110' />
+                        <SiBuymeacoffee className=' text-xl hover:scale-110 active:scale-95' />
                     </a>
 
                 </div>

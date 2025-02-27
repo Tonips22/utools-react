@@ -17,6 +17,10 @@
     scale: 1.05;
 }
 
+.coloredButton:active{
+    scale: .95;
+}
+
 @property --angle{
     syntax: "<angle>"   ;
     initial-value: 0deg;
