@@ -38,7 +38,7 @@ export default function Label({
     <>
       {hasCheckBox ? (
         <span
-            className={`${background()} label hoverable flex flex-row text-white font-secondary-font text-xs px-2 py-1 gap-2 rounded-full text-center hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out`}
+            className={`${background()} label flex flex-row text-white font-secondary-font text-xs px-2 py-1 gap-2 rounded-full text-center hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out`}
         >
             <label className="relative flex gap-2 items-center cursor-pointer">
             <input

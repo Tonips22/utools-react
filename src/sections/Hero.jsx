@@ -42,7 +42,7 @@ export default function Hero({ searchTerm, setSearchTerm, categories, setCategor
           />
         </label>
 
-        <ul className="flex flex-row items-center justify-center flex-wrap gap-2 mt-4 w-[350px] md:w-[500px] lg:w-[600px]">
+        <ul className="hoverable flex flex-row items-center justify-center flex-wrap gap-2 mt-4 w-[350px] md:w-[500px] lg:w-[600px]">
           {/* Por cada Label, indicamos si está checkeado 
               comprobando si su texto está en categories */}
           <Label
