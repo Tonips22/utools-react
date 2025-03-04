@@ -103,7 +103,7 @@ function App() {
         */}
         {posts.length < totalPosts && (
           <button
-            className="coloredButton hoverable"
+            className="hoverable coloredButton"
             onClick={handleLoadMore}
             disabled={loading}
           >
