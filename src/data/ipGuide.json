@@ -1,0 +1,8 @@
+{
+    "title": "IP Guide",
+    "description": "A free and easy to use API for looking up IP, Network, and ASN data. Refreshed nightly from authoritative sources. Use APIs or bulk data to map IPs to ASNs, or list all of the IPs of an ASN.",
+    "image": "/posts/ipguide.webp",
+    "link": "https://ip.guide/",
+    "categories": ["API"]
+    
+}
