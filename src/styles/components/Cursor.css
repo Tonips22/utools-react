@@ -4,7 +4,7 @@
     border-radius: 50%;
     background: linear-gradient( var(--pink) 40%, var(--blue) 70%);
     z-index: 1000;
-    pointer-events: none;
+    /* pointer-events: none; */
 
     transition: height 0.3s ease, width 0.3s ease, background 0.3s ease;
 
