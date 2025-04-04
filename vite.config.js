@@ -13,6 +13,8 @@ export default defineConfig({
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@data': path.resolve(__dirname, 'src/data'),
       '@logic': path.resolve(__dirname, 'src/logic'),
+      '@lib': path.resolve(__dirname, 'src/lib'),
+      '@auth': path.resolve(__dirname, 'src/auth'),
     },
   },
 });
