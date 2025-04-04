@@ -26,4 +26,17 @@ dist-ssr
 # TODO
 TODO.md
 
-
+# Environment variables
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.development
+.env.test
+.env.production
+# MacOS
+*.DS_Store
+# Windows
+Thumbs.db
