@@ -15,6 +15,7 @@ export default defineConfig({
       '@logic': path.resolve(__dirname, 'src/logic'),
       '@lib': path.resolve(__dirname, 'src/lib'),
       '@auth': path.resolve(__dirname, 'src/auth'),
+      '@pages': path.resolve(__dirname, 'src/pages'),
     },
   },
 });
