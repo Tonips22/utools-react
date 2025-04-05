@@ -63,7 +63,6 @@ function Home() {
     <>
       <Header />
       <NavBar />
-      <Cursor />
 
       {/* 
         Pasamos las categories y la función setCategories al Hero 
