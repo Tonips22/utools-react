@@ -1,5 +1,8 @@
 # TODO
 
+* AÑADIR TÉRMINOS Y CONDICIONES
+* AÑADIR POLÍTICA DE PRIVACIDAD
+
 * Añadir buscador
 
 * Añadir infite scroll
@@ -22,3 +25,4 @@ https://www.patterns.dev/
 https://authjs.dev/
 https://layoutsfortailwind.lalokalabs.dev/
 https://resend.com/
+https://pocketbase.io/
