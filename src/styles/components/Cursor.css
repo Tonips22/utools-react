@@ -3,7 +3,7 @@
     width: 12px;
     border-radius: 50%;
     background: linear-gradient( var(--pink) 40%, var(--blue) 70%);
-    z-index: 1000;
+    z-index: 999;
     /* pointer-events: none; */
 
     transition: height 0.3s ease, width 0.3s ease, background 0.3s ease;
