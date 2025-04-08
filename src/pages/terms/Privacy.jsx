@@ -1,8 +1,8 @@
-import Navbar from "@components/Navbar";
+import NavBar from "@components/NavBar";
 export default function Privacy() {
     return (
         <main className="flex flex-col min-h-screen text-white p-8 gap-8 max-w-[80ch] mx-auto">
-            <Navbar></Navbar>
+            <NavBar></NavBar>
 
             <h1 className="font-primary-font text-8xl" id="header">Privacy Policy</h1>
 
