@@ -1,4 +1,4 @@
-import Navbar from "@components/Navbar";
+import Navbar from "@components/Navbar.jsx";
 export default function Service() {
     return (
         <main className="flex flex-col min-h-screen text-white p-8 gap-8 max-w-[80ch] mx-auto">
