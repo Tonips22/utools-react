@@ -1,15 +1,15 @@
 import Coffee from '@assets/buymeacoffee.svg';
 import { useAuth } from "@auth/AuthProvider.jsx";
 import { RiLoginCircleLine } from "react-icons/ri";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@heroui/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar} from "@heroui/react";
 
 
 
-export default function Header(){
+export default function Header({transparent=true, absolute=true}) {
     const { user, logout } = useAuth(); // Obtener el usuario autenticado desde el contexto de autenticación
     
     return (
-        <header id='header' className=" z-50 absolute top-0 left-0 w-full flex justify-between items-center py-4 px-8 bg-transparent">
+        <header id='header' className={` z-50 ${absolute ? "absolute" : ""} top-0 left-0 w-full flex justify-between items-center py-4 px-8 bg-transparent ${transparent ? "" : "backdrop-blur-md"}`}>
             <a href="/" className='hoverable hover:scale-110 transition-transform relative active:scale-95'>
                 <img src='/logo.webp' alt="Utools Logo" className="w-12 h-12 z-10" />
                 <img src='/logo.webp' alt="Utools Logo" className=" -z-10 w-12 h-12 blur-md absolute top-0 left-0" />
