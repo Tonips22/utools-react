@@ -26,3 +26,8 @@ https://authjs.dev/
 https://layoutsfortailwind.lalokalabs.dev/
 https://resend.com/
 https://pocketbase.io/
+
+* Mejorar SEO
+* Añadir terminos y condiciones
+* Añadir política de privacidad
+* Comprobar que no hay fallas en el login
