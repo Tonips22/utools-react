@@ -26,7 +26,6 @@ export default function Label({
     if (text === "Deployment") return "bg-rose-500/80";
     if (text === "Components") return "bg-amber-500/80";
     if (text === "Colors") return "bg-emerald-400/80";
-    if (text === "backgrounds") return "bg-emerald-400/80";
     if (text === "Typography") return "bg-yellow-500/80";
     if (text === "Icons") return "bg-teal-500/80";
     if (text === "Mockups") return "bg-rose-300/80";
