@@ -45,6 +45,11 @@ h1{ font-family: var(--secondary-font); font-size: 3.2rem; }
 img, video, svg { max-width: 100%; height: auto; }
 a { text-decoration: none; color: inherit; }
 ul, ol { list-style: none; }
+::selection {
+  background: var(--pink); /* Fondo cuando seleccionas */
+  color: var(--dark);        /* Color del texto seleccionado */
+}
+
 
 @media (prefers-color-scheme: light) {
 	:root {
