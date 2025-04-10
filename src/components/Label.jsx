@@ -1,50 +1,28 @@
 // Label.jsx
 import React from "react";
 
-export default function Label({
-  text,
-  hasCheckBox = false,
-  isChecked = false,   // valor controlado que viene del padre
-  onChange,            // callback para notificar el cambio al padre
-}) {
-  // Cuando se haga click en el checkbox, se avisa al padre
-  const handleCheck = (event) => {
-    // event.target.checked es true o false
-    // Avisamos al padre con onChange
-    if (onChange) {
-      onChange(text, event.target.checked);
-    }
-  };
-
-  // Función para dar color de fondo (opcionalmente podrías usar un objeto o switch)
-  const background = () => {
-    if (text === "Images") return "bg-slate-700/80";
-    if (text === "Videos") return "bg-gray-700/80";
-    if (text === "Optimization") return "bg-lime-700/80";
-    if (text === "Hosting") return "bg-violet-500/80";
-    if (text === "Design") return "bg-sky-500/80";
-    if (text === "Deployment") return "bg-rose-500/80";
-    if (text === "Components") return "bg-amber-500/80";
-    if (text === "Colors") return "bg-emerald-400/80";
-    if (text === "Typography") return "bg-yellow-500/80";
-    if (text === "Icons") return "bg-teal-500/80";
-    if (text === "Mockups") return "bg-rose-300/80";
-    if (text === "API") return "bg-fuchsia-500/80";
-    return "bg-slate-700/80"; // valor por defecto si no coincide
-  };
+export default function Label({ text, color, hasCheckBox = false, isChecked = false, onChange }) {
+  // const handleCheck = (event) => {
+  //   // event.target.checked es true o false
+  //   // Avisamos al padre con onChange
+  //   if (onChange) {
+  //     onChange(text, event.target.checked);
+  //   }
+  // };
 
   return (
     <>
       {hasCheckBox ? (
         <span
-            className={`${background()} label flex flex-row text-white font-secondary-font text-xs px-2 py-1 gap-2 rounded-full text-center hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out`}
+            style={{ backgroundColor: color }}
+            className={`bg-[#${color}] label flex flex-row text-white font-secondary-font text-xs px-2 py-1 gap-2 rounded-full text-center hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out`}
         >
             <label className="relative flex gap-2 items-center cursor-pointer">
             <input
                 className="peer sr-only"
                 type="checkbox"
-                checked={isChecked}       // Aquí controlamos desde fuera si está marcado
-                onChange={handleCheck}     // Avisamos al padre
+                // checked={isChecked}       // Aquí controlamos desde fuera si está marcado
+                // onChange={handleCheck}     // Avisamos al padre
             />
             <div
                 className="w-4 h-4 rounded-md bg-white border-2 border-purple-500 transition-all
@@ -63,7 +41,8 @@ export default function Label({
         
       ) : (
         <span
-        className={`${background()} label hoverable flex flex-row text-white font-secondary-font text-xs px-2 py-1 gap-2 rounded-full text-center`}
+        style={{ backgroundColor: color }}
+        className={` label hoverable flex flex-row text-white font-secondary-font text-xs px-2 py-1 gap-2 rounded-full text-center`}
         >
             <span className="text-xs font-medium text-white pointer-events-none">{text}</span>
         </span>

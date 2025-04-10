@@ -3,6 +3,7 @@ import Footer from "@sections/Footer.jsx";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@auth/AuthProvider.jsx";
 
+
 export default function Dashboard() {
     const navigate = useNavigate();
     const { user } = useAuth(); // Obtener el usuario autenticado desde el contexto de autenticación
@@ -13,12 +14,15 @@ export default function Dashboard() {
     }
 
     return (
-        <>
-            <Header/>
-            <section>
-                <h1>{user.user_metadata.name} aaa</h1>
+        <main className=" min-h-screen flex flex-col">
+            <Header
+                transparent={false}
+                absolute={false}
+            />
+            <section className="grid grid-cols-4 gap-4 p-8">
+                aaa
             </section>
             <Footer />
-        </>
+        </main>
     );
 }

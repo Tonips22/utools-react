@@ -1,6 +1,8 @@
 import Label from "@components/Label.jsx";
 
 export default function Post({ title, link, children, image, categories = ["non-stablished"] }) {
+    console.log(categories);
+    
     
     return (
         <a target="_blank" href={link} className="hoverable flex flex-col justify-start rounded-2xl bg-dark hover:opacity-80 transition-opacity duration-200 ease-in-out overflow-hidden cursor-pointer h-[425px]">
@@ -14,7 +16,7 @@ export default function Post({ title, link, children, image, categories = ["non-
 
                 <div className="labels flex flex-row gap-2 flex-wrap">
                     {categories.map((category, index) => (
-                        <Label key={index} text={category}/>
+                        <Label key={index} text={category.categories.nombre} color={category.categories.color}/>
                     ))}
                 </div>
             </div>
