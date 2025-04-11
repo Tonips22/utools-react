@@ -1,7 +1,7 @@
 // Label.jsx
 import React from "react";
 
-export default function Label({ text, color, hasCheckBox = false, isChecked = false, onChange }) {
+export default function Label({ text, color, hasCheckBox = false, isChecked = false, onChange, className="" }) {
   // const handleCheck = (event) => {
   //   // event.target.checked es true o false
   //   // Avisamos al padre con onChange
@@ -15,7 +15,7 @@ export default function Label({ text, color, hasCheckBox = false, isChecked = fa
       {hasCheckBox ? (
         <span
             style={{ backgroundColor: color }}
-            className={`bg-[#${color}] label flex flex-row text-white font-secondary-font text-xs px-2 py-1 gap-2 rounded-full text-center hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out`}
+            className={`${className} label flex flex-row text-white font-secondary-font text-xs px-2 py-1 gap-2 rounded-full text-center hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out`}
         >
             <label className="relative flex gap-2 items-center cursor-pointer">
             <input
@@ -42,7 +42,7 @@ export default function Label({ text, color, hasCheckBox = false, isChecked = fa
       ) : (
         <span
         style={{ backgroundColor: color }}
-        className={` label hoverable flex flex-row text-white font-secondary-font text-xs px-2 py-1 gap-2 rounded-full text-center`}
+        className={` ${className} label hoverable flex flex-row text-white font-secondary-font text-xs px-2 py-1 gap-2 rounded-full text-center`}
         >
             <span className="text-xs font-medium text-white pointer-events-none">{text}</span>
         </span>

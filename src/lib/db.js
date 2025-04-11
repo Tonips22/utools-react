@@ -11,6 +11,16 @@ export const getAllPublishedPosts = async () => {
   return data
 }
 
+export const getUserPosts = async (userId) => {
+  const { data, error } = await supabase
+  .from("posts")
+  .select(`*, post_categories( categories (nombre, color) )`)
+  .eq("usuario_id", userId)
+
+  if (error) throw error
+  return data
+}
+
 export const getSearchedPublishedPosts = async (searchTerm) => {
   const { data, error } = await supabase
   .from("posts")
