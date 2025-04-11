@@ -1,6 +1,24 @@
+import { useState } from 'react';
 import AnimatedBg from '@components/AnimatedBg.jsx';
+import { RxCross2 } from "react-icons/rx";
 
-export default function Hero() {
+export default function Hero({searchTerm, setSearchTerm}) {
+  const [value, setValue] = useState(searchTerm);
+
+  const handleInputChange = (e) => {
+    setValue(e.target.value);
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setSearchTerm(value);
+    }
+  }
+  
+
+  const searchTermUpdate = () => {
+    setSearchTerm(value);
+  }
     
 
   return (
@@ -11,14 +29,38 @@ export default function Hero() {
         <h1 className="text-6xl text-white font-bold cursor-default">Utools</h1>
 
         <label className='hoverable flex flex-row items-center gap-4 bg-dark rounded-full px-8 py-4 w-[350px] cursor-text md:w-[500px] lg:w-[600px]'>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <svg 
+            xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-search cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out"
+            onClick={searchTermUpdate}
+          >
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
 
           <input
             type="text"
-            value=""
+            value={value}
+            onKeyDown={handleKeyDown}
+            onChange={handleInputChange}
             autoFocus
             className="hoverable searchBar text-white bg-transparent rounded-full border-none outline-none w-full px-1"
           />
+
+          {value && (
+            <RxCross2
+              className="text-white text-2xl cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out"
+              onClick={() => {
+                setValue('');
+              }}
+            />
+          )}
         </label>
 
         <ul className="hoverable flex flex-row items-center justify-center flex-wrap gap-2 w-[350px] md:w-[500px] lg:w-[600px]">

@@ -7,35 +7,54 @@ import Post from "@components/Post.jsx";
 import Loader from "@components/Loader.jsx";
 import Footer from "@sections/Footer.jsx";
 import "@styles/components/ColoredButton.css";
-import { getAllPublishedPosts } from "@lib/db.js";
+import { getAllPublishedPosts, getSearchedPublishedPosts } from "@lib/db.js";
 
 function Home() {
   const [posts, setPosts] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
   // const [page, setPage] = useState(1);
   // const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    getAllPublishedPosts().then((data) => {
-      setPosts(data);
-      console.log(data);
-      
-      
-    });
-  }, []);
-
   const PAGINATION = 12;
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      try {
+        let data = []
+
+        if(searchTerm.trim() === ""){
+          data = await getAllPublishedPosts();
+        }else{
+          data = await getSearchedPublishedPosts(searchTerm);
+        }
+        setPosts(data);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPosts();
+  }, [searchTerm]);
+
 
   return (
     <>
-      <Header />
+      <Header/>
       <NavBar />
 
-      <Hero/>
-
+      <Hero
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
+      
       <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20">
-        {posts.length > 0 ? (
+        {loading ? (
+          <Loader />
+        ) : posts.length > 0 ? (
           posts.map((post, index) => (
             <Post
               key={post.id}
@@ -48,7 +67,7 @@ function Home() {
             </Post>
           ))
         ) : (
-          <Loader />
+          <p className="text-lg font-primary-font">No results found</p>
         )}
       </main>
 

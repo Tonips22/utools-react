@@ -10,12 +10,13 @@ export const getAllPublishedPosts = async () => {
   if (error) throw error
   return data
 }
-// Obtener las categorías de un post
-export const getPostCategories = async (postId) => {
+
+export const getSearchedPublishedPosts = async (searchTerm) => {
   const { data, error } = await supabase
-    .from('categories')
-    .select('*')
-    .eq('post_id', postId)
+  .from("posts")
+  .select(`*, post_categories( categories (nombre, color) )`)
+  .eq("estado", "published")
+  .ilike("titulo", `%${searchTerm}%`)
 
   if (error) throw error
   return data
