@@ -58,7 +58,6 @@ export default function Hero({searchTerm, setSearchTerm}) {
               className="text-white text-2xl cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out"
               onClick={() => {
                 setValue('');
-                setSearchTerm('');
               }}
             />
           )}
