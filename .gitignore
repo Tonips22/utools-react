@@ -27,3 +27,5 @@ dist-ssr
 TODO.md
 
 
+# environment variables
+.env
