@@ -13,7 +13,8 @@ import "@styles/components/ColoredButton.css";
 function Home() {
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // cuando haces una búsqueda nueva
+  const [loadingMore, setLoadingMore] = useState(false); // cuando cargas más
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   // const [page, setPage] = useState(1);
@@ -24,21 +25,17 @@ function Home() {
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
+      setPage(1); // Resetear página al buscar
       try {
         let data = [];
   
         if (searchTerm.trim() === "") {
-          data = await getAllPublishedPosts(page, PAGINATION);
+          data = await getAllPublishedPosts(1, PAGINATION);
         } else {
-          data = await getSearchedPublishedPosts(searchTerm, page, PAGINATION);
+          data = await getSearchedPublishedPosts(searchTerm, 1, PAGINATION);
         }
   
-        // Si es página 1, reinicia el array. Si no, añade los nuevos posts.
-        setPosts(prev =>
-          page === 1 ? data : [...prev, ...data]
-        );
-  
-        // Si se devuelven menos de PAGINATION, ya no hay más
+        setPosts(data);
         setHasMore(data.length === PAGINATION);
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -48,7 +45,30 @@ function Home() {
     };
   
     fetchPosts();
-  }, [page, searchTerm]);
+  }, [searchTerm]);
+
+  const loadMorePosts = async () => {
+    const nextPage = page + 1;
+    setLoadingMore(true);
+  
+    try {
+      let data = [];
+  
+      if (searchTerm.trim() === "") {
+        data = await getAllPublishedPosts(nextPage, PAGINATION);
+      } else {
+        data = await getSearchedPublishedPosts(searchTerm, nextPage, PAGINATION);
+      }
+  
+      setPosts(prev => [...prev, ...data]);
+      setPage(nextPage);
+      setHasMore(data.length === PAGINATION);
+    } catch (error) {
+      console.error("Error loading more posts:", error);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
 
   return (
@@ -65,7 +85,7 @@ function Home() {
         {loading ? (
           <Loader />
         ) : posts.length > 0 ? (
-          posts.map((post, index) => (
+          posts.map((post) => (
             <Post
               key={post.id}
               id={post.id}
@@ -85,10 +105,11 @@ function Home() {
       <div className="flex justify-center mt-8">
         {hasMore && !loading && (
           <button
-            onClick={() => setPage(prev => prev + 1)}
+            onClick={loadMorePosts}
             className="coloredButton"
+            disabled={loadingMore}
           >
-            Load more...
+            {loadingMore ? "Loading..." : "Load more"}
           </button>
         )}
       </div>
