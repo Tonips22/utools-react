@@ -8,11 +8,14 @@ import Loader from "@components/Loader.jsx";
 import Footer from "@sections/Footer.jsx";
 import "@styles/components/ColoredButton.css";
 import { getAllPublishedPosts, getSearchedPublishedPosts } from "@lib/db.js";
+import "@styles/components/ColoredButton.css";
 
 function Home() {
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   // const [page, setPage] = useState(1);
   // const [categories, setCategories] = useState([]);
 
@@ -22,23 +25,30 @@ function Home() {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        let data = []
-
-        if(searchTerm.trim() === ""){
-          data = await getAllPublishedPosts();
-        }else{
-          data = await getSearchedPublishedPosts(searchTerm);
+        let data = [];
+  
+        if (searchTerm.trim() === "") {
+          data = await getAllPublishedPosts(page, PAGINATION);
+        } else {
+          data = await getSearchedPublishedPosts(searchTerm, page, PAGINATION);
         }
-        setPosts(data);
+  
+        // Si es página 1, reinicia el array. Si no, añade los nuevos posts.
+        setPosts(prev =>
+          page === 1 ? data : [...prev, ...data]
+        );
+  
+        // Si se devuelven menos de PAGINATION, ya no hay más
+        setHasMore(data.length === PAGINATION);
       } catch (error) {
         console.error("Error fetching posts:", error);
       } finally {
         setLoading(false);
       }
-    }
-
+    };
+  
     fetchPosts();
-  }, [searchTerm]);
+  }, [page, searchTerm]);
 
 
   return (
@@ -58,6 +68,7 @@ function Home() {
           posts.map((post, index) => (
             <Post
               key={post.id}
+              id={post.id}
               title={post.titulo}
               link={post.enlace}
               image={post.imagen}
@@ -71,8 +82,15 @@ function Home() {
         )}
       </main>
 
-      <div className="flex justify-center">
-        
+      <div className="flex justify-center mt-8">
+        {hasMore && !loading && (
+          <button
+            onClick={() => setPage(prev => prev + 1)}
+            className="coloredButton"
+          >
+            Load more...
+          </button>
+        )}
       </div>
 
       <Footer />
