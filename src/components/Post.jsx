@@ -24,8 +24,14 @@ export default function Post({id, title, link, children, image, categories = ["n
                 </div>
 
                 <div className="labels flex flex-row gap-2 flex-wrap">
-                    {categories.map((category, index) => (
-                        <Label key={index} text={category.categories.nombre} color={category.categories.color}/>
+                {categories
+                    .filter(category => category.categories) // Evita null
+                    .map((category, index) => (
+                        <Label
+                            key={index}
+                            text={category.categories.nombre}
+                            color={category.categories.color}
+                        />
                     ))}
                 </div>
             </div>

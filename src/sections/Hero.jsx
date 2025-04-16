@@ -1,9 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AnimatedBg from '@components/AnimatedBg.jsx';
+import Label from '@components/Label.jsx';
+import { getAllCategories } from '@lib/db.js'; 
 import { RxCross2 } from "react-icons/rx";
 
-export default function Hero({searchTerm, setSearchTerm}) {
+export default function Hero({searchTerm, setSearchTerm, activeCategories, setactiveCategories}) {
   const [value, setValue] = useState(searchTerm);
+  const [allCategories, setAllCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const all = await getAllCategories();
+      setAllCategories(all);
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleInputChange = (e) => {
     setValue(e.target.value);
@@ -19,6 +31,17 @@ export default function Hero({searchTerm, setSearchTerm}) {
   const searchTermUpdate = () => {
     setSearchTerm(value);
   }
+
+  const handleCategoryChange = (categoryName, isChecked) => {
+    if (isChecked) {
+      setactiveCategories(prev => [...prev, categoryName]);
+    } else {
+      setactiveCategories(prev => prev.filter(name => name !== categoryName));
+    }
+
+    setValue('');
+  };
+  
     
 
   return (
@@ -35,9 +58,9 @@ export default function Hero({searchTerm, setSearchTerm}) {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-search cursor-pointer hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out"
             onClick={searchTermUpdate}
           >
@@ -64,6 +87,16 @@ export default function Hero({searchTerm, setSearchTerm}) {
         </label>
 
         <ul className="hoverable flex flex-row items-center justify-center flex-wrap gap-2 w-[350px] md:w-[500px] lg:w-[600px]">
+          {allCategories.map((category) => (
+            <Label
+              key={category.id}
+              color={category.color}
+              text={category.nombre}
+              hasCheckBox={true}
+              onChange={handleCategoryChange}
+              isChecked={activeCategories.includes(category.nombre)}
+            />
+          ))}
         </ul>
       </div>
     </section>

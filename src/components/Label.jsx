@@ -2,13 +2,12 @@
 import React from "react";
 
 export default function Label({ text, color, hasCheckBox = false, isChecked = false, onChange, className="" }) {
-  // const handleCheck = (event) => {
-  //   // event.target.checked es true o false
-  //   // Avisamos al padre con onChange
-  //   if (onChange) {
-  //     onChange(text, event.target.checked);
-  //   }
-  // };
+  const handleCheck = (event) => {
+    if (onChange) {
+      onChange(text, event.target.checked);
+    }
+  };
+  
 
   return (
     <>
@@ -21,8 +20,8 @@ export default function Label({ text, color, hasCheckBox = false, isChecked = fa
             <input
                 className="peer sr-only"
                 type="checkbox"
-                // checked={isChecked}       // Aquí controlamos desde fuera si está marcado
-                // onChange={handleCheck}     // Avisamos al padre
+                checked={isChecked}       // Aquí controlamos desde fuera si está marcado
+                onChange={handleCheck}     // Avisamos al padre
             />
             <div
                 className="w-4 h-4 rounded-md bg-white border-2 border-purple-500 transition-all

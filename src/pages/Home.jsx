@@ -7,7 +7,7 @@ import Post from "@components/Post.jsx";
 import Loader from "@components/Loader.jsx";
 import Footer from "@sections/Footer.jsx";
 import "@styles/components/ColoredButton.css";
-import { getAllPublishedPosts, getSearchedPublishedPosts } from "@lib/db.js";
+import { getAllPublishedPosts, getSearchedPublishedPosts, getFilteredPostsByCategories } from "@lib/db.js";
 import "@styles/components/ColoredButton.css";
 
 function Home() {
@@ -17,8 +17,7 @@ function Home() {
   const [loadingMore, setLoadingMore] = useState(false); // cuando cargas más
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  // const [page, setPage] = useState(1);
-  // const [categories, setCategories] = useState([]);
+  const [activeCategories, setactiveCategories] = useState([]);
 
   const PAGINATION = 12;
 
@@ -29,8 +28,14 @@ function Home() {
       try {
         let data = [];
   
-        if (searchTerm.trim() === "") {
+        if (searchTerm.trim() === "" && activeCategories.length === 0) {
           data = await getAllPublishedPosts(1, PAGINATION);
+        } else if(activeCategories.length > 0 && searchTerm.trim() === "") {
+          data = await getFilteredPostsByCategories(activeCategories);
+          console.log(data);
+        } else if (activeCategories.length > 0 && searchTerm.trim() !== "") {
+          data = await getFilteredPostsByCategories(activeCategories);
+          data = data.filter(post => post.titulo.toLowerCase().includes(searchTerm.toLowerCase()));
         } else {
           data = await getSearchedPublishedPosts(searchTerm, 1, PAGINATION);
         }
@@ -45,7 +50,7 @@ function Home() {
     };
   
     fetchPosts();
-  }, [searchTerm]);
+  }, [searchTerm, activeCategories]);
 
   const loadMorePosts = async () => {
     const nextPage = page + 1;
@@ -79,6 +84,8 @@ function Home() {
       <Hero
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        activeCategories={activeCategories}
+        setactiveCategories={setactiveCategories}
       />
       
       <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20">

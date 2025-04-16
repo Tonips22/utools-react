@@ -49,3 +49,37 @@ export const deletePost = async (postId) => {
   if (error) throw error
   return data
 }
+
+export const getAllCategories = async () => {
+  const { data, error } = await supabase
+    .from("categories")
+    .select("*")
+    .order("id", { ascending: true });
+
+  if (error) throw error;
+  return data;
+}
+
+export const getFilteredPostsByCategories = async (categories = []) => {
+  if (categories.length === 0) return [];
+  
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*, post_categories(categories(*))')
+    .eq('estado', 'published');
+
+    if (error) throw error
+
+  // Filtrar en el lado del cliente
+  const filteredData = data.filter(post =>
+    categories.every(category => 
+      post.post_categories.some(rel =>
+        rel.categories.nombre === category
+      )
+    )
+  );
+  
+
+  return filteredData;
+};
+
