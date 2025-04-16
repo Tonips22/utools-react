@@ -31,7 +31,7 @@ function Home() {
         if (searchTerm.trim() === "" && activeCategories.length === 0) {
           data = await getAllPublishedPosts(1, PAGINATION);
         } else if(activeCategories.length > 0 && searchTerm.trim() === "") {
-          data = await getFilteredPostsByCategories(activeCategories);
+          data = await getFilteredPostsByCategories(activeCategories, 1, PAGINATION);
           console.log(data);
         } else if (activeCategories.length > 0 && searchTerm.trim() !== "") {
           data = await getFilteredPostsByCategories(activeCategories);

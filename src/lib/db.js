@@ -60,13 +60,17 @@ export const getAllCategories = async () => {
   return data;
 }
 
-export const getFilteredPostsByCategories = async (categories = []) => {
+export const getFilteredPostsByCategories = async (categories = [], page = 1, limit = 12) => {
   if (categories.length === 0) return [];
+  const offset = (page - 1) * limit;
+
   
   const { data, error } = await supabase
     .from('posts')
     .select('*, post_categories(categories(*))')
-    .eq('estado', 'published');
+    .eq('estado', 'published')
+    .order('created_at', { ascending: true })
+    .range(offset, offset + limit - 1);
 
     if (error) throw error
 
