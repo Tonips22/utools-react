@@ -31,6 +31,7 @@ export default function Label({
     if (text === "Icons") return "bg-teal-500/80";
     if (text === "Mockups") return "bg-rose-300/80";
     if (text === "API") return "bg-fuchsia-500/80";
+    if (text === "Animations") return "bg-red-500/80";
     return "bg-slate-700/80"; // valor por defecto si no coincide
   };
 

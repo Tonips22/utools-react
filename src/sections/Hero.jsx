@@ -115,6 +115,12 @@ export default function Hero({ searchTerm, setSearchTerm, categories, setCategor
             isChecked={categories.includes('Optimization')}
             onChange={handleCheckboxChange}
           />
+          <Label
+            hasCheckBox
+            text="Animations"
+            isChecked={categories.includes('Animations')}
+            onChange={handleCheckboxChange}
+          />
         </ul>
       </div>
     </section>
