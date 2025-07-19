@@ -6,6 +6,7 @@ import { useAuth } from "@auth/AuthProvider.jsx";
 import Post from "@components/Post.jsx";
 import Loader from "@components/Loader.jsx";
 import { getUserPosts } from "@lib/db.js";
+import { CiEdit } from "react-icons/ci";
 
 
 export default function Dashboard() {
@@ -49,13 +50,13 @@ export default function Dashboard() {
                 ) : posts.length > 0 ? (
                 posts.map((post, index) => (
                     <Post
-                    key={post.id}
-                    title={post.titulo}
-                    link={post.enlace}
-                    image={post.imagen}
-                    categories={post.post_categories}
-                    showStatus={true}
-                    status={post.estado}
+                      key={post.id}
+                      title={post.titulo}
+                      link={post.enlace}
+                      image={post.imagen}
+                      categories={post.post_categories}
+                      showStatus={true}
+                      status={post.estado}
                     >
                     {post.descripcion}
                     </Post>
@@ -64,6 +65,10 @@ export default function Dashboard() {
                 <p className="text-lg font-primary-font">You don't have any posts yet</p>
                 )}
             </main>
+
+            <button className="flex items-center rounded-full bg-pink text-dark px-4 py-2 self-start hover:opacity-80 transition-opacity duration-200 ease-in-out z-[999] mx-8" onClick={() => navigate("/new-post")}>
+                + New Post
+            </button>
             <Footer />
         </main>
     );
