@@ -7,6 +7,7 @@ import Post from "@components/Post.jsx";
 import Loader from "@components/Loader.jsx";
 import { getUserPosts } from "@lib/db.js";
 import { CiEdit } from "react-icons/ci";
+import PostForm from "@components/PostForm.jsx"; // Import the PostForm component
 
 
 export default function Dashboard() {
@@ -14,6 +15,7 @@ export default function Dashboard() {
     const { user } = useAuth(); // Obtener el usuario autenticado desde el contexto de autenticación
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [activeForm, setActiveForm] = useState(false); // para controlar el formulario activo
 
     useEffect(() => {
         if (!user) {
@@ -22,7 +24,14 @@ export default function Dashboard() {
           fetchPosts(); // solo si hay user
         }
       }, [user]);
-      
+
+      if(activeForm){
+        const body = document.querySelector("body");
+        body.style.overflow = "hidden"; // prevenir scroll cuando el formulario está activo
+      } else {
+        const body = document.querySelector("body");
+        body.style.overflow = "auto"; // permitir scroll cuando el formulario no está activo
+      }
 
       const fetchPosts = async () => {
         if (!user) return; // prevención extra
@@ -66,9 +75,19 @@ export default function Dashboard() {
                 )}
             </main>
 
-            <button className="flex items-center rounded-full bg-pink text-dark px-4 py-2 self-start hover:opacity-80 transition-opacity duration-200 ease-in-out z-[999] mx-8" onClick={() => navigate("/new-post")}>
-                + New Post
+            <button className="flex items-center rounded-full bg-pink text-dark px-4 py-2 self-start hover:opacity-80 transition-opacity duration-200 ease-in-out z-[999] mx-8" onClick={() => setActiveForm(true)}>
+                New Post +
             </button>
+
+            {activeForm && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[990]">
+                  <PostForm
+                    isNewPost={true}
+                    activeForm={activeForm}
+                    setActiveForm={setActiveForm}
+                  />
+                </div>
+            )}
             <Footer />
         </main>
     );
