@@ -86,4 +86,46 @@ export const getFilteredPostsByCategories = async (categories = [], page = 1, li
 
   return filteredData;
 };
+export const createNewPost = async (
+  title, description, link, imageUrl, userId, estado = "pending"
+) => {
+  const { data, error } = await supabase
+    .from("posts")
+    .insert([{
+      titulo: title,
+      descripcion: description,
+      enlace: link,
+      imagen: imageUrl,      // puede ser null o cadena vacía
+      usuario_id: userId,
+      estado
+    }])
+    .select("id");  // retorna el id del nuevo post
 
+  if (error) throw error;
+  return data[0];
+};
+
+export const createNewPostCategories = async (postId, categoryIds) => {
+  const payload = categoryIds.map(id => ({
+    post_id: postId,
+    category_id: id
+  }));
+  const { data, error } = await supabase
+    .from("post_categories")
+    .insert(payload);
+
+  if (error) throw error;
+  return data;
+};
+
+export const userCreatePost = async (
+  title, description, link, imageUrl, userId, categoryIds, estado = "pending"
+) => {
+  // 1) Insertamos el post (imagen puede ser null)
+  const post = await createNewPost(
+    title, description, link, imageUrl, userId, estado
+  );
+  // 2) Asociamos categorías
+  const categories = await createNewPostCategories(post.id, categoryIds);
+  return { post, categories };
+};
