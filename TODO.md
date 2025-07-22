@@ -33,8 +33,12 @@ https://pocketbase.io/
 * Comprobar que no hay fallas en el login
 
 * Sistema de notificaciones
-* Crear post
+* Crear post -- sin imagen ✅
+* Crear post -- con imagen
 * Editar Post
 * Eliminar Post
+* Validar 100KB de peso en la imagen ✅
 
 * Hacer en el formulario un preview de como quedará el post a la derecha
+- Arreglar index de boton de crear post 
+* **Nuevo Loader**
