@@ -31,3 +31,5 @@ https://pocketbase.io/
 * Añadir terminos y condiciones
 * Añadir política de privacidad
 * Comprobar que no hay fallas en el login
+
+* Hacer en el formulario un preview de como quedará el post a la derecha
