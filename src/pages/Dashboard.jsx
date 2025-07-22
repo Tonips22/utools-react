@@ -6,8 +6,7 @@ import { useAuth } from "@auth/AuthProvider.jsx";
 import Post from "@components/Post.jsx";
 import Loader from "@components/Loader.jsx";
 import { getUserPosts } from "@lib/db.js";
-import { CiEdit } from "react-icons/ci";
-import PostForm from "@components/PostForm.jsx"; // Import the PostForm component
+import PostForm from "@components/PostForm.jsx";
 
 
 export default function Dashboard() {
@@ -53,6 +52,7 @@ export default function Dashboard() {
                 transparent={false}
                 absolute={false}
             />
+            <h1 className="font-primary-font text-5xl px-8"> {user.user_metadata.name}'s DashBoard </h1>
             <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20">
                 {loading ? (
                 <Loader />
@@ -80,7 +80,7 @@ export default function Dashboard() {
             </button>
 
             {activeForm && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-[990]">
+                <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[990]">
                   <PostForm
                     isNewPost={true}
                     activeForm={activeForm}
