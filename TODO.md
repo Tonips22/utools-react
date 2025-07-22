@@ -1,21 +1,21 @@
 # TODO
 
-* AÑADIR TÉRMINOS Y CONDICIONES
-* AÑADIR POLÍTICA DE PRIVACIDAD
+* AÑADIR TÉRMINOS Y CONDICIONES ✅
+* AÑADIR POLÍTICA DE PRIVACIDAD ✅
 
-* Añadir buscador
+* Añadir buscador ✅
 
-* Añadir infite scroll
+* Añadir infite scroll ✅
 
-* Crear footer
+* Crear footer ✅
 
 * Añadir página de contacto
 
-* Añadir buy me a coffee
+* Añadir buy me a coffee ✅
 
-* Añadir labels
+* Añadir labels ✅
 
-* Corregir favicon
+* Corregir favicon ✅
 
 * Añadir tags como Database, Courses, etc...
 
@@ -28,8 +28,13 @@ https://resend.com/
 https://pocketbase.io/
 
 * Mejorar SEO
-* Añadir terminos y condiciones
-* Añadir política de privacidad
+* Añadir terminos y condiciones ✅
+* Añadir política de privacidad ✅
 * Comprobar que no hay fallas en el login
+
+* Sistema de notificaciones
+* Crear post
+* Editar Post
+* Eliminar Post
 
 * Hacer en el formulario un preview de como quedará el post a la derecha
