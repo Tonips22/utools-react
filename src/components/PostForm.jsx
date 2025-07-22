@@ -7,6 +7,9 @@ export default function PostForm({isNewPost = true, setActiveForm}) {
     const buttonText = isNewPost ? "Create" : "Save";
     const [categories, setCategories] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
+    const [imageFile, setImageFile] = useState(null);
+    const [isDragging, setIsDragging] = useState(false);
+
 
 
     useEffect(() => {
@@ -28,6 +31,38 @@ export default function PostForm({isNewPost = true, setActiveForm}) {
             setSelectedCategories(prev => prev.filter(name => name !== categoryName));
         }
     };
+
+    // Drag and drop handlers for image upload
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+
+        const file = e.dataTransfer.files[0];
+        if (file && file.type === "image/webp") {
+            setImageFile(file);
+        } else {
+            alert("Please upload a .webp image.");
+        }
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file && file.type === "image/webp") {
+            setImageFile(file);
+        } else {
+            alert("Please upload a .webp image.");
+        }
+    };
+
 
 
     return (
@@ -94,15 +129,48 @@ export default function PostForm({isNewPost = true, setActiveForm}) {
 
             {/* Image Upload */}
             <div className="flex flex-col gap-2">
-            <label className="block text-white opacity-80">Image</label>
-            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/40 rounded-lg cursor-pointer hover:border-pink hover:bg-pink/10 transition-all duration-200">
-                <span className="text-white text-sm">Click to upload .webp image</span>
-                <input type="file" accept="image/webp" className="hidden" />
-            </label>
+            <label className="block text-white opacity-80">Image <span className="text-pink">*</span></label>
+
+            <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onClick={() => document.getElementById("fileInput").click()}
+                style={{
+                    backgroundImage: imageFile ? `url(${URL.createObjectURL(imageFile)})` : "none",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
+                className={`relative flex items-center justify-center w-full h-40 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                isDragging
+                    ? "border-pink bg-pink/10"
+                    : imageFile
+                    ? "border-white/10"
+                    : "border-dashed border-white/40 hover:border-pink hover:bg-pink/5"
+                }`}
+            >
+                <div className="absolute inset-0 bg-black/30 rounded-lg backdrop-blur-sm flex items-center justify-center">
+                <span className="text-white text-sm">
+                    {imageFile ? "Change image" : "Click or drag & drop a .webp image"}
+                </span>
+                </div>
+
+                <input
+                    id="fileInput"
+                    type="file"
+                    accept="image/webp"
+                    className="hidden"
+                    onChange={handleFileChange}
+                    required
+                />
+            </div>
+
             <p className="text-xs text-white/60 italic">
                 Image should be in .webp and less than 100KB.
             </p>
             </div>
+
+
 
             {/* Buttons */}
             <div className="flex gap-4">
