@@ -24,7 +24,7 @@ export default function Label({ text, color, hasCheckBox = false, isChecked = fa
                 onChange={handleCheck}     // Avisamos al padre
             />
             <div
-                className="w-4 h-4 rounded-md bg-white border-2 border-purple-500 transition-all
+                className="w-4 h-4 rounded-md bg-white transition-all
                         duration-300 ease-in-out peer-checked:bg-gradient-to-br from-blue to-pink
                         peer-checked:border-0 peer-checked:rotate-12
                         after:content-[''] after:absolute after:top-1/2 after:left-1/2
