@@ -4,7 +4,7 @@ export default function Service() {
         <main className="flex flex-col min-h-screen text-white p-8 gap-8 max-w-[80ch] mx-auto">
             <NavBar></NavBar>
 
-            <h1 className="font-primary-font text-7xl" id="header">Terms of Service</h1>
+            <h1 className="font-primary text-7xl" id="header">Terms of Service</h1>
 
             <p>These Terms of Service govern your use of Utools, accessible at <a className=" text-pink" href="https://utools-agt.vercel.app/">https://utools-agt.vercel.app</a>. By using our app, you agree to comply with these terms.</p>
             

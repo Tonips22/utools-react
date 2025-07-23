@@ -52,7 +52,7 @@ export default function Dashboard() {
                 transparent={false}
                 absolute={false}
             />
-            <h1 className="font-primary-font text-5xl px-8"> {user.user_metadata.name}'s DashBoard </h1>
+            {/* <h1 className="font-primary text-5xl px-8"> {user.user_metadata.name}'s DashBoard </h1> */}
             <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20">
                 {loading ? (
                 <Loader />
@@ -71,7 +71,8 @@ export default function Dashboard() {
                     </Post>
                 ))
                 ) : (
-                <p className="text-lg font-primary-font">You don't have any posts yet</p>
+                <p className="text-lg font-primary
+  ">You don't have any posts yet</p>
                 )}
             </main>
 

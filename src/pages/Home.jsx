@@ -105,7 +105,7 @@ function Home() {
             </Post>
           ))
         ) : (
-          <p className="text-lg font-primary-font">No results found</p>
+          <p className="text-lg font-primary">No results found</p>
         )}
       </main>
 

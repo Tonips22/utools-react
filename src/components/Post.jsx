@@ -18,9 +18,9 @@ export default function Post({id, title, link, children, image, categories = ["n
 
             <div className="flex flex-col justify-between p-4 h-2/3">
                 <div className="flex flex-col gap-4">
-                    <h3 className="font-primary-font text-3xl"> {title} </h3>
-                    <p className="font-secondary-font text-sm"> {children} </p>
-                    {name && <p className="font-secondary-font text-xs opacity-60"> Reference by {name}</p>}
+                    <h3 className="font-primary text-3xl"> {title} </h3>
+                    <p className="font-secondary text-sm"> {children} </p>
+                    {name && <p className="font-secondary text-xs opacity-60"> Reference by {name}</p>}
                 </div>
 
                 <div className="labels flex flex-row gap-2 flex-wrap">

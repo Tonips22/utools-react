@@ -27,11 +27,11 @@ export default function Login() {
             <section className="flex flex-col items-center justify-center p-8 rounded-lg relative">
                 <AnimatedBg />
                 <h1 className="z-20 text-2xl">Welcome to</h1>
-                <a href="/" className="hoverable font-primary-font z-20 text-8xl">Utools</a>
+                <a href="/" className="hoverable font-primary z-20 text-8xl">Utools</a>
             </section>
 
             <section className="z-10 flex flex-col items-center justify-center gap-4 p-8">
-                <h1 className="font-primary-font text-7xl">Sign In</h1>
+                <h1 className="font-primary text-7xl">Sign In</h1>
                 <h2 className="font-bold">Choose a method to sign in.</h2>
                 {loading && <p>Loading...</p>} {/* Mensaje de carga */}
                 <button onClick={() => handleLogin("google")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-white rounded-lg px-4 py-2 text-dark min-w-60 hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out">

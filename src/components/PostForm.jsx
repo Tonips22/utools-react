@@ -80,7 +80,7 @@ export default function PostForm({ isNewPost = true, setActiveForm }) {
   };
 
   return (
-    <div className="flex flex-col bg-dark p-8 rounded-2xl font-primary-font gap-6 max-w-screen-md w-full mx-auto">
+    <div className="flex flex-col bg-dark p-8 rounded-2xl font-primary gap-6 max-w-screen-md w-full mx-auto">
       <h1 className="text-2xl font-bold text-white">{titleText}</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6 text-sm">

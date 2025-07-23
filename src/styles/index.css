@@ -1,70 +1,107 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  color-scheme: light dark;
-  
-  /*Colors*/
-  --bg: #010005;
-  --white: #FFFEFE;
-  --dark: #141319;
-  --blue: #173EF2;
-  --pink: #FE4BA5;
-  --purple: #901BCA;
-  --light-blue: #00EEF3;
+@layer base {
+  /* — Variables globales — */
+  :root {
+    color-scheme: light dark;
 
-  /*Fonts*/
-  --primary-font: 'Inder', sans-serif;
-  --secondary-font: 'Inter Variable', sans-serif;
+    /* Colors */
+    --bg: #010005;
+    --white: #FFFEFE;
+    --dark: #141319;
+    --blue: #173EF2;
+    --pink: #FE4BA5;
+    --purple: #901BCA;
+    --light-blue: #00EEF3;
 
-  /* font-synthesis: none;
-	text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale; */
-}
-
-* { margin: 0; padding: 0; }
-*, *::before, *::after { box-sizing: border-box; }
-html { font-size: 16px; scroll-behavior: smooth; scrollbar-width: none;}
-body {
-  background-image: linear-gradient(#141319 2px, transparent 2px), linear-gradient(to right, #141319 2px, transparent 2px);
-  background-size: 32px 32px;
-  background-color: #010005;
-  color: var(--white);	
-  font-family: var(--secondary-font);
-  min-height: 100vh;
-  max-width: 1920px;
-  margin: 0 auto;
-}
-
-input, button, textarea, select { font: inherit; }
-p { text-wrap: pretty; overflow-wrap: break-word; }
-h1, h2, h3, h4, h5, h6 { text-wrap: balance; overflow-wrap: break-word; }
-h1{ font-family: var(--secondary-font); font-size: 3.2rem; }
-img, video, svg { max-width: 100%; height: auto; }
-a { text-decoration: none; color: inherit; }
-ul, ol { list-style: none; }
-::selection {
-  background: var(--pink); /* Fondo cuando seleccionas */
-  color: var(--dark);        /* Color del texto seleccionado */
-}
-
-
-@media (prefers-color-scheme: light) {
-	:root {
-		--bg: #FFFEFE;
-    --white: #010005;
-		--dark: #d4d4d4;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * { 
-    animation-duration: 0.01ms !important; 
-    animation-iteration-count: 1 !important; 
-    transition-duration: 0.01ms !important; 
-    scroll-behavior: auto !important;
-    transition: none; 
+    /* Fonts */
+    --primary-font: 'Inder', sans-serif;
+    --secondary-font: 'Inter Variable', sans-serif;
   }
+
+  /* — Box sizing — */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  *{ margin: 0; padding: 0; }
+
+  /* — Tipografía y cuerpo — */
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    /* opcional: scrollbar-width: none; */
+  }
+  body {
+    margin: 0 auto;
+    min-height: 100vh;
+    max-width: 1920px;
+    font-family: var(--secondary-font);
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(#141319 2px, transparent 2px),
+      linear-gradient(to right, #141319 2px, transparent 2px);
+    background-size: 32px 32px;
+    color: var(--white);
+  }
+
+  /* — Reset selectivo *sin* cargarte paddings/márgenes de Tailwind — */
+  ul, ol {
+    list-style: none;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  img, video, svg {
+    max-width: 100%;
+    height: auto;
+  }
+  input, button, textarea, select {
+    font: inherit;
+  }
+  p {
+    overflow-wrap: break-word;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+  }
+
+  /* — Selection — */
+  ::selection {
+    background: var(--pink);
+    color: var(--dark);
+  }
+
+  /* — Media queries — */
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #FFFEFE;
+      --white: #010005;
+      --dark: #d4d4d4;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0 !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0 !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@theme{
+    /*Colors*/
+    --color-bg: var(--bg);
+    --color-dark: var(--dark);
+    --color-white: var(--white);
+    --color-blue: var(--blue);
+    --color-pink: var(--pink);
+    --color-purple: var(--purple);
+    --color-light-blue: var(--light-blue);
+
+    /*Fonts*/
+    --font-primary: var(--primary-font);
+    --font-secondary: var(--secondary-font);
 }

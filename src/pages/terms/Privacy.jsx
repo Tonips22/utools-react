@@ -4,7 +4,7 @@ export default function Privacy() {
         <main className="flex flex-col min-h-screen text-white p-8 gap-8 max-w-[80ch] mx-auto">
             <NavBar></NavBar>
 
-            <h1 className="font-primary-font text-8xl" id="header">Privacy Policy</h1>
+            <h1 className="font-primary text-8xl" id="header">Privacy Policy</h1>
 
             <p>At Utools, accessible from <a className=" text-pink" href="https://utools-agt.vercel.app/">https://utools-agt.vercel.app</a>, the privacy of our users is a priority. This Privacy Policy explains how we collect, use, and protect personal information.</p>
 
