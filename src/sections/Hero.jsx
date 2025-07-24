@@ -49,7 +49,7 @@ export default function Hero({searchTerm, setSearchTerm, activeCategories, setac
       <AnimatedBg />
 
       <div className="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center gap-4">
-        <h1 className="text-6xl text-white font-bold cursor-default">Utools</h1>
+        <h1 className="text-6xl text-white font-bold cursor-default relative after:content-['BETA'] after:absolute after:-bottom-0 after:-right-10 after:text-[10px] after:border-1 after:border-pink after:px-1 after:py-0.5 after:rounded-full after:text-pink">Utools</h1>
 
         <label className='hoverable flex flex-row items-center gap-4 bg-black/10 shadow-2xl border-2 border-dark backdrop-blur-xl rounded-full px-8 py-4 w-[350px] cursor-text md:w-[500px] lg:w-[600px]'>
           <svg 
