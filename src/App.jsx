@@ -6,13 +6,14 @@ import NotFound from '@pages/NotFound.jsx';
 import Cursor from "@components/Cursor.jsx";
 import Privacy from '@pages/terms/Privacy.jsx';
 import Service from '@pages/terms/Service.jsx';
-
+import { ToastProvider } from '@heroui/react';
 
 
 function App() {
     return (
         <Router>
           <Cursor/>
+          <ToastProvider/>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/dashboard" element={<Dashboard />} />

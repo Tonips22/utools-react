@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@plugin './hero.ts';
+@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
 
 @layer base {
   /* — Variables globales — */
@@ -30,7 +33,7 @@
   html {
     font-size: 16px;
     scroll-behavior: smooth;
-    /* opcional: scrollbar-width: none; */
+    scrollbar-width: none;
   }
   body {
     margin: 0 auto;

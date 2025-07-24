@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { addToast } from "@heroui/react";
 import { getAllCategories, userCreatePost } from "@lib/db.js";
 import { useAuth } from "@auth/AuthProvider.jsx";
 import Label from "@components/Label.jsx";
@@ -21,7 +22,16 @@ export default function PostForm({ isNewPost = true, setActiveForm }) {
 
   // Carga categorías
   useEffect(() => {
-    getAllCategories().then(setAllCategories).catch(console.error);
+    getAllCategories()
+      .then(setAllCategories)
+      .catch(err => {
+        console.error(err);
+        addToast({
+          title: "Error",
+          description: "No se pudieron cargar las categorías",
+          color: "danger",
+        });
+      });
   }, []);
 
   // Toggle categorías (guarda sólo el id)
@@ -29,9 +39,7 @@ export default function PostForm({ isNewPost = true, setActiveForm }) {
     const cat = allCategories.find(c => c.nombre === categoryName);
     if (!cat) return;
     setSelectedCategoryIds(prev =>
-      checked
-        ? [...prev, cat.id]
-        : prev.filter(id => id !== cat.id)
+      checked ? [...prev, cat.id] : prev.filter(id => id !== cat.id)
     );
   };
 
@@ -43,23 +51,46 @@ export default function PostForm({ isNewPost = true, setActiveForm }) {
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
     if (file?.type === "image/webp") setImageFile(file);
-    else alert("Solo .webp permitido.");
+    else {
+      addToast({
+        title: "Formato inválido",
+        description: "Solo .webp permitido",
+        color: "warning",
+      });
+    }
   };
   const handleFileChange = e => {
     const file = e.target.files[0];
     if (file?.type === "image/webp") setImageFile(file);
-    else alert("Solo .webp permitido.");
+    else {
+      addToast({
+        title: "Formato inválido",
+        description: "Solo .webp permitido",
+        color: "warning",
+      });
+    }
   };
 
   // Submit (sin subida de imagen)
   const handleSubmit = async e => {
     e.preventDefault();
-    if (!user) return alert("Debes estar logueado");
+    if (!user) {
+      addToast({
+        title: "Acceso denegado",
+        description: "Debes estar logueado para crear un post",
+        color: "danger",
+      });
+      return;
+    }
     if (!title || !link || !description || selectedCategoryIds.length === 0) {
-      return alert("Rellena todos los campos y elige al menos una categoría.");
+      addToast({
+        title: "Campos incompletos",
+        description: "Rellena todos los campos y elige al menos una categoría",
+        color: "warning",
+      });
+      return;
     }
 
-    // No subimos nada: la URL será null si no hay archivo
     const imageUrl = imageFile ? URL.createObjectURL(imageFile) : null;
 
     try {
@@ -67,15 +98,23 @@ export default function PostForm({ isNewPost = true, setActiveForm }) {
         title,
         description,
         link,
-        imageUrl,           // puede ser null
+        imageUrl,
         user.id,
         selectedCategoryIds
       );
+      addToast({
+        title: "Post creado",
+        description: "Tu post se ha registrado correctamente",
+        color: "success",
+      });
       setActiveForm(false);
-      // refresca la lista de posts si lo necesitas
     } catch (err) {
       console.error(err);
-      alert("Error creando el post.");
+      addToast({
+        title: "Error",
+        description: "Algo falló creando el post",
+        color: "danger",
+      });
     }
   };
 

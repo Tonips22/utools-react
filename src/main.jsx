@@ -8,6 +8,8 @@ import '@fontsource-variable/inter';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <AuthProvider>
-        <App />
+        <main className='dark'>
+            <App />
+        </main>
     </AuthProvider>
 );
