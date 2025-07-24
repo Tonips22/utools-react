@@ -21,6 +21,8 @@ export default function Dashboard() {
           navigate("/login");
         } else {
           fetchPosts(); // solo si hay user
+          const title = `${user.user_metadata.name}'s Dashboard`;
+          document.title = `${title} | Utools`;
         }
       }, [user]);
 
@@ -52,7 +54,7 @@ export default function Dashboard() {
                 transparent={false}
                 absolute={false}
             />
-            {/* <h1 className="font-primary text-5xl px-8"> {user.user_metadata.name}'s DashBoard </h1> */}
+            {/* <h1 className="font-primary text-5xl px-8"> {title} </h1> */}
             <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20">
                 {loading ? (
                 <Loader />

@@ -8,6 +8,8 @@ export default function Login() {
     const { user, loginWithProvider } = useAuth();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const title = "Login | Utools";
+    document.title = title;
 
     // Redirigir si el usuario ya está autenticado
     useEffect(() => {
