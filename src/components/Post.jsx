@@ -46,25 +46,64 @@ export default function Post({id, title, link, children, image, categories = ["n
                 />
 
                 <Dropdown
-                className="hoverable z-0 rounded-xl p-2 bg-dark"
+                    classNames={{
+                        // wrapper del popover (el que tiene bg-content1)
+                        content: "bg-transparent backdrop-blur-md rounded-xl", 
+                        // puedes ocultar la flechita si quieres
+                        arrow: "hidden",
+                        base: "w-36 bg-transparent border-none outline-none",
+                        trigger: "flex items-center gap-2",
+                    }}
+                    
                 >
                     <DropdownTrigger>
-                        <Button size="sm">
-                            <TbDotsVertical className="hoverable text-dark text-xl cursor-pointer hover:scale-110 active:scale-95 transition-transform duration-200 ease-in-out"/>
-                        </Button>
+                        <button
+                            type="button"
+                            aria-label="post options"
+                            className="p-0 m-0 bg-transparent leading-none cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+                        >
+                            <TbDotsVertical className="text-dark text-xl" />
+                        </button>
                     </DropdownTrigger>
-                    <DropdownMenu aria-label="Static Actions" className="flex flex-col gap-4 min-w-36">
-                        <DropdownItem key="edit" className="group hover:bg-pink hover:text-dark rounded-md transition-colors duration-200 ease-in-out" >
+                    <DropdownMenu 
+                        aria-label="Static Actions"
+                        classNames={{
+                            base: "bg-dark backdrop-blur-sm rounded-xl p-2",
+                            list: "flex flex-col gap-2",
+                        }}
+                        itemClasses={{
+                            base: "rounded-lg py-1 px-2 text-sm text-white hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out",
+                        }}
+                        variant="light"
+                    >
+                        <DropdownItem
+                            key="edit"
+                            classNames={{ 
+                                base: "group flex flex-row items-center gap-2 bg-dark bg-transparent hover:bg-pink", 
+                                title: "text-sm text-white group-hover:text-dark",
+                            }}
+                        >
                             <div className="flex flex-row items-center gap-2">
                                 <CiEdit className="text-pink text-xl group-hover:text-dark rounded-md transition-colors duration-200 ease-in-out" />
                                 Edit post
                             </div>
                         </DropdownItem>
-                        <DropdownItem key="delete" className="group hover:bg-red-700 hover:text-white rounded-md transition-colors duration-200 ease-in-out" >
-                            <Button className="flex flex-row items-center gap-2" size="sm">
+                        <DropdownItem
+                            key="delete"
+                            classNames={{ 
+                                base: "group flex flex-row items-center gap-2 bg-dark bg-transparent hover:bg-red-700 cursor-pointer", 
+                                title: "text-sm text-white",
+                            }}
+                        >
+                            <button
+                                type="button"
+                                aria-label="post options"
+                                className="flex flex-row items-center gap-2 cursor-pointer bg-transparent hover:bg-red-700 text-white transition-colors duration-200 ease-in-out"
+                                variant="light"
+                            >
                                 <FaTrashAlt className="text-red-700 text-lg group-hover:text-white rounded-md transition-colors duration-200 ease-in-out" />
                                 Delete post
-                            </Button>
+                            </button>
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
