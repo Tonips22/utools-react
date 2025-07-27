@@ -36,15 +36,15 @@ export default function Login() {
                 <h1 className="font-primary text-7xl">Sign In</h1>
                 <h2 className="font-bold">Choose a method to sign in.</h2>
                 {loading && <p>Loading...</p>} {/* Mensaje de carga */}
-                <button onClick={() => handleLogin("google")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-white rounded-lg px-4 py-2 text-dark min-w-60 hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out">
+                <button onClick={() => handleLogin("google")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-white rounded-lg px-4 py-2 text-dark min-w-60 hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out cursor-pointer">
                     <FaGoogle className="size-5" />
                     <p className="self-center">Continue with Google</p>
                 </button>
-                <button onClick={() => handleLogin("github")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-white rounded-lg px-4 py-2 text-dark min-w-60 hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out">
+                <button onClick={() => handleLogin("github")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-white rounded-lg px-4 py-2 text-dark min-w-60 hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out cursor-pointer">
                     <FaGithub className="size-5" />
                     <p className="self-center">Continue with GitHub</p>
                 </button>
-                <button onClick={() => handleLogin("twitch")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-white rounded-lg px-4 py-2 text-dark min-w-60 hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out">
+                <button onClick={() => handleLogin("twitch")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-white rounded-lg px-4 py-2 text-dark min-w-60 hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out cursor-pointer">
                     <FaTwitch className="size-5" />
                     <p className="self-center">Continue with Twitch</p>
                 </button>
