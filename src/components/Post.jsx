@@ -1,8 +1,10 @@
+import { useState } from "react";
 import Label from "@components/Label.jsx";
 import { TbDotsVertical } from "react-icons/tb";
 import { CiEdit } from "react-icons/ci";
 import { FaTrashAlt } from "react-icons/fa";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@heroui/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, addToast} from "@heroui/react";
+import { deletePostCascade } from "@lib/db.js";
 
 export default function Post({id, title, link, children, image, categories = ["non-stablished"], name="", showStatus=false, status="pending" }) {
     const statusColors = {
@@ -10,8 +12,28 @@ export default function Post({id, title, link, children, image, categories = ["n
         "published": "#53FA53cc",
         "rejected": "#F46058CC",
     };
-    
+    const [openModal, setOpenModal] = useState(false);
+
+    const handleDelete = async () => {
+        try {
+            await deletePostCascade(id);
+            addToast({
+                title: "Post deleted",
+                description: "Your post has been successfully deleted.",
+                color: "success",
+            });
+        } catch (error) {
+            console.error("Error deleting post:", error);
+            addToast({
+                title: "Error deleting post",
+                description: "There was an error deleting your post.",
+                color: "error",
+            });
+        }
+    };
+
     return (
+        <>
         <div className="relative">
         <a target="_blank" href={link} className="hoverable relative flex flex-col justify-start rounded-2xl bg-dark hover:opacity-80 transition-opacity duration-200 ease-in-out overflow-hidden cursor-pointer h-[425px]">
             <img className=" w-full h-1/3 object-cover object-center rounded-tl-2xl rounded-tr-2xl" src={image} alt={title} />
@@ -100,6 +122,7 @@ export default function Post({id, title, link, children, image, categories = ["n
                                 aria-label="post options"
                                 className="flex flex-row items-center gap-2 cursor-pointer bg-transparent hover:bg-red-700 text-white transition-colors duration-200 ease-in-out"
                                 variant="light"
+                                onClick={() => setOpenModal(true)}
                             >
                                 <FaTrashAlt className="text-red-700 text-lg group-hover:text-white rounded-md transition-colors duration-200 ease-in-out" />
                                 Delete post
@@ -110,5 +133,34 @@ export default function Post({id, title, link, children, image, categories = ["n
             </div>
         )}
         </div>
+
+        {openModal && (
+            <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-[99999]">
+                <div className="bg-dark rounded-xl p-6 w-96 flex flex-col gap-4">
+                    <h2 className="text-2xl font-bold">Delete Post</h2>
+                    <p className="">Are you sure you want to delete <span className="font-bold">{title}</span>?</p>
+                    <div className="flex justify-end gap-2">
+                        <Button
+                            variant="light"
+                            color="default"
+                            onClick={() => setOpenModal(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="flat"
+                            color="danger"
+                                onClick={() => {
+                                    handleDelete();
+                                    setOpenModal(false);
+                            }}
+                        >
+                            Delete
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
     );
 }

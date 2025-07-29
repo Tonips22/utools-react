@@ -62,6 +62,7 @@ export default function Dashboard() {
                 posts.map((post, index) => (
                     <Post
                       key={post.id}
+                      id={post.id}
                       title={post.titulo}
                       link={post.enlace}
                       image={post.imagen}
