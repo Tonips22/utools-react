@@ -21,7 +21,7 @@ export default function Dashboard() {
           navigate("/login");
         } else {
           fetchPosts(); // solo si hay user
-          const title = `${user.user_metadata.name}'s Dashboard`;
+          const title = (user.user_metadata.name) ? `${user.user_metadata.name}'s Dashboard` : "Dashboard";
           document.title = `${title} | Utools`;
         }
       }, [user]);

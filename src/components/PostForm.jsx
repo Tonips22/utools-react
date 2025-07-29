@@ -3,6 +3,7 @@ import { addToast } from "@heroui/react";
 import { getAllCategories, userCreatePost } from "@lib/db.js";
 import { useAuth } from "@auth/AuthProvider.jsx";
 import Label from "@components/Label.jsx";
+import { supabase } from '@lib/supabase.js'
 
 export default function PostForm({ isNewPost = true, setActiveForm }) {
   const { user } = useAuth();
@@ -72,51 +73,71 @@ export default function PostForm({ isNewPost = true, setActiveForm }) {
   };
 
   // Submit (sin subida de imagen)
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    /* ─ 1) Validaciones básicas ───────────────────────── */
     if (!user) {
-      addToast({
-        title: "Acceso denegado",
-        description: "Debes estar logueado para crear un post",
-        color: "danger",
-      });
+      addToast({ title: "Acceso denegado", description: "Debes estar logueado", color: "danger" });
       return;
     }
     if (!title || !link || !description || selectedCategoryIds.length === 0) {
-      addToast({
-        title: "Campos incompletos",
-        description: "Rellena todos los campos y elige al menos una categoría",
-        color: "warning",
-      });
+      addToast({ title: "Campos incompletos", description: "Rellena todo y elige categoría", color: "warning" });
+      return;
+    }
+    if (!imageFile) {
+      addToast({ title: "Imagen requerida", description: "Sube una imagen .webp", color: "warning" });
+      return;
+    }
+    if (imageFile.size > 100 * 1024) {          // 100 KB
+      addToast({ title: "Imagen muy pesada", description: "Debe pesar menos de 100 KB", color: "warning" });
       return;
     }
 
-    const imageUrl = imageFile ? URL.createObjectURL(imageFile) : null;
+    /* ─ 2) Sube la imagen al bucket 'post-images' ─────── */
+    const filePath = `${user.id}/${Date.now()}.webp`;
+    const { error: uploadError } = await supabase
+      .storage
+      .from("post-images")            // ← bucket
+      .upload(filePath, imageFile, { upsert: false });
 
+    if (uploadError) {
+      console.error(uploadError);
+      addToast({ title: "Error al subir imagen", description: uploadError.message, color: "danger" });
+      return;
+    }
+
+    /* ─ 3) Obtiene la URL pública ─────────────────────── */
+    const { data: urlData, error: urlError } = supabase
+      .storage
+      .from("post-images")
+      .getPublicUrl(filePath);
+
+    if (urlError) {
+      console.error(urlError);
+      addToast({ title: "Error URL", description: urlError.message, color: "danger" });
+      return;
+    }
+    const publicUrl = urlData.publicUrl;   // ← ESTA es la URL correcta
+
+    /* ─ 4) Inserta post + relación categorías ─────────── */
     try {
       await userCreatePost(
         title,
         description,
         link,
-        imageUrl,
+        publicUrl,          // ← ahora sí
         user.id,
         selectedCategoryIds
       );
-      addToast({
-        title: "Post creado",
-        description: "Tu post se ha registrado correctamente",
-        color: "success",
-      });
+      addToast({ title: "Post creado", description: "Publicado correctamente", color: "success" });
       setActiveForm(false);
     } catch (err) {
       console.error(err);
-      addToast({
-        title: "Error",
-        description: "Algo falló creando el post",
-        color: "danger",
-      });
+      addToast({ title: "Error", description: "No se pudo crear el post", color: "danger" });
     }
   };
+
 
   return (
     <div className="flex flex-col bg-dark p-8 rounded-2xl font-primary gap-6 max-w-screen-md w-full mx-auto">
