@@ -50,6 +50,67 @@ export const deletePost = async (postId) => {
   return data
 }
 
+/** Elimina:
+ *  1) La fila de `posts`
+ *  2) Las filas de `post_categories`
+ *  3) El archivo .webp del bucket post-images
+ */
+export const deletePostCascade = async (postId) => {
+  /* ─ 0) Sacamos la URL de la imagen ───────────────── */
+  const { data: postRow, error: fetchErr } = await supabase
+    .from("posts")
+    .select("imagen")
+    .eq("id", postId)
+    .single();
+
+  if (fetchErr) throw fetchErr;
+
+  /* ─ 1) Borramos relaciones en post_categories ────── */
+  const { error: pcErr } = await supabase
+    .from("post_categories")
+    .delete()
+    .eq("post_id", postId);
+
+  if (pcErr) throw pcErr;
+
+  /* ─ 2) Borramos la imagen del bucket (si existe) ─── */
+  if (postRow?.imagen) {
+    const imageUrl = postRow.imagen;
+    const url = new URL(imageUrl);
+    const path = decodeURIComponent(
+      url.pathname.replace("/storage/v1/object/public/post-images/", "")
+    );
+
+    console.log("🔍 Imagen a borrar:");
+    console.log("URL completa:", imageUrl);
+    console.log("URL pathname:", url.pathname);
+    console.log("Path interno para Supabase:", path);
+
+    const { error: rmErr } = await supabase
+      .storage
+      .from("post-images")
+      .remove([path]);
+
+    if (rmErr) {
+      console.error("❌ Error al borrar imagen:", rmErr);
+      throw rmErr;
+    } else {
+      console.log("✅ Imagen borrada correctamente:", path);
+    }
+  }
+
+
+  /* ─ 3) Borramos el propio post ───────────────────── */
+  const { data, error: postErr } = await supabase
+    .from("posts")
+    .delete()
+    .eq("id", postId);
+
+  if (postErr) throw postErr;
+  return data;
+};
+
+
 export const getAllCategories = async () => {
   const { data, error } = await supabase
     .from("categories")
