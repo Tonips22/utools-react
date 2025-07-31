@@ -7,6 +7,7 @@ import Post from "@components/Post.jsx";
 import Loader from "@components/Loader.jsx";
 import { getUserPosts } from "@lib/db.js";
 import PostForm from "@components/PostForm.jsx";
+import Skeleton from "@components/Skeleton.jsx";
 
 
 export default function Dashboard() {
@@ -15,6 +16,8 @@ export default function Dashboard() {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeForm, setActiveForm] = useState(false); // para controlar el formulario activo
+
+    const SKELETON_COUNT = 8;
 
     useEffect(() => {
         if (!user) {
@@ -57,7 +60,9 @@ export default function Dashboard() {
             {/* <h1 className="font-primary text-5xl px-8"> {title} </h1> */}
             <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20">
                 {loading ? (
-                <Loader />
+                  Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+                    <Skeleton key={index} />
+                  ))
                 ) : posts.length > 0 ? (
                 posts.map((post, index) => (
                     <Post

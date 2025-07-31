@@ -9,6 +9,7 @@ import Footer from "@sections/Footer.jsx";
 import "@styles/components/ColoredButton.css";
 import { getAllPublishedPosts, getSearchedPublishedPosts, getFilteredPostsByCategories } from "@lib/db.js";
 import "@styles/components/ColoredButton.css";
+import Skeleton from "@components/Skeleton.jsx";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -20,6 +21,7 @@ function Home() {
   const [activeCategories, setactiveCategories] = useState([]);
 
   const PAGINATION = 12;
+  const SKELETON_COUNT = 8;
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -90,7 +92,9 @@ function Home() {
       
       <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20">
         {loading ? (
-          <Loader />
+          Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+            <Skeleton key={index} />
+          ))
         ) : posts.length > 0 ? (
           posts.map((post) => (
             <Post
