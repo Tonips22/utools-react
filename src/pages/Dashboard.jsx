@@ -84,9 +84,20 @@ export default function Dashboard() {
                 )}
             </main>
 
-            <button className="flex items-center rounded-full bg-pink text-dark px-4 py-2 self-start hover:opacity-80 transition-opacity duration-200 ease-in-out z-[999] mx-8" onClick={() => setActiveForm(true)}>
-                New Post +
-            </button>
+            <button
+            onClick={() => setActiveForm(true)}
+            className="bg-dark rounded-2xl cursor-pointer self-start px-6 py-3 font-semibold hover:bg-dark/80 transition-colors duration-300 z-[990] group mx-8"
+          >
+            <span
+              className="hoverable text-transparent bg-clip-text 
+                        bg-gradient-to-r from-light-blue via-purple to-pink 
+                        bg-[length:200%_100%] bg-left 
+                        group-hover:bg-right 
+                        transition-[background-position] duration-200 ease-in-out"
+            >
+              New Post +
+            </span>
+          </button>
 
             {activeForm && (
                 <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[990]">

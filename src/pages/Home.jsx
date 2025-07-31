@@ -117,11 +117,21 @@ function Home() {
         {hasMore && !loading && (
           <button
             onClick={loadMorePosts}
-            className="coloredButton"
+            className="bg-dark rounded-2xl cursor-pointer px-6 py-3 font-semibold hover:bg-dark/80 transition-colors duration-300 z-[990] group"
             disabled={loadingMore}
           >
-            {loadingMore ? "Loading..." : "Load more"}
+            <span
+              className="hoverable text-transparent bg-clip-text 
+                        bg-gradient-to-r from-light-blue via-purple to-pink 
+                        bg-[length:200%_100%] bg-left 
+                        group-hover:bg-right 
+                        transition-[background-position] duration-200 ease-in-out"
+            >
+              {loadingMore ? "Loading..." : "Load more"}
+            </span>
           </button>
+
+
         )}
       </div>
 
