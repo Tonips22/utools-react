@@ -6,9 +6,7 @@ import Hero from "@sections/Hero.jsx";
 import Post from "@components/Post.jsx";
 import Loader from "@components/Loader.jsx";
 import Footer from "@sections/Footer.jsx";
-import "@styles/components/ColoredButton.css";
 import { getAllPublishedPosts, getSearchedPublishedPosts, getFilteredPostsByCategories } from "@lib/db.js";
-import "@styles/components/ColoredButton.css";
 import Skeleton from "@components/Skeleton.jsx";
 
 function Home() {
