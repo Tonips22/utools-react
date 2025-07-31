@@ -100,6 +100,7 @@ export default function Post({id, title, link, children, image, categories = ["n
                     >
                         <DropdownItem
                             key="edit"
+                            textValue="Edit post"
                             classNames={{ 
                                 base: "group flex flex-row items-center gap-2 bg-dark bg-transparent hover:bg-pink", 
                                 title: "text-sm text-white group-hover:text-dark",
@@ -112,6 +113,7 @@ export default function Post({id, title, link, children, image, categories = ["n
                         </DropdownItem>
                         <DropdownItem
                             key="delete"
+                            textValue="Delete post"
                             classNames={{ 
                                 base: "group flex flex-row items-center gap-2 bg-dark bg-transparent hover:bg-red-700 cursor-pointer", 
                                 title: "text-sm text-white",
