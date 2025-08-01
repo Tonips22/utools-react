@@ -1,6 +1,7 @@
 import '@styles/components/Loader.css';
-export default function Loader() {
+import { useState } from 'react';
+export default function Loader({ inverseColors = false }) {
     return (
-        <div className="loader"></div>
+        <div className={`loader ${inverseColors ? 'loader-invert' : ''}`}></div>
     );
 }

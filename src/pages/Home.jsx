@@ -8,6 +8,7 @@ import Loader from "@components/Loader.jsx";
 import Footer from "@sections/Footer.jsx";
 import { getAllPublishedPosts, getSearchedPublishedPosts, getFilteredPostsByCategories } from "@lib/db.js";
 import Skeleton from "@components/Skeleton.jsx";
+import { img, span } from "framer-motion/client";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -107,7 +108,7 @@ function Home() {
             </Post>
           ))
         ) : (
-          <p className="text-lg font-primary">No results found</p>
+          <img src="no-results.avif" alt="No results found image" className="col-span-4 row-span-1" />
         )}
       </main>
 
@@ -115,22 +116,27 @@ function Home() {
         {hasMore && !loading && (
           <button
             onClick={loadMorePosts}
-            className="bg-dark rounded-2xl cursor-pointer px-6 py-3 font-semibold hover:bg-dark/80 transition-colors duration-300 z-[990] group"
+            className="bg-dark rounded-2xl cursor-pointer px-6 py-3 font-semibold hover:bg-dark/80 transition-colors duration-300 z-[990] group min-w-[120px] min-h-[48px]"
             disabled={loadingMore}
           >
-            <span
-              className="hoverable text-transparent bg-clip-text 
+            {loadingMore ? (
+              <div className="flex justify-center items-center">
+                <Loader className="loader-button" />
+              </div>
+            ) : (
+              <span
+                className="hoverable text-transparent bg-clip-text 
                         bg-gradient-to-r from-light-blue via-purple to-pink 
                         bg-[length:200%_100%] bg-left 
                         group-hover:bg-right 
                         transition-[background-position] duration-200 ease-in-out"
-            >
-              {loadingMore ? "Loading..." : "Load more"}
-            </span>
+              >
+                Load More
+              </span>
+            )}
           </button>
-
-
         )}
+
       </div>
 
       <Footer />

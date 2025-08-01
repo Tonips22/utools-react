@@ -1,45 +1,80 @@
 .loader {
-    width: 31.4px;
-    height: 31.4px;
-    border-radius: 50%;
-    background: var(--pink);
-    transform-origin: top;
-    display: grid;
-    animation: loader-3vgb5t 1s infinite linear;
+   --loader-color: var(--pink);
+   --loader-bg: var(--dark);
+   width: 24px;
+   height: 24px;
+   padding: 4px;
+   background: transparent;
+   display: grid;
+   filter: blur(1.5px) contrast(15);
+   /* mix-blend-mode: darken; */
 }
 
-.loader::before,
-.loader::after {
-    content: "";
-    grid-area: 1/1;
-    background: var(--purple);
-    border-radius: 50%;
-    transform-origin: top;
-    animation: inherit;
-    animation-name: loader-k94uub;
+.loader-invert {
+   --loader-color: var(--dark);
+   --loader-bg: var(--pink);
 }
 
-.loader::after {
-    background: var(--blue);
-    --s: 180deg;
+.loader-button {
+  width: 24px;
+  height: 24px;
+  padding: 4px;
 }
 
-@keyframes loader-3vgb5t {
-    0%, 20% {
-        transform: rotate(0);
-    }
-
-100% {
-    transform: rotate(360deg);
+.loader:before,
+.loader:after {
+   content: "";
+   margin: 2.4px;
+   border-radius: 50%;
+   background: var(--loader-color);
+   grid-area: 1/1;
+   -webkit-mask-size: 100% 9.6px,100% 100%;
+   -webkit-mask-repeat: no-repeat;
+   -webkit-mask-composite: destination-out;
+   mask-composite: exclude;
 }
+
+.loader:before {
+   -webkit-mask-image: linear-gradient(var(--loader-bg) 0 0),
+          linear-gradient(var(--loader-bg) 0 0);
+   animation: loader-ih5205 2.8s infinite;
 }
 
-@keyframes loader-k94uub {
-    50% {
-        transform: rotate(var(--s,90deg));
-    }
-
-    100% {
-        transform: rotate(0);
-    }
+.loader:after {
+   -webkit-mask-image: linear-gradient(var(--loader-bg) 0 0);
+   animation: loader-ih5205 2.8s  infinite,
+          loader-6b5cz8 0.7s infinite cubic-bezier(0.5,200,0.5,-200);
 }
+
+@keyframes loader-ih5205 {
+   0% {
+      -webkit-mask-position: 0 20% ,0 0;
+   }
+
+   20% {
+      -webkit-mask-position: 0 80% ,0 0;
+   }
+
+   40% {
+      -webkit-mask-position: 0 100%,0 0;
+   }
+
+   60% {
+      -webkit-mask-position: 0 0%  ,0 0;
+   }
+
+   80% {
+      -webkit-mask-position: 0 35% ,0 0;
+   }
+
+   100% {
+      -webkit-mask-position: 0 0   ,0 0;
+   }
+}
+
+@keyframes loader-6b5cz8 {
+   100% {
+      transform: translate(0.1px);
+   }
+}
+</style>
