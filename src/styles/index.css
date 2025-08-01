@@ -77,13 +77,6 @@
   }
 
   /* — Media queries — */
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg: #FFFEFE;
-      --white: #010005;
-      --dark: #d4d4d4;
-    }
-  }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0 !important;
