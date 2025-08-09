@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { addToast } from "@heroui/react";
-import { getAllCategories, userCreatePost } from "@lib/db.js";
+import { getAllCategories, userCreatePost, getPostById, updatePost, updatePostCategories } from "@lib/db.js";
 import { useAuth } from "@auth/AuthProvider.jsx";
 import Label from "@components/Label.jsx";
 import { supabase } from '@lib/supabase.js'
 
-export default function PostForm({ isNewPost = true, setActiveForm }) {
+export default function PostForm({ isNewPost = true, setActiveForm, postId = null }) {
   const { user } = useAuth();
   const titleText = isNewPost ? "New Post" : "Edit Post";
   const buttonText = isNewPost ? "Create" : "Save";
@@ -20,6 +20,7 @@ export default function PostForm({ isNewPost = true, setActiveForm }) {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [description, setDescription] = useState("");
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
   // Carga categorías
   useEffect(() => {
@@ -29,10 +30,35 @@ export default function PostForm({ isNewPost = true, setActiveForm }) {
         console.error(err);
         addToast({
           title: "Error",
-          description: "No se pudieron cargar las categorías",
+          description: "Impossible to load categories",
           color: "danger",
         });
       });
+
+
+    if (!isNewPost && postId) {
+      console.log("Loading post for edit:", postId);
+      
+      // Cargar post para editar
+      getPostById(postId)
+        .then(post => {
+          setTitle(post.titulo);
+          setLink(post.enlace);
+          setDescription(post.descripcion);
+          setImagePreviewUrl(post.imagen || "");
+          setSelectedCategoryIds(
+            post.post_categories.map((rel) => rel.categories.id)
+          );
+        })
+        .catch(err => {
+          console.error(err);
+          addToast({
+            title: "Error",
+            description: "Could not load post",
+            color: "danger",
+          });
+        });
+    }
   }, []);
 
   // Toggle categorías (guarda sólo el id)
@@ -51,22 +77,26 @@ export default function PostForm({ isNewPost = true, setActiveForm }) {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    if (file?.type === "image/webp") setImageFile(file);
-    else {
+    if (file?.type === "image/webp") {
+      setImageFile(file);
+      setImagePreviewUrl("");
+    } else {
       addToast({
-        title: "Formato inválido",
-        description: "Solo .webp permitido",
+        title: "Invalid format",
+        description: "Only .webp allowed",
         color: "warning",
       });
     }
   };
   const handleFileChange = e => {
     const file = e.target.files[0];
-    if (file?.type === "image/webp") setImageFile(file);
-    else {
+    if (file?.type === "image/webp"){
+      setImageFile(file);
+      setImagePreviewUrl("");
+    } else {
       addToast({
-        title: "Formato inválido",
-        description: "Solo .webp permitido",
+        title: "Invalid format",
+        description: "Only .webp allowed",
         color: "warning",
       });
     }
@@ -78,64 +108,84 @@ export default function PostForm({ isNewPost = true, setActiveForm }) {
 
     /* ─ 1) Validaciones básicas ───────────────────────── */
     if (!user) {
-      addToast({ title: "Acceso denegado", description: "Debes estar logueado", color: "danger" });
+      addToast({ title: "Access denied", description: "You must be logged in", color: "danger" });
       return;
     }
     if (!title || !link || !description || selectedCategoryIds.length === 0) {
-      addToast({ title: "Campos incompletos", description: "Rellena todo y elige categoría", color: "warning" });
+      addToast({ title: "Incomplete fields", description: "Fill in all fields and choose a category", color: "warning" });
       return;
     }
-    if (!imageFile) {
-      addToast({ title: "Imagen requerida", description: "Sube una imagen .webp", color: "warning" });
-      return;
-    }
-    if (imageFile.size > 100 * 1024) {          // 100 KB
-      addToast({ title: "Imagen muy pesada", description: "Debe pesar menos de 100 KB", color: "warning" });
+    if (isNewPost && !imageFile) {
+      addToast({ title: "Image required", description: "Upload a .webp image", color: "warning" });
       return;
     }
 
-    /* ─ 2) Sube la imagen al bucket 'post-images' ─────── */
-    const filePath = `${user.id}/${Date.now()}.webp`;
-    const { error: uploadError } = await supabase
-      .storage
-      .from("post-images")            // ← bucket
-      .upload(filePath, imageFile, { upsert: false });
-
-    if (uploadError) {
-      console.error(uploadError);
-      addToast({ title: "Error al subir imagen", description: uploadError.message, color: "danger" });
+    if (!isNewPost && !imageFile && !imagePreviewUrl) {
+      addToast({ title: "Image required", description: "Upload a .webp image", color: "warning" });
       return;
     }
-
-    /* ─ 3) Obtiene la URL pública ─────────────────────── */
-    const { data: urlData, error: urlError } = supabase
-      .storage
-      .from("post-images")
-      .getPublicUrl(filePath);
-
-    if (urlError) {
-      console.error(urlError);
-      addToast({ title: "Error URL", description: urlError.message, color: "danger" });
+    if (imageFile && imageFile.size > 100 * 1024) {          // 100 KB
+      addToast({ title: "Image too heavy", description: "Must be less than 100 KB", color: "warning" });
       return;
     }
-    const publicUrl = urlData.publicUrl;   // ← ESTA es la URL correcta
 
     /* ─ 4) Inserta post + relación categorías ─────────── */
     try {
-      await userCreatePost(
-        title,
-        description,
-        link,
-        publicUrl,          // ← ahora sí
-        user.id,
-        selectedCategoryIds
-      );
-      addToast({ title: "Post creado", description: "Publicado correctamente", color: "success" });
+      let imageToUse = "";
+
+      if (imageFile) {
+        // Si hay una nueva imagen, súbela
+        const filePath = `${user.id}/${Date.now()}.webp`;
+        const { error: uploadError } = await supabase
+          .storage
+          .from("post-images")
+          .upload(filePath, imageFile, { upsert: false });
+
+        if (uploadError) {
+          console.error(uploadError);
+          addToast({ title: "Error uploading image", description: uploadError.message, color: "danger" });
+          return;
+        }
+
+        const { data: urlData, error: urlError } = supabase
+          .storage
+          .from("post-images")
+          .getPublicUrl(filePath);
+
+        if (urlError) {
+          console.error(urlError);
+          addToast({ title: "Error URL", description: urlError.message, color: "danger" });
+          return;
+        }
+
+        imageToUse = urlData.publicUrl;
+      }
+
+      if (isNewPost) {
+        await userCreatePost(title, description, link, imageToUse, user.id, selectedCategoryIds);
+        addToast({ title: "Post created", description: "Post created successfully", color: "success" });
+      } else {
+        const updatedFields = {
+          titulo: title,
+          descripcion: description,
+          enlace: link,
+        };
+
+        if (imageToUse) {
+          updatedFields.imagen = imageToUse;
+        }
+
+        await updatePost(postId, updatedFields);
+        await updatePostCategories(postId, selectedCategoryIds);
+        addToast({ title: "Post updated", description: "Changes saved successfully", color: "success" });
+      }
+
       setActiveForm(false);
     } catch (err) {
       console.error(err);
-      addToast({ title: "Error", description: "No se pudo crear el post", color: "danger" });
+      addToast({ title: "Error", description: "Could not save post", color: "danger" });
     }
+
   };
 
 
@@ -205,8 +255,10 @@ export default function PostForm({ isNewPost = true, setActiveForm }) {
             onDrop={handleDrop}
             onClick={() => document.getElementById("fileInput").click()}
             style={{
-              backgroundImage: imageFile
+              backgroundImage: (imageFile instanceof File)
                 ? `url(${URL.createObjectURL(imageFile)})`
+                : imagePreviewUrl
+                ? `url(${imagePreviewUrl})`
                 : "none",
               backgroundSize: "cover",
               backgroundPosition: "center",

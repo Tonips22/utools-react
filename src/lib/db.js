@@ -40,6 +40,17 @@ export async function getSearchedPublishedPosts(searchTerm, page = 1, limit = 12
   return data;
 }
 
+export const getPostById = async (postId) => {
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*, post_categories(categories(id, nombre, color))")
+    .eq("id", postId)
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
 export const deletePost = async (postId) => {
   const { data, error } = await supabase
   .from("posts")
@@ -189,4 +200,37 @@ export const userCreatePost = async (
   // 2) Asociamos categorías
   const categories = await createNewPostCategories(post.id, categoryIds);
   return { post, categories };
+};
+
+export const updatePost = async (postId, updatedFields) => {
+  const { data, error } = await supabase
+    .from("posts")
+    .update(updatedFields)
+    .eq("id", postId);
+
+  if (error) throw error;
+  return data;
+};
+
+export const updatePostCategories = async (postId, newCategoryIds) => {
+  // 1) Borra las categorías actuales
+  const { error: deleteErr } = await supabase
+    .from("post_categories")
+    .delete()
+    .eq("post_id", postId);
+
+  if (deleteErr) throw deleteErr;
+
+  // 2) Inserta las nuevas
+  const payload = newCategoryIds.map((id) => ({
+    post_id: postId,
+    category_id: id,
+  }));
+
+  const { data, error: insertErr } = await supabase
+    .from("post_categories")
+    .insert(payload);
+
+  if (insertErr) throw insertErr;
+  return data;
 };
