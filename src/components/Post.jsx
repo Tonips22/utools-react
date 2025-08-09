@@ -5,6 +5,7 @@ import { CiEdit } from "react-icons/ci";
 import { FaTrashAlt } from "react-icons/fa";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, addToast} from "@heroui/react";
 import { deletePostCascade } from "@lib/db.js";
+import PostForm from "@components/PostForm.jsx";
 
 export default function Post({id, title, link, children, image, categories = ["non-stablished"], name="", showStatus=false, status="pending" }) {
     const statusColors = {
@@ -13,6 +14,7 @@ export default function Post({id, title, link, children, image, categories = ["n
         "rejected": "#F46058CC",
     };
     const [openModal, setOpenModal] = useState(false);
+    const [activeForm, setActiveForm] = useState(false);
 
     const handleDelete = async () => {
         try {
@@ -106,10 +108,17 @@ export default function Post({id, title, link, children, image, categories = ["n
                                 title: "text-sm text-white group-hover:text-dark",
                             }}
                         >
-                            <div className="flex flex-row items-center gap-2">
+
+                            <button
+                                type="button"
+                                aria-label="post options"
+                                className="flex flex-row items-center gap-2 cursor-pointer bg-transparent hover:bg-pink text-white transition-colors duration-200 ease-in-out"
+                                variant="light"
+                                onClick={() => setActiveForm(true)}
+                            >
                                 <CiEdit className="text-pink text-xl group-hover:text-dark rounded-md transition-colors duration-200 ease-in-out" />
                                 Edit post
-                            </div>
+                            </button>
                         </DropdownItem>
                         <DropdownItem
                             key="delete"
@@ -163,6 +172,16 @@ export default function Post({id, title, link, children, image, categories = ["n
                 </div>
             </div>
         )}
+
+        {activeForm && (
+                <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[999]">
+                  <PostForm
+                    isNewPost={false}
+                    setActiveForm={setActiveForm}
+                    postId={id}
+                  />
+                </div>
+            )}
         </>
     );
 }
