@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import AnimatedBg from '@components/AnimatedBg.jsx';
 
 const NotFound = () => {
+  const title = "Page Not Found | Utools";
+  document.title = title;
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center px-4">
       <AnimatedBg/>
