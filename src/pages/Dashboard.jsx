@@ -103,7 +103,6 @@ export default function Dashboard() {
                 <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[990]">
                   <PostForm
                     isNewPost={true}
-                    activeForm={activeForm}
                     setActiveForm={setActiveForm}
                   />
                 </div>
