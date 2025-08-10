@@ -18,6 +18,9 @@ export default function Dashboard() {
     const [activeForm, setActiveForm] = useState(false); // para controlar el formulario activo
 
     const hasFetched = useRef(false); // control de ejecución
+    const title = user?.user_metadata?.name
+      ? `${user.user_metadata.name}'s Dashboard`
+      : "Dashboard";
 
     const SKELETON_COUNT = 8;
 
@@ -61,13 +64,13 @@ export default function Dashboard() {
       }      
 
     return (
-        <main className=" min-h-screen flex flex-col">
+        <main className="min-h-screen flex flex-col gap-4">
             <Header
                 transparent={false}
                 absolute={false}
             />
-            {/* <h1 className="font-primary text-5xl px-8"> {title} </h1> */}
-            <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20">
+            <h1 className="font-primary text-5xl px-8 "> {title} </h1>
+            <main className=" min-h-[70vh] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20">
                 {loading ? (
                   Array.from({ length: SKELETON_COUNT }).map((_, index) => (
                     <Skeleton key={index} />
