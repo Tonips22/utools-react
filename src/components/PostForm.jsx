@@ -305,13 +305,13 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
         <div className="flex gap-4">
           <button
             type="submit"
-            className="bg-pink text-white px-4 py-2 rounded-md hover:opacity-80"
+            className="bg-pink text-white px-4 py-2 rounded-md hover:opacity-80 cursor-pointer"
           >
             {buttonText}
           </button>
           <button
             type="button"
-            className="border border-red-500/80 text-white px-4 py-2 rounded-md hover:bg-red-500/80"
+            className="border border-red-500/80 text-white px-4 py-2 rounded-md hover:bg-red-500/80 cursor-pointer"
             onClick={() => setActiveForm(false)}
           >
             Cancel
