@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "@sections/Header.jsx";
 import Footer from "@sections/Footer.jsx";
 import { useNavigate } from "react-router-dom";
@@ -12,19 +12,28 @@ import Skeleton from "@components/Skeleton.jsx";
 
 export default function Dashboard() {
     const navigate = useNavigate();
-    const { user } = useAuth(); // Obtener el usuario autenticado desde el contexto de autenticación
+    const { user } = useAuth();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeForm, setActiveForm] = useState(false); // para controlar el formulario activo
+
+    const hasFetched = useRef(false); // control de ejecución
 
     const SKELETON_COUNT = 8;
 
     useEffect(() => {
         if (!user) {
           navigate("/login");
-        } else {
-          fetchPosts(); // solo si hay user
-          const title = (user.user_metadata.name) ? `${user.user_metadata.name}'s Dashboard` : "Dashboard";
+          return;
+        } 
+        // Solo ejecuta la carga si no se ha hecho antes
+        if (!hasFetched.current) {
+          hasFetched.current = true;
+          fetchPosts(); 
+
+          const title = user.user_metadata?.name
+            ? `${user.user_metadata.name}'s Dashboard`
+            : "Dashboard";
           document.title = `${title} | Utools`;
         }
       }, [user]);
