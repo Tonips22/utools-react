@@ -80,7 +80,7 @@ function Home() {
   return (
     <>
       <Header/>
-      <NavBar />
+      {/* <NavBar /> */}
 
       <Hero
         searchTerm={searchTerm}
