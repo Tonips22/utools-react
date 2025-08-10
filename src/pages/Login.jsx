@@ -25,7 +25,7 @@ export default function Login() {
     };
 
     return (
-        <main className="grid grid-cols-2 h-screen text-white p-8">
+        <main className="grid grid-cols-1 md:grid-cols-2 h-screen text-white p-8">
             <section className="flex flex-col items-center justify-center p-8 rounded-lg relative">
                 <AnimatedBg />
                 <h1 className="z-20 text-2xl">Welcome to</h1>
