@@ -9,7 +9,7 @@ export default function Header({ transparent = true, absolute = true }) {
   return (
     <header
       id="header"
-      className={`z-50 ${absolute ? "absolute" : ""} top-0 left-0 w-full flex justify-between items-center py-4 px-8 bg-transparent ${transparent ? "" : "backdrop-blur-md"}`}
+      className={`z-20 ${absolute ? "absolute" : ""} top-0 left-0 w-full flex justify-between items-center py-4 px-8 bg-transparent ${transparent ? "" : "backdrop-blur-md"}`}
     >
       <a href="/" className="hoverable hover:scale-110 transition-transform relative active:scale-95">
         <img src="/logo.webp" alt="Utools Logo" className="w-12 h-12 z-10" />

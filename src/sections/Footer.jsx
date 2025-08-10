@@ -5,7 +5,7 @@ import { SiBuymeacoffee } from "react-icons/si";
 export default function Footer() {
     const year = new Date().getFullYear();
     return (
-        <footer id='footer' className='relative z-50 w-full flex justify-center items-center py-4 px-4 bg-transparent min-h-[10vh]'>
+        <footer id='footer' className='relative w-full flex justify-center items-center py-4 px-4 bg-transparent min-h-[10vh]'>
             <AnimatedBg isFooter={true} />
             <div className='absolute top-0 left-0 h-full flex flex-row items-end justify-between px-8 py-4 w-full'>
                 <h2 className=' text-sm font-secondary'>

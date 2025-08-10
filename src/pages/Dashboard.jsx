@@ -86,7 +86,7 @@ export default function Dashboard() {
 
             <button
             onClick={() => setActiveForm(true)}
-            className="bg-dark rounded-2xl cursor-pointer self-start px-6 py-3 font-semibold hover:bg-dark/80 transition-colors duration-300 z-[990] group mx-8"
+            className="bg-dark rounded-2xl cursor-pointer self-start px-6 py-3 font-semibold hover:bg-dark/80 transition-colors duration-300 z-10 group mx-8"
           >
             <span
               className="hoverable text-transparent bg-clip-text 
@@ -100,7 +100,7 @@ export default function Dashboard() {
           </button>
 
             {activeForm && (
-                <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[990]">
+                <div className="fixed top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm flex items-center justify-center z-[999999]">
                   <PostForm
                     isNewPost={true}
                     setActiveForm={setActiveForm}
