@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { addToast } from "@heroui/react";
-import { getAllCategories, userCreatePost, getPostById, updatePost, updatePostCategories } from "@lib/db.js";
+import { getAllCategories, userCreatePost, getPostById, updatePost, updatePostCategories, deleteImage } from "@lib/db.js";
 import { useAuth } from "@auth/AuthProvider.jsx";
 import Label from "@components/Label.jsx";
 import { supabase } from '@lib/supabase.js'
@@ -124,6 +124,14 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
       addToast({ title: "Image required", description: "Upload a .webp image", color: "warning" });
       return;
     }
+
+    if (!isNewPost && imageFile) {
+      const oldPost = await getPostById(postId);
+      if (oldPost?.imagen) {
+        await deleteImage(oldPost.imagen);
+      }
+    }
+    
     if (imageFile && imageFile.size > 100 * 1024) {          // 100 KB
       addToast({ title: "Image too heavy", description: "Must be less than 100 KB", color: "warning" });
       return;
@@ -169,6 +177,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
           titulo: title,
           descripcion: description,
           enlace: link,
+          estado: "pending"
         };
 
         if (imageToUse) {
