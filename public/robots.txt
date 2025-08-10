@@ -1,0 +1,37 @@
+# Robots.txt for Utools - Developer Tools Platform
+# https://utools-agt.vercel.app/
+
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /privacy
+Allow: /service
+
+# Block user dashboards and private areas
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /dashboard/*
+
+# Block any potential admin or private routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /*.json$
+
+# Allow search engines to access images and assets
+Allow: /public/
+Allow: /assets/
+Allow: *.css
+Allow: *.js
+Allow: *.webp
+Allow: *.png
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.svg
+Allow: *.ico
+
+# Sitemap location
+Sitemap: https://utools-agt.vercel.app/sitemap.xml
+
+# Crawl delay (be respectful to server resources)
+Crawl-delay: 1

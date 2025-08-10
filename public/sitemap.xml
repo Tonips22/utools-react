@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Homepage - Highest priority -->
+  <url>
+    <loc>https://utools-agt.vercel.app/</loc>
+    <lastmod>2025-08-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://utools-agt.vercel.app/wallpaper.webp</image:loc>
+      <image:title>Utools - Developer Tools Platform</image:title>
+      <image:caption>Curated platform for developer tools and resources</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Login page -->
+  <url>
+    <loc>https://utools-agt.vercel.app/login</loc>
+    <lastmod>2025-08-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://utools-agt.vercel.app/privacy</loc>
+    <lastmod>2025-08-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  
+  <!-- Terms of Service -->
+  <url>
+    <loc>https://utools-agt.vercel.app/service</loc>
+    <lastmod>2025-08-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  
+</urlset>

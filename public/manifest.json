@@ -1,0 +1,30 @@
+{
+  "name": "Utools - Developer Tools Platform",
+  "short_name": "Utools",
+  "description": "Discover and share the best developer tools, UI components, design resources, APIs, and libraries. A curated platform for web developers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#010005",
+  "theme_color": "#010005",
+  "orientation": "portrait-primary",
+  "categories": ["productivity", "developer", "tools"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/logo.webp",
+      "sizes": "any",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/wallpaper.webp",
+      "sizes": "1200x630",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "Utools Platform Homepage"
+    }
+  ]
+}
