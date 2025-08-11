@@ -1,6 +1,6 @@
 import { supabase } from '@lib/supabase.js'
 
-// Obtener todos los posts publicados
+// Obtener todos los posts publicados (paginado)
 export async function getAllPublishedPosts(page = 1, limit = 12) {
   const offset = (page - 1) * limit;
 
@@ -8,7 +8,7 @@ export async function getAllPublishedPosts(page = 1, limit = 12) {
     .from("posts")
     .select("*, post_categories(categories(nombre, color))")
     .eq("estado", "published")
-    .order("titulo", { ascending: true })
+    .order("titulo", { ascending: false })
     .range(offset, offset + limit - 1);
 
   if (error) throw error;
@@ -17,12 +17,12 @@ export async function getAllPublishedPosts(page = 1, limit = 12) {
 
 export const getUserPosts = async (userId) => {
   const { data, error } = await supabase
-  .from("posts")
-  .select(`*, post_categories( categories (nombre, color) )`)
-  .eq("usuario_id", userId)
+    .from("posts")
+    .select(`*, post_categories( categories (nombre, color) )`)
+    .eq("usuario_id", userId);
 
-  if (error) throw error
-  return data
+  if (error) throw error;
+  return data;
 }
 
 export async function getSearchedPublishedPosts(searchTerm, page = 1, limit = 12) {
@@ -33,7 +33,7 @@ export async function getSearchedPublishedPosts(searchTerm, page = 1, limit = 12
     .select("*, post_categories(categories(nombre, color))")
     .eq("estado", "published")
     .ilike("titulo", `%${searchTerm}%`)
-    .order("created_at", { ascending: true })
+    .order("titulo", { ascending: false })
     .range(offset, offset + limit - 1);
 
   if (error) throw error;
@@ -53,12 +53,12 @@ export const getPostById = async (postId) => {
 
 export const deletePost = async (postId) => {
   const { data, error } = await supabase
-  .from("posts")
-  .delete()
-  .eq("id", postId)
+    .from("posts")
+    .delete()
+    .eq("id", postId);
 
-  if (error) throw error
-  return data
+  if (error) throw error;
+  return data;
 }
 
 export const deleteImage = async (imageUrl) => {
@@ -80,13 +80,8 @@ export const deleteImage = async (imageUrl) => {
   console.log("✅ Imagen borrada correctamente:", path);
 };
 
-/** Elimina:
- *  1) La fila de `posts`
- *  2) Las filas de `post_categories`
- *  3) El archivo .webp del bucket post-images
- */
+/** deletePostCascade ... (sin cambios funcionales) */
 export const deletePostCascade = async (postId) => {
-  /* ─ 0) Sacamos la URL de la imagen ───────────────── */
   const { data: postRow, error: fetchErr } = await supabase
     .from("posts")
     .select("imagen")
@@ -95,7 +90,6 @@ export const deletePostCascade = async (postId) => {
 
   if (fetchErr) throw fetchErr;
 
-  /* ─ 1) Borramos relaciones en post_categories ────── */
   const { error: pcErr } = await supabase
     .from("post_categories")
     .delete()
@@ -103,14 +97,11 @@ export const deletePostCascade = async (postId) => {
 
   if (pcErr) throw pcErr;
 
-  /* ─ 2) Borramos la imagen del bucket (si existe) ─── */
   if (postRow?.imagen) {
     const imageUrl = postRow.imagen;
     await deleteImage(imageUrl);
   }
 
-
-  /* ─ 3) Borramos el propio post ───────────────────── */
   const { data, error: postErr } = await supabase
     .from("posts")
     .delete()
@@ -130,32 +121,42 @@ export const getAllCategories = async () => {
   return data;
 }
 
-export const getFilteredPostsByCategories = async (categories = [], page = 1, limit = 12) => {
-  if (categories.length === 0) return [];
-  const offset = (page - 1) * limit;
+/**
+ * Filtra por todas las categorías indicadas (AND). 
+ * Devuelve página `page` con tamaño `limit`.
+ * Opcional: searchTerm (se filtra por titulo en cliente si se pasa).
+ */
+export const getFilteredPostsByCategories = async (categories = [], page = 1, limit = 12, searchTerm = "") => {
+  if (!Array.isArray(categories) || categories.length === 0) return [];
 
-  
+  // Traemos todos los posts publicados con sus relaciones (sin .range para no truncar antes del filtrado)
   const { data, error } = await supabase
     .from('posts')
-    .select('*, post_categories(categories(*))')
+    .select('*, post_categories(categories(nombre, color))')
     .eq('estado', 'published')
-    .order('created_at', { ascending: true })
-    .range(offset, offset + limit - 1);
+    .order('titulo', { ascending: false });
 
-    if (error) throw error
+  if (error) throw error;
 
-  // Filtrar en el lado del cliente
+  // Filtrar: el post debe tener TODAS las categorías seleccionadas (AND)
   const filteredData = data.filter(post =>
-    categories.every(category => 
+    categories.every(categoryName =>
       post.post_categories.some(rel =>
-        rel.categories.nombre === category
+        rel.categories && rel.categories.nombre === categoryName
       )
     )
   );
-  
 
-  return filteredData;
+  // Si nos pasan searchTerm, filtramos por título también (cliente)
+  const finalFiltered = searchTerm
+    ? filteredData.filter(p => p.titulo && p.titulo.toLowerCase().includes(searchTerm.toLowerCase()))
+    : filteredData;
+
+  // Aplicar paginación después del filtrado
+  const offset = (page - 1) * limit;
+  return finalFiltered.slice(offset, offset + limit);
 };
+
 export const createNewPost = async (
   title, description, link, imageUrl, userId, estado = "pending"
 ) => {
@@ -165,11 +166,11 @@ export const createNewPost = async (
       titulo: title,
       descripcion: description,
       enlace: link,
-      imagen: imageUrl,      // puede ser null o cadena vacía
+      imagen: imageUrl,
       usuario_id: userId,
       estado
     }])
-    .select("id");  // retorna el id del nuevo post
+    .select("id");
 
   if (error) throw error;
   return data[0];
@@ -191,11 +192,9 @@ export const createNewPostCategories = async (postId, categoryIds) => {
 export const userCreatePost = async (
   title, description, link, imageUrl, userId, categoryIds, estado = "pending"
 ) => {
-  // 1) Insertamos el post (imagen puede ser null)
   const post = await createNewPost(
     title, description, link, imageUrl, userId, estado
   );
-  // 2) Asociamos categorías
   const categories = await createNewPostCategories(post.id, categoryIds);
   return { post, categories };
 };
@@ -211,7 +210,6 @@ export const updatePost = async (postId, updatedFields) => {
 };
 
 export const updatePostCategories = async (postId, newCategoryIds) => {
-  // 1) Borra las categorías actuales
   const { error: deleteErr } = await supabase
     .from("post_categories")
     .delete()
@@ -219,7 +217,6 @@ export const updatePostCategories = async (postId, newCategoryIds) => {
 
   if (deleteErr) throw deleteErr;
 
-  // 2) Inserta las nuevas
   const payload = newCategoryIds.map((id) => ({
     post_id: postId,
     category_id: id,
