@@ -1,7 +1,0 @@
-{
-    "title": "DriverJS",
-    "description": "A light-weight, no-dependency, vanilla JavaScript library to drive user's focus across the page.",
-    "image": "/posts/driver.webp",
-    "link": "https://driverjs.com/",
-    "categories": ["Components"]
-}
