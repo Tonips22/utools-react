@@ -8,7 +8,7 @@ export async function getAllPublishedPosts(page = 1, limit = 12) {
     .from("posts")
     .select("*, post_categories(categories(nombre, color))")
     .eq("estado", "published")
-    .order("created_at", { ascending: true })
+    .order("titulo", { ascending: true })
     .range(offset, offset + limit - 1);
 
   if (error) throw error;
