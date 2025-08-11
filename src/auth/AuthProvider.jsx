@@ -24,8 +24,14 @@ export function AuthProvider({ children }) {
     }, []);
 
     const loginWithProvider = async (provider) => {
-        await supabase.auth.signInWithOAuth({ provider });
+        await supabase.auth.signInWithOAuth({
+            provider,
+            options: {
+            redirectTo: window.location.origin + '/' // o la ruta que quieras tras login
+            }
+        });
     };
+
 
     const logout = async () => {
         await supabase.auth.signOut();
