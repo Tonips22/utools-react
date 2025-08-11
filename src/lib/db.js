@@ -8,7 +8,7 @@ export async function getAllPublishedPosts(page = 1, limit = 12) {
     .from("posts")
     .select("*, post_categories(categories(nombre, color))")
     .eq("estado", "published")
-    .order("titulo", { ascending: false })
+    .order("titulo", { ascending: true })
     .range(offset, offset + limit - 1);
 
   if (error) throw error;
@@ -33,7 +33,7 @@ export async function getSearchedPublishedPosts(searchTerm, page = 1, limit = 12
     .select("*, post_categories(categories(nombre, color))")
     .eq("estado", "published")
     .ilike("titulo", `%${searchTerm}%`)
-    .order("titulo", { ascending: false })
+    .order("titulo", { ascending: true })
     .range(offset, offset + limit - 1);
 
   if (error) throw error;
@@ -134,7 +134,7 @@ export const getFilteredPostsByCategories = async (categories = [], page = 1, li
     .from('posts')
     .select('*, post_categories(categories(nombre, color))')
     .eq('estado', 'published')
-    .order('titulo', { ascending: false });
+    .order('titulo', { ascending: true });
 
   if (error) throw error;
 
