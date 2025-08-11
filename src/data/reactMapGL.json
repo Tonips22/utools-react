@@ -1,0 +1,8 @@
+{
+    "title": "React Map Gl",
+    "description": "react-map-gl makes using MapLibre GL JS and Mapbox GL JS in React applications easy.",
+    "image": "/posts/reactmapgl.webp",
+    "link": "https://visgl.github.io/react-map-gl/",
+    "categories": ["Components"]
+    
+}
