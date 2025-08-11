@@ -1,23 +1,24 @@
-.circle{
+.circle {
     height: 12px;
     width: 12px;
     border-radius: 50%;
-    background: linear-gradient( var(--pink) 40%, var(--blue) 70%);
-    z-index: 9999;
-    /* pointer-events: none; */
-
-    transition: height 0.3s ease, width 0.3s ease, background 0.3s ease;
-
+    background: linear-gradient(135deg, #fe4ba5 40%, #173EF2 70%);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     animation: rotate 5s linear infinite;
+    opacity: 1;
+    transform-origin: center;
+    will-change: transform, width, height;
 }
 
-.circle.active-circle{
-    height: 100px;
-    width: 100px;
-    background: hsl(from var(--pink) h s l / .5);
-    /* background: linear-gradient( hsl(from var(--pink) h s l / .5) 40%, hsl(from var(--blue) h s l / .5) 70%); */
-    /* mix-blend-mode:exclusion; */
-
+.circle.active-circle {
+    height: 60px;
+    width: 60px;
+    background: rgba(254, 75, 165, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    mix-blend-mode: exclusion;
+    animation: none;
 }
 
 @keyframes rotate {

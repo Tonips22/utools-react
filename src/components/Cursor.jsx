@@ -1,56 +1,95 @@
-import { useState, useEffect, useRef } from 'react';
+// Cursor.jsx
+import { useState, useEffect, useRef, useCallback } from 'react';
 import '@styles/components/Cursor.css';
 
 export default function Cursor() {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const circleRef = useRef(null);
 
+    const handleMouseMove = useCallback((e) => {
+        setPosition({ x: e.clientX, y: e.clientY });
+    }, []);
+
+    const handleHover = useCallback(() => {
+        if (circleRef.current) {
+            circleRef.current.classList.add('active-circle');
+        }
+    }, []);
+
+    const handleLeave = useCallback(() => {
+        if (circleRef.current) {
+            circleRef.current.classList.remove('active-circle');
+        }
+    }, []);
+
     useEffect(() => {
-        const handleMouseMove = (e) => {
-            setPosition({ x: e.clientX + 10, y: e.clientY - 10 });
-        };
+        const supportsHover = window.matchMedia('(hover: hover)').matches;
+        if (!supportsHover) return;
 
-        const handleHover = (e) => {
-            if (circleRef.current) {
-                circleRef.current.classList.add('active-circle');
+        let ticking = false;
+        const throttledMouseMove = (e) => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    handleMouseMove(e);
+                    ticking = false;
+                });
+                ticking = true;
             }
         };
 
-        const handleLeave = (e) => {
-            if (circleRef.current) {
-                circleRef.current.classList.remove('active-circle');
-            }
+        document.addEventListener('mousemove', throttledMouseMove, { passive: true });
+        return () => {
+            document.removeEventListener('mousemove', throttledMouseMove);
         };
+    }, [handleMouseMove]);
 
-        // Attach global mousemove event
-        window.addEventListener('mousemove', handleMouseMove);
-
-        // Attach hover events to hoverable elements
-        const hoverables = document.querySelectorAll('.hoverable');
-        hoverables.forEach((hoverable) => {
-            hoverable.addEventListener('mouseover', handleHover);
-            hoverable.addEventListener('mouseleave', handleLeave);
+    useEffect(() => {
+        const observer = new MutationObserver(() => {
+            const hoverables = document.querySelectorAll('.hoverable');
+            hoverables.forEach((hoverable) => {
+                if (!hoverable.dataset.cursorListenerAdded) {
+                    hoverable.addEventListener('mouseenter', handleHover, { passive: true });
+                    hoverable.addEventListener('mouseleave', handleLeave, { passive: true });
+                    hoverable.dataset.cursorListenerAdded = 'true';
+                }
+            });
         });
 
-        // Cleanup event listeners
+        const hoverables = document.querySelectorAll('.hoverable');
+        hoverables.forEach((hoverable) => {
+            hoverable.addEventListener('mouseenter', handleHover, { passive: true });
+            hoverable.addEventListener('mouseleave', handleLeave, { passive: true });
+            hoverable.dataset.cursorListenerAdded = 'true';
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+
         return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
+            observer.disconnect();
+            const hoverables = document.querySelectorAll('.hoverable');
             hoverables.forEach((hoverable) => {
-                hoverable.removeEventListener('mouseover', handleHover);
+                hoverable.removeEventListener('mouseenter', handleHover);
                 hoverable.removeEventListener('mouseleave', handleLeave);
+                delete hoverable.dataset.cursorListenerAdded;
             });
         };
-    }, []);
+    }, [handleHover, handleLeave]);
+
+    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    if (isTouchDevice) return null;
 
     return (
         <div
-            ref={circleRef}
-            className="circle"
             style={{
-                top: `${position.y}px`,
-                left: `${position.x}px`,
                 position: 'fixed',
+                top: 0,
+                left: 0,
+                transform: `translate(${position.x - 6}px, ${position.y - 6}px)`,
+                zIndex: 1000,
+                pointerEvents: 'none',
             }}
-        ></div>
+        >
+            <div ref={circleRef} className="circle" />
+        </div>
     );
 }
