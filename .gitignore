@@ -25,6 +25,7 @@ dist-ssr
 
 # TODO
 TODO.md
+notas.txt
 
 # Environment variables
 .env
