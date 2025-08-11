@@ -1,8 +1,0 @@
-{
-    "title": "JSONPlaceholder",
-    "description": "Fake Online REST API for Testing and Prototyping",
-    "image": "/posts/jsonplaceholder.webp",
-    "link": "https://jsonplaceholder.typicode.com/",
-    "categories": ["API"]
-    
-}
