@@ -12,7 +12,7 @@ import { ToastProvider } from '@heroui/react';
 function App() {
     return (
         <Router>
-          <Cursor/>
+          {/* <Cursor/> */}
           <ToastProvider/>
             <Routes>
                 <Route path="/" element={<Home />} />
