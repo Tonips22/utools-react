@@ -1,64 +1,31 @@
 .circle {
-    width: 12px;
     height: 12px;
+    width: 12px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #FE4BA5 40%, #173EF2 70%);
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999 !important;
+    background: linear-gradient(135deg, #fe4ba5 40%, #173EF2 70%);
     pointer-events: none;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     animation: rotate 5s linear infinite;
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
-    transform-origin: center center;
+    opacity: 1;
+    transform-origin: center;
     will-change: transform, width, height;
-    /* Forzar aceleración por hardware para mejor rendimiento */
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    perspective: 1000px;
 }
 
 .circle.active-circle {
-    width: 40px;
-    height: 40px;
+    height: 60px;
+    width: 60px;
     background: rgba(254, 75, 165, 0.4);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 2px solid rgba(254, 75, 165, 0.6);
+    mix-blend-mode: exclusion;
     animation: none;
 }
 
 @keyframes rotate {
-    0% {
-        transform: rotate(0deg) translateZ(0);
+    from {
+        transform: rotate(0deg);
     }
-    100% {
-        transform: rotate(360deg) translateZ(0);
-    }
-}
-
-/* Hide cursor on touch devices and mobile */
-@media (hover: none) and (pointer: coarse) {
-    .circle {
-        display: none !important;
-    }
-}
-
-/* Hide on small screens (mobile) */
-@media (max-width: 768px) {
-    .circle {
-        display: none !important;
-    }
-}
-
-/* Fallback for older browsers */
-@supports not (backdrop-filter: blur(8px)) {
-    .circle.active-circle {
-        background: rgba(254, 75, 165, 0.6);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+    to {
+        transform: rotate(360deg);
     }
 }
