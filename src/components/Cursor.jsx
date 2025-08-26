@@ -1,13 +1,15 @@
 // Cursor.jsx
 import { useState, useEffect, useRef, useCallback } from 'react';
-import '@styles/components/Cursor.css';
+import '../styles/components/Cursor.css';
 
 export default function Cursor() {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const circleRef = useRef(null);
 
     const handleMouseMove = useCallback((e) => {
-        setPosition({ x: e.clientX, y: e.clientY });
+        const newPosition = { x: e.clientX, y: e.clientY };
+        setPosition(newPosition);
+        console.log('🖱️ Cursor position:', newPosition);
     }, []);
 
     const handleHover = useCallback(() => {
@@ -24,6 +26,7 @@ export default function Cursor() {
 
     useEffect(() => {
         const supportsHover = window.matchMedia('(hover: hover)').matches;
+        console.log('🖱️ Supports hover:', supportsHover);
         if (!supportsHover) return;
 
         let ticking = false;
@@ -38,8 +41,11 @@ export default function Cursor() {
         };
 
         document.addEventListener('mousemove', throttledMouseMove, { passive: true });
+        console.log('🖱️ Mouse move listener added');
+        
         return () => {
             document.removeEventListener('mousemove', throttledMouseMove);
+            console.log('🖱️ Mouse move listener removed');
         };
     }, [handleMouseMove]);
 
@@ -76,6 +82,9 @@ export default function Cursor() {
     }, [handleHover, handleLeave]);
 
     const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    console.log('📱 Is touch device:', isTouchDevice);
+    console.log('🖱️ Cursor position for render:', position);
+    
     if (isTouchDevice) return null;
 
     return (

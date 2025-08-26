@@ -22,4 +22,22 @@ export default defineConfig({
       '@pages': path.resolve(__dirname, 'src/pages'),
     },
   },
+  build: {
+    // Optimizaciones para producción
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          supabase: ['@supabase/supabase-js']
+        }
+      }
+    }
+  },
+  // Asegurar que los assets se sirvan correctamente
+  base: '/',
+  publicDir: 'public'
 });
