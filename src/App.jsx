@@ -7,14 +7,12 @@ import Cursor from "@components/Cursor.jsx";
 import Privacy from '@pages/terms/Privacy.jsx';
 import Service from '@pages/terms/Service.jsx';
 import { ToastProvider } from '@heroui/react';
-import CursorTest from './debug/CursorTest';
 
 
 function App() {
     return (
         <Router>
           <Cursor/>
-          {process.env.NODE_ENV === 'production' && <CursorTest />}
           <ToastProvider/>
             <Routes>
                 <Route path="/" element={<Home />} />

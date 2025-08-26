@@ -19,9 +19,6 @@
     transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
-    /* Debugging - border temporal */
-    border: 1px solid red;
-    box-shadow: 0 0 0 1px red;
 }
 
 .circle.active-circle {
