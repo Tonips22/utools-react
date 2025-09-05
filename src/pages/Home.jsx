@@ -123,7 +123,7 @@ function Home() {
         {hasMore && !loading && (
           <button
             onClick={loadMorePosts}
-            className="bg-dark rounded-2xl cursor-pointer px-6 py-3 font-semibold hover:bg-dark/80 transition-colors duration-300 z-[990] group min-w-[120px] min-h-[48px]"
+            className=" hoverable bg-dark rounded-2xl cursor-pointer px-6 py-3 font-semibold hover:bg-dark/80 transition-colors duration-300 z-[990] group min-w-[120px] min-h-[48px]"
             disabled={loadingMore}
           >
             {loadingMore ? (
@@ -132,7 +132,7 @@ function Home() {
               </div>
             ) : (
               <span
-                className="hoverable text-transparent bg-clip-text 
+                className=" text-transparent bg-clip-text 
                         bg-gradient-to-r from-light-blue via-purple to-pink 
                         bg-[length:200%_100%] bg-left 
                         group-hover:bg-right 
