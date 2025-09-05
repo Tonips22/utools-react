@@ -16,7 +16,7 @@
     height: 12px;
     width: 12px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #fe4ba5 40%, #173EF2 70%);
+    background: linear-gradient(135deg, var(--light-blue), var(--purple), var(--pink));
     pointer-events: none;
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     animation: rotate 5s linear infinite;
@@ -33,11 +33,12 @@
     height: 60px;
     width: 60px;
     border-radius: 100%;
-    background: rgba(254, 75, 165, 0.4);
+    background: linear-gradient(135deg, var(--light-blue), var(--purple), var(--pink));
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     mix-blend-mode: exclusion;
-    animation: none;
+    /* animation: none; */
+    opacity: 0.6;
 }
 
 @keyframes rotate {
