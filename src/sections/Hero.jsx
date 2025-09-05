@@ -3,6 +3,7 @@ import AnimatedBg from '@components/AnimatedBg.jsx';
 import Label from '@components/Label.jsx';
 import { getAllCategories } from '@lib/db.js'; 
 import { RxCross2 } from "react-icons/rx";
+import GradientText from '@components/GradientText';
 
 export default function Hero({searchTerm, setSearchTerm, activeCategories, setactiveCategories}) {
   const [value, setValue] = useState(searchTerm);
@@ -41,18 +42,37 @@ export default function Hero({searchTerm, setSearchTerm, activeCategories, setac
 
     setValue('');
   };
-  
     
 
   return (
-    <section className="min-h-[75vh] flex-col items-center justify-center relative z-10" id="hero">
-      <AnimatedBg />
+    <section className="min-h-[75vh] relative flex-col items-center justify-center bg-linear-to-b from-dark from-95% to-dark/20 z-10" id="hero">
+      {/* <AnimatedBg /> */}
+
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          background: `
+            radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
+            radial-gradient(ellipse 100% 60% at 30% 10%, rgba(0, 255, 255, 0.12), transparent 60%),
+            radial-gradient(ellipse 90% 70% at 50% 0%, rgba(138, 43, 226, 0.18), transparent 65%),
+            radial-gradient(ellipse 110% 50% at 80% 30%, rgba(255, 215, 0, 0.08), transparent 40%),
+            #000000
+          `,
+        }}
+      />
 
       <div className="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center gap-4">
-        <h1 className="text-6xl text-white font-bold cursor-default relative after:content-['BETA'] after:absolute after:-bottom-0 after:-right-10 after:text-[10px] after:border-1 after:border-pink after:px-1 after:py-0.5 after:rounded-full after:text-pink">Utools</h1>
+        <h1 className="text-6xl font-bold cursor-default relative">
+          <GradientText animated={true}>Utools</GradientText>
+        </h1>
 
-        <label className='hoverable flex flex-row items-center gap-4 bg-black/10 shadow-2xl border-2 border-dark backdrop-blur-xl rounded-full px-8 py-4 w-[350px] cursor-text md:w-[500px] lg:w-[600px]'>
-          <svg 
+        <div className="relative group">
+          <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-full blur-sm opacity-75 group-hover:opacity-100 group-hover:blur-md transition-all duration-300"></div>
+          <label
+            className="hoverable relative flex flex-row items-center gap-4 bg-dark shadow-2xl backdrop-blur-xl rounded-full px-8 py-4 w-[350px] cursor-text md:w-[500px] lg:w-[600px]"
+          >
+
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24" height="24"
             viewBox="0 0 24 24"
@@ -85,6 +105,7 @@ export default function Hero({searchTerm, setSearchTerm, activeCategories, setac
             />
           )}
         </label>
+        </div>
 
         <ul className="hoverable flex flex-row items-center justify-center flex-wrap gap-2 w-[350px] md:w-[500px] lg:w-[600px]">
           {allCategories.map((category) => (
