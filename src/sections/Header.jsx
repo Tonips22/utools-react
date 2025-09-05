@@ -1,6 +1,5 @@
 import Coffee from '@assets/buymeacoffee.svg';
 import { useAuth } from "@auth/AuthProvider.jsx";
-import { RiLoginCircleLine } from "react-icons/ri";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar } from "@heroui/react";
 
 export default function Header({ transparent = true, absolute = true }) {
@@ -9,8 +8,24 @@ export default function Header({ transparent = true, absolute = true }) {
   return (
     <header
       id="header"
-      className={`z-20 ${absolute ? "absolute" : ""} top-0 left-0 w-full flex justify-between items-center py-4 px-8 bg-transparent ${transparent ? "" : "backdrop-blur-md"}`}
+      className={`z-20 ${absolute ? "absolute" : "relative"} top-0 left-0 w-full flex justify-between items-center py-4 px-8 bg-transparent`}
     >
+      {
+        transparent === false && (
+          <div
+            className="absolute inset-0 z-0"
+            style={{
+              background: `
+                radial-gradient(ellipse 180% 120% at 70% 20%, rgba(255, 20, 147, 0.25), transparent 70%),
+                radial-gradient(ellipse 160% 100% at 30% 10%, rgba(0, 255, 255, 0.20), transparent 80%),
+                radial-gradient(ellipse 150% 110% at 50% 0%, rgba(138, 43, 226, 0.28), transparent 85%),
+                radial-gradient(ellipse 170% 80% at 80% 30%, rgba(255, 215, 0, 0.15), transparent 60%),
+                #000000
+              `,
+            }}
+          />
+        )
+      }
       <a href="/" className="hoverable hover:scale-110 transition-transform relative active:scale-95">
         <img src="/logo.webp" alt="Utools Logo" className="w-12 h-12 z-10" />
         <img src="/logo.webp" alt="Utools Logo" className=" -z-10 w-12 h-12 blur-md absolute top-0 left-0" />
@@ -95,10 +110,9 @@ export default function Header({ transparent = true, absolute = true }) {
         ) : (
           <a
             href="/login"
-            className="hoverable flex items-center backdrop-blur-xl bg-gray-50/20  p-2 gap-2 z-10 rounded-xl hover:scale-110 transition-transform relative active:scale-95"
-          >
-            <RiLoginCircleLine className="h-6 w-6" />
-            <p>Sign In</p>
+            className="hoverable bg-dark rounded-2xl cursor-pointer px-4 py-2 font-semibold active:scale-95 transition-all duration-300 group text-center border-1 border-dark/20 before:absolute before:inset-0 before:bg-gradient-to-r before:from-light-blue before:via-purple before:to-pink before:rounded-2xl before:-z-10 before:blur-xs relative flex items-center justify-center space-x-2"
+            >
+            <span className='text-transparent bg-clip-text bg-gradient-to-r from-light-blue via-purple to-pink bg-[length:200%_100%] bg-left group-hover:bg-right transition-[background-position] duration-200 ease-in-out text-center'>Sign In</span>
           </a>
         )}
       </nav>
