@@ -38,7 +38,7 @@
     -webkit-backdrop-filter: blur(8px);
     mix-blend-mode: exclusion;
     /* animation: none; */
-    opacity: 0.6;
+    opacity: 0.4;
 }
 
 @keyframes rotate {
