@@ -1,3 +1,17 @@
+/* Cursor.css - Versión robusta para producción */
+.cursor-wrapper {
+    contain: layout style paint;
+    will-change: transform;
+}
+
+.cursor-visible {
+    opacity: 1;
+}
+
+.cursor-hidden {
+    opacity: 0;
+}
+
 .circle {
     height: 12px;
     width: 12px;
@@ -8,7 +22,11 @@
     animation: rotate 5s linear infinite;
     opacity: 1;
     transform-origin: center;
-    /* will-change: transform, width, height; */
+    will-change: transform, width, height;
+    /* Forzar aceleración por hardware */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .circle.active-circle {
@@ -23,10 +41,35 @@
 }
 
 @keyframes rotate {
-    from {
-        transform: rotate(0deg);
+    0% {
+        transform: rotate(0deg) translateZ(0);
     }
-    to {
-        transform: rotate(360deg);
+    100% {
+        transform: rotate(360deg) translateZ(0);
+    }
+}
+
+/* Ocultar en dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+    .cursor-wrapper,
+    .circle {
+        display: none !important;
+    }
+}
+
+/* Ocultar en pantallas pequeñas */
+@media (max-width: 768px) {
+    .cursor-wrapper,
+    .circle {
+        display: none !important;
+    }
+}
+
+/* Asegurar que funcione en diferentes navegadores */
+@supports not (backdrop-filter: blur(8px)) {
+    .circle.active-circle {
+        background: rgba(254, 75, 165, 0.6);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
     }
 }
