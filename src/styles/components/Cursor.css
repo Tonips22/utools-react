@@ -8,12 +8,13 @@
     animation: rotate 5s linear infinite;
     opacity: 1;
     transform-origin: center;
-    will-change: transform, width, height;
+    /* will-change: transform, width, height; */
 }
 
 .circle.active-circle {
     height: 60px;
     width: 60px;
+    border-radius: 100%;
     background: rgba(254, 75, 165, 0.4);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
