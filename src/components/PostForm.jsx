@@ -200,7 +200,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 p-8 rounded-2xl font-primary gap-6 w-full h-full mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 p-8 rounded-2xl font-primary gap-6 w-full h-full mx-auto overflow-auto scrollbar-hide">
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6 text-sm">
         <h1 className="text-2xl font-bold text-white">{titleText}</h1>
@@ -212,7 +212,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
               value={title}
               onChange={e => setTitle(e.target.value)}
               required
-              className="w-full bg-dark p-2 rounded-md border border-white focus:border-pink outline-none"
+              className="w-full p-2 rounded-md border border-white focus:border-pink outline-none"
             />
           </div>
           <div className="hoverable flex flex-col gap-2">
@@ -222,7 +222,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
               onChange={e => setLink(e.target.value)}
               placeholder="www.example.com"
               required
-              className="w-full bg-dark p-2 rounded-md border border-white focus:border-pink outline-none placeholder:italic"
+              className="w-full p-2 rounded-md border border-white focus:border-pink outline-none placeholder:italic"
             />
           </div>
         </div>
@@ -257,7 +257,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
         </div>
 
         {/* Image upload (preview local) */}
-        <div className="hoverable flex flex-col gap-2">
+        <div className="hoverable flex flex-col gap-2 border border-dashed border-white/40 p-4 rounded-lg">
           <label className="text-white/80">Image</label>
           <div
             onDragOver={handleDragOver}
@@ -337,7 +337,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
             image={
               imageFile instanceof File 
                 ? URL.createObjectURL(imageFile)
-                : imagePreviewUrl || "/no-results.avif"
+                : imagePreviewUrl || "/wallpaper.webp"
             }
             categories={
               // Convertir selectedCategoryIds a la estructura esperada por Post
