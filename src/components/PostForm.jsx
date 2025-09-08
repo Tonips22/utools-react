@@ -200,13 +200,13 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 bg-dark p-8 rounded-2xl font-primary gap-6 w-full h-full mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 p-8 rounded-2xl font-primary gap-6 w-full h-full mx-auto">
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6 text-sm">
         <h1 className="text-2xl font-bold text-white">{titleText}</h1>
         {/* Title + Link */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
+          <div className="hoverable flex flex-col gap-2">
             <label className="text-white/80">Title <span className="text-pink">*</span></label>
             <input
               value={title}
@@ -215,7 +215,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
               className="w-full bg-dark p-2 rounded-md border border-white focus:border-pink outline-none"
             />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="hoverable flex flex-col gap-2">
             <label className="text-white/80">Link <span className="text-pink">*</span></label>
             <input
               value={link}
@@ -228,7 +228,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
         </div>
 
         {/* Description */}
-        <div className="flex flex-col gap-2">
+        <div className="hoverable flex flex-col gap-2">
           <label className="text-white/80">Description <span className="text-pink">*</span></label>
           <textarea
             value={description}
@@ -240,7 +240,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
         </div>
 
         {/* Categories */}
-        <div className="flex flex-col gap-2">
+        <div className="hoverable flex flex-col gap-2">
           <label className="text-white/80">Categories <span className="text-pink">*</span></label>
           <div className="flex flex-wrap gap-2">
             {allCategories.map(cat => (
@@ -257,7 +257,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
         </div>
 
         {/* Image upload (preview local) */}
-        <div className="flex flex-col gap-2">
+        <div className="hoverable flex flex-col gap-2">
           <label className="text-white/80">Image</label>
           <div
             onDragOver={handleDragOver}
@@ -278,7 +278,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
               transition-all duration-200
               ${isDragging
                 ? "border-pink bg-pink/10"
-                : imageFile
+                : imageFile || imagePreviewUrl
                 ? "border-transparent"
                 : "border-dashed border-white/40 hover:border-pink hover:bg-pink/5"
               }
@@ -286,7 +286,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
           >
             <div className="absolute inset-0 bg-black/30 rounded-lg flex items-center justify-center">
               <span className="text-white text-sm">
-                {imageFile ? "Change image" : "Click or drag & drop a .webp"}
+                {imageFile || imagePreviewUrl ? "Change image" : "Click or drag & drop a .webp"}
               </span>
             </div>
             <input
@@ -306,32 +306,59 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
         <div className="flex gap-4">
           <button
             type="submit"
-            className="bg-pink text-white px-4 py-2 rounded-md hover:opacity-80 cursor-pointer"
+            className="hoverable bg-dark rounded-lg cursor-pointer px-4 py-2 font-semibold hover:bg-dark/80 transition-colors duration-300 z-[990] group min-w-[80px] text-center"
           >
-            {buttonText}
+            <span
+                className=" text-transparent bg-clip-text bg-gradient-to-r from-light-blue via-purple to-pink bg-[length:200%_100%] bg-left group-hover:bg-right transition-[background-position] duration-200 ease-in-out">
+                {buttonText}
+              </span>
           </button>
           <button
             type="button"
-            className="border border-red-500/80 text-white px-4 py-2 rounded-md hover:bg-red-500/80 cursor-pointer"
+            className="hoverable bg-red-500/40 rounded-lg px-4 py-2 font-semibold transition-colors duration-300 z-[990] group text-white cursor-pointer min-w-[80px] text-center"
             onClick={() => setActiveForm(false)}
           >
-            Cancel
+            <span
+                className=" text-transparent bg-clip-text bg-gradient-to-r from-pink via-red-500 to-pink bg-[length:200%_100%] bg-left group-hover:bg-right transition-[background-position] duration-200 ease-in-out">
+                Cancel
+              </span>
           </button>
         </div>
       </form>
 
       {/* Preview (sólo en pantallas grandes) */}
       <div className="hidden md:flex flex-col items-center justify-center gap-4">
-        <Post
-          id={postId}
-          title={title}
-          link={link}
-          image={imagePreviewUrl}
-          categories={selectedCategoryIds}
-          noLink={true}
-        >
-          {description}
-        </Post>
+        <h3 className="text-white text-lg font-bold">Preview</h3>
+        <div className="w-full max-w-sm">
+          <Post
+            id={postId}
+            title={title || "Enter a title..."}
+            link={link || "#"}
+            image={
+              imageFile instanceof File 
+                ? URL.createObjectURL(imageFile)
+                : imagePreviewUrl || "/no-results.avif"
+            }
+            categories={
+              // Convertir selectedCategoryIds a la estructura esperada por Post
+              selectedCategoryIds.map(categoryId => {
+                const category = allCategories.find(cat => cat.id === categoryId);
+                return category ? {
+                  categories: {
+                    nombre: category.nombre,
+                    color: category.color
+                  }
+                } : null;
+              }).filter(Boolean) // Filtrar nulls
+            }
+            noLink={true}
+          >
+            {description || "Enter a description..."}
+          </Post>
+        </div>
+        <p className="text-xs text-white/60 text-center italic">
+          This is how your post will look once published
+        </p>
       </div>
     </div>
   );
