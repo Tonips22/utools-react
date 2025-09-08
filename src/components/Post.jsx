@@ -7,7 +7,7 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, addToast}
 import { deletePostCascade } from "@lib/db.js";
 import PostForm from "@components/PostForm.jsx";
 
-export default function Post({id, title, link, children, image, categories = ["non-stablished"], name="", showStatus=false, status="pending", noLink=false}) {
+export default function Post({id, title, link, children, image, categories = ["non-stablished"], name="", showStatus=false, status="pending", noLink=false, onPostDeleted, onPostUpdated}) {
     const statusColors = {
         "pending": "#901BCACC",
         "published": "#53FA53cc",
@@ -24,6 +24,10 @@ export default function Post({id, title, link, children, image, categories = ["n
                 description: "Your post has been successfully deleted.",
                 color: "success",
             });
+            // Llamar callback para refrescar la lista
+            if (onPostDeleted) {
+                onPostDeleted();
+            }
         } catch (error) {
             console.error("Error deleting post:", error);
             addToast({
@@ -179,6 +183,7 @@ export default function Post({id, title, link, children, image, categories = ["n
                     isNewPost={false}
                     setActiveForm={setActiveForm}
                     postId={id}
+                    onPostUpdated={onPostUpdated}
                   />
                 </div>
             )}

@@ -61,6 +61,17 @@ export default function Dashboard() {
         } finally {
           setLoading(false);
         }
+      }
+
+      // Función para refrescar posts sin loading
+      const refreshPosts = async () => {
+        if (!user) return;
+        try {
+          const data = await getUserPosts(user.id);
+          setPosts(data);
+        } catch (error) {
+          console.error("Error refreshing posts:", error);
+        }
       }      
 
     return (
@@ -86,6 +97,8 @@ export default function Dashboard() {
                       categories={post.post_categories}
                       showStatus={true}
                       status={post.estado}
+                      onPostDeleted={refreshPosts}
+                      onPostUpdated={refreshPosts}
                     >
                     {post.descripcion}
                     </Post>
@@ -125,6 +138,7 @@ export default function Dashboard() {
                   <PostForm
                     isNewPost={true}
                     setActiveForm={setActiveForm}
+                    onPostCreated={refreshPosts}
                   />
                 </div>
             )}

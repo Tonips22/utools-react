@@ -6,7 +6,7 @@ import Label from "@components/Label.jsx";
 import { supabase } from '@lib/supabase.js'
 import Post from "@components/Post.jsx";
 
-export default function PostForm({ isNewPost = true, setActiveForm, postId = null }) {
+export default function PostForm({ isNewPost = true, setActiveForm, postId = null, onPostCreated, onPostUpdated }) {
   const { user } = useAuth();
   const titleText = isNewPost ? "New Post" : "Edit Post";
   const buttonText = isNewPost ? "Create" : "Save";
@@ -173,6 +173,11 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
       if (isNewPost) {
         await userCreatePost(title, description, link, imageToUse, user.id, selectedCategoryIds);
         addToast({ title: "Post created", description: "Post created successfully", color: "success" });
+        
+        // Callback para refrescar la lista de posts
+        if (onPostCreated) {
+          onPostCreated();
+        }
       } else {
         const updatedFields = {
           titulo: title,
@@ -188,6 +193,11 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
         await updatePost(postId, updatedFields);
         await updatePostCategories(postId, selectedCategoryIds);
         addToast({ title: "Post updated", description: "Changes saved successfully", color: "success" });
+        
+        // Callback para refrescar la lista de posts
+        if (onPostUpdated) {
+          onPostUpdated();
+        }
       }
 
       setActiveForm(false);
