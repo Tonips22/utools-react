@@ -112,7 +112,7 @@ export default function Dashboard() {
           </button>
 
             {activeForm && (
-                <div className="fixed top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm flex items-center justify-center z-[999999]">
+                <div className="fixed top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-[999999]">
                   <PostForm
                     isNewPost={true}
                     setActiveForm={setActiveForm}

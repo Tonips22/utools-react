@@ -7,7 +7,7 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, addToast}
 import { deletePostCascade } from "@lib/db.js";
 import PostForm from "@components/PostForm.jsx";
 
-export default function Post({id, title, link, children, image, categories = ["non-stablished"], name="", showStatus=false, status="pending" }) {
+export default function Post({id, title, link, children, image, categories = ["non-stablished"], name="", showStatus=false, status="pending", noLink=false}) {
     const statusColors = {
         "pending": "#901BCACC",
         "published": "#53FA53cc",
@@ -37,7 +37,7 @@ export default function Post({id, title, link, children, image, categories = ["n
     return (
         <>
         <div className="relative">
-        <a target="_blank" href={link} className="hoverable relative flex flex-col justify-start rounded-2xl bg-dark hover:opacity-80 transition-opacity duration-200 ease-in-out overflow-hidden cursor-pointer h-[425px]">
+        <a target="_blank" href={link} className={`hoverable relative flex flex-col justify-start rounded-2xl bg-dark hover:opacity-80 transition-opacity duration-200 ease-in-out overflow-hidden cursor-pointer h-[425px] ${noLink ? "pointer-events-none" : ""}`}>
             <img className=" w-full h-1/3 object-cover object-center rounded-tl-2xl rounded-tr-2xl" src={image} alt={title} />
 
             <div className="flex flex-col justify-between p-4 h-2/3">

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { addToast } from "@heroui/react";
 import { getAllCategories, userCreatePost, getPostById, updatePost, updatePostCategories, deleteImage } from "@lib/db.js";
 import { useAuth } from "@auth/AuthProvider.jsx";
 import Label from "@components/Label.jsx";
 import { supabase } from '@lib/supabase.js'
+import Post from "@components/Post.jsx";
 
 export default function PostForm({ isNewPost = true, setActiveForm, postId = null }) {
   const { user } = useAuth();
@@ -199,10 +200,10 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
 
 
   return (
-    <div className="flex flex-col bg-dark p-8 rounded-2xl font-primary gap-6 max-w-screen-md w-full mx-auto">
-      <h1 className="text-2xl font-bold text-white">{titleText}</h1>
+    <div className="grid grid-cols-1 md:grid-cols-2 bg-dark p-8 rounded-2xl font-primary gap-6 w-full h-full mx-auto">
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6 text-sm">
+        <h1 className="text-2xl font-bold text-white">{titleText}</h1>
         {/* Title + Link */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2">
@@ -318,6 +319,20 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
           </button>
         </div>
       </form>
+
+      {/* Preview (sólo en pantallas grandes) */}
+      <div className="hidden md:flex flex-col items-center justify-center gap-4">
+        <Post
+          id={postId}
+          title={title}
+          link={link}
+          image={imagePreviewUrl}
+          categories={selectedCategoryIds}
+          noLink={true}
+        >
+          {description}
+        </Post>
+      </div>
     </div>
   );
 }
