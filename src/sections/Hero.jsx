@@ -63,7 +63,7 @@ export default function Hero({searchTerm, setSearchTerm, activeCategories, setac
 
       <div className="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center gap-4">
         <h1 className="text-6xl font-bold cursor-default relative">
-          <GradientText animated={true}>Utools</GradientText>
+          <GradientText animated={true} shadow={true}>Utools</GradientText>
         </h1>
 
         <div className="relative group">
