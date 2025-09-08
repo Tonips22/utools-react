@@ -112,7 +112,7 @@ export default function Dashboard() {
           </button>
 
             {activeForm && (
-                <div className="fixed top-0 left-0 w-full h-full z-[999999]"
+                <div className="fixed top-0 left-0 w-full h-full z-[990]"
                 style={{
                   background: `
                     radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
