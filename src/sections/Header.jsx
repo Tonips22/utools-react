@@ -1,4 +1,3 @@
-import Coffee from '@assets/buymeacoffee.svg';
 import { useAuth } from "@auth/AuthProvider.jsx";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar } from "@heroui/react";
 
@@ -33,13 +32,16 @@ export default function Header({ transparent = true, absolute = true }) {
 
       <nav className="flex items-center space-x-8">
         <a
-          href="https://buymeacoffee.com/tonigt"
-          className="hoverable hover:scale-110 transition-transform max-w-6 relative active:scale-95"
+          href="https://github.com/Tonips22/utools-react"
+          className="hoverable flex items-center gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/10 hover:border-white/30 hover:scale-105 transition-all duration-200 active:scale-95 relative group"
           target="_blank"
           rel="noreferrer"
         >
-          <img src={Coffee} alt="BuyMeACoffee Logo" />
-          <img src={Coffee} alt="BuyMeACoffee Logo" className=" -z-10 w-12 h-12 blur-md absolute top-0 left-0" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-all duration-200">
+            <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" className="fill-[#eab308] stroke-[#eab308] transition-all duration-200"/>
+          </svg>
+          <span className="text-white text-sm font-medium">Star on GitHub</span>
+          <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-300"></div>
         </a>
 
         {user ? (
@@ -110,7 +112,7 @@ export default function Header({ transparent = true, absolute = true }) {
         ) : (
           <a
             href="/login"
-            className="hoverable bg-dark rounded-2xl cursor-pointer px-4 py-2 font-semibold active:scale-95 transition-all duration-300 group text-center border-1 border-dark/20 before:absolute before:inset-0 before:bg-gradient-to-r before:from-light-blue before:via-purple before:to-pink before:rounded-2xl before:-z-10 before:blur-xs relative flex items-center justify-center space-x-2"
+            className="hoverable bg-dark rounded-2xl cursor-pointer px-4 py-2 font-semibold active:scale-95 transition-all duration-300 group text-center border-1 border-white/10 before:absolute before:inset-0 before:bg-gradient-to-r before:from-light-blue before:via-purple before:to-pink before:rounded-2xl before:-z-10 before:blur-xs relative flex items-center justify-center space-x-2"
             >
             <span className='text-transparent bg-clip-text bg-gradient-to-r from-light-blue via-purple to-pink bg-[length:200%_100%] bg-left group-hover:bg-right transition-[background-position] duration-200 ease-in-out text-center'>Sign In</span>
           </a>
