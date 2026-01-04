@@ -33,7 +33,7 @@ export default function Header({ transparent = true, absolute = true }) {
       <nav className="flex items-center gap-4">
         <a
           href="https://github.com/Tonips22/utools-react"
-          className="hoverable flex items-center gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/10 hover:border-white/30 hover:scale-105 transition-all duration-200 active:scale-95 relative group"
+          className="hidden md:flex hoverable items-center gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/10 hover:border-white/30 hover:scale-105 transition-all duration-200 active:scale-95 relative group"
           target="_blank"
           rel="noreferrer"
         >
