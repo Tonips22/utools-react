@@ -30,7 +30,7 @@ export default function Header({ transparent = true, absolute = true }) {
         <img src="/logo.webp" alt="Utools Logo" className=" -z-10 w-12 h-12 blur-md absolute top-0 left-0" />
       </a>
 
-      <nav className="flex items-center space-x-8">
+      <nav className="flex items-center gap-4">
         <a
           href="https://github.com/Tonips22/utools-react"
           className="hoverable flex items-center gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/10 hover:border-white/30 hover:scale-105 transition-all duration-200 active:scale-95 relative group"
@@ -112,9 +112,15 @@ export default function Header({ transparent = true, absolute = true }) {
         ) : (
           <a
             href="/login"
-            className="hoverable bg-dark rounded-2xl cursor-pointer px-4 py-2 font-semibold active:scale-95 transition-all duration-300 group text-center border-1 border-white/10 before:absolute before:inset-0 before:bg-gradient-to-r before:from-light-blue before:via-purple before:to-pink before:rounded-2xl before:-z-10 before:blur-xs relative flex items-center justify-center space-x-2"
-            >
-            <span className='text-transparent bg-clip-text bg-gradient-to-r from-light-blue via-purple to-pink bg-[length:200%_100%] bg-left group-hover:bg-right transition-[background-position] duration-200 ease-in-out text-center'>Sign In</span>
+            className="hoverable flex items-center gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/10 hover:border-white/30 hover:scale-105 transition-all duration-200 active:scale-95 relative group"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-all duration-200">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+              <polyline points="10 17 15 12 10 7"/>
+              <line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+            <span className="text-white text-sm font-medium">Sign In</span>
+            <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-300"></div>
           </a>
         )}
       </nav>
