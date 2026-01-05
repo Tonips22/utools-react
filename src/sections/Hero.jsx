@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import AnimatedBg from '@components/AnimatedBg.jsx';
+// import AnimatedBg from '@components/AnimatedBg.jsx';
 import Label from '@components/Label.jsx';
 import { getAllCategories } from '@lib/db.js'; 
 import { RxCross2 } from "react-icons/rx";
@@ -8,11 +8,19 @@ import GradientText from '@components/GradientText';
 export default function Hero({searchTerm, setSearchTerm, activeCategories, setactiveCategories}) {
   const [value, setValue] = useState(searchTerm);
   const [allCategories, setAllCategories] = useState([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const all = await getAllCategories();
-      setAllCategories(all);
+      setLoadingCategories(true);
+      try {
+        const all = await getAllCategories();
+        setAllCategories(all);
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      } finally {
+        setLoadingCategories(false);
+      }
     };
 
     fetchCategories();
@@ -108,16 +116,27 @@ export default function Hero({searchTerm, setSearchTerm, activeCategories, setac
         </div>
 
         <ul className="hoverable flex flex-row items-center justify-center flex-wrap gap-2 w-[350px] md:w-[500px] lg:w-[600px]">
-          {allCategories.map((category) => (
-            <Label
-              key={category.id}
-              color={category.color}
-              text={category.nombre}
-              hasCheckBox={true}
-              onChange={handleCategoryChange}
-              isChecked={activeCategories.includes(category.nombre)}
-            />
-          ))}
+          {loadingCategories ? (
+            // Skeleton para categorías
+            Array.from({ length: 12 }).map((_, index) => (
+              <div
+                key={index}
+                className="h-7 bg-gray-700 rounded-full animate-pulse"
+                style={{ width: `${60 + Math.random() * 40}px` }}
+              />
+            ))
+          ) : (
+            allCategories.map((category) => (
+              <Label
+                key={category.id}
+                color={category.color}
+                text={category.nombre}
+                hasCheckBox={true}
+                onChange={handleCategoryChange}
+                isChecked={activeCategories.includes(category.nombre)}
+              />
+            ))
+          )}
         </ul>
       </div>
     </section>
