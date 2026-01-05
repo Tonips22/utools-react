@@ -17,7 +17,7 @@ export default function Button({
       {...props}
     >
       {children}
-      <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-300"></div>
+      <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-200 ease-in-out"></div>
     </button>
   );
 }
