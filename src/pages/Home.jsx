@@ -4,6 +4,7 @@ import NavBar from "@components/NavBar.jsx";
 import Hero from "@sections/Hero.jsx";
 import Post from "@components/Post.jsx";
 import Loader from "@components/Loader.jsx";
+import Button from "@components/Button.jsx";
 import Footer from "@sections/Footer.jsx";
 import { getAllPublishedPosts, getSearchedPublishedPosts, getFilteredPostsByCategories } from "@lib/db.js";
 import Skeleton from "@components/Skeleton.jsx";
@@ -121,27 +122,17 @@ function Home() {
 
       <div className="flex justify-center mt-8">
         {hasMore && !loading && (
-          <button
+          <Button
             onClick={loadMorePosts}
-            className=" hoverable bg-dark rounded-2xl cursor-pointer px-6 py-3 font-semibold hover:bg-dark/80 transition-colors duration-300 z-[990] group min-w-[120px] min-h-[48px]"
+            className="font-semibold z-[990] min-w-[120px] min-h-[48px] text-white"
             disabled={loadingMore}
           >
             {loadingMore ? (
-              <div className="flex justify-center items-center">
-                <Loader className="loader-button" />
-              </div>
+              <Loader className="loader-button" />
             ) : (
-              <span
-                className=" text-transparent bg-clip-text 
-                        bg-gradient-to-r from-light-blue via-purple to-pink 
-                        bg-[length:200%_100%] bg-left 
-                        group-hover:bg-right 
-                        transition-[background-position] duration-200 ease-in-out"
-              >
-                Load More
-              </span>
+              "Load More"
             )}
-          </button>
+          </Button>
         )}
       </div>
 
