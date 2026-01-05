@@ -6,7 +6,7 @@ export default function Sidebar() {
   const { user } = useAuth();
 
   return (
-    <aside className=" h-screen sticky bg-bg border-r border-white/10 rounded-tr-xl rounded-br-xl p-6 flex flex-col items-center justify-between">
+    <aside className="fixed left-0 top-0 h-screen bg-bg border-r border-white/10 rounded-tr-xl rounded-br-xl p-6 flex flex-col items-center justify-between">
         <a href="/" className="hoverable hover:scale-105 active:scale-95 transition-scale duration-200 ease-in-out">
             <img src="/logo.webp" alt="Utools Logo" className="w-12 h-12" />
         </a>

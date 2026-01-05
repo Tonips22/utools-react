@@ -29,7 +29,7 @@ export default function Dashboard() {
             }}
         >
             <Sidebar />
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col ml-[128px]">
                 <Outlet />
                 <Footer />
             </div>
