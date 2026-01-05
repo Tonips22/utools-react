@@ -6,7 +6,15 @@ export default function Sidebar() {
   const { user } = useAuth();
 
   return (
-    <aside className="fixed left-0 top-0 h-screen bg-bg border-r border-white/10 rounded-tr-xl rounded-br-xl p-6 flex flex-col items-center justify-between">
+    <aside className="fixed left-0 top-0 h-screen border-r border-white/10 rounded-tr-xl rounded-br-xl p-6 flex flex-col items-center justify-between" style={{
+        background: `
+            radial-gradient(ellipse 200% 120% at 20% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
+            radial-gradient(ellipse 180% 100% at 10% 50%, rgba(0, 255, 255, 0.12), transparent 60%),
+            radial-gradient(ellipse 170% 90% at 0% 70%, rgba(138, 43, 226, 0.18), transparent 65%),
+            radial-gradient(ellipse 150% 110% at 30% 40%, rgba(255, 215, 0, 0.08), transparent 40%),
+            #00000000
+    `,
+    }}>
         <a href="/" className="hoverable hover:scale-105 active:scale-95 transition-scale duration-200 ease-in-out">
             <img src="/logo.webp" alt="Utools Logo" className="w-12 h-12" />
         </a>
