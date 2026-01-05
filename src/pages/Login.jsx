@@ -2,6 +2,7 @@ import { useAuth } from "@auth/AuthProvider.jsx";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AnimatedBg from "@components/AnimatedBg.jsx";
+import Loader from "@components/Loader.jsx";
 import { FaGoogle, FaGithub, FaTwitch } from "react-icons/fa";
 
 export default function Login() {
@@ -32,21 +33,21 @@ export default function Login() {
                 <a href="/" className="hoverable font-primary z-20 text-8xl">Utools</a>
             </section>
 
-            <section className="z-10 flex flex-col items-center justify-center gap-4 p-8">
+            <section className="z-10 flex flex-col items-center justify-center gap-6 p-8">
                 <h1 className="font-primary text-7xl">Sign In</h1>
-                <h2 className="font-bold">Choose a method to sign in.</h2>
-                {loading && <p>Loading...</p>} {/* Mensaje de carga */}
-                <button onClick={() => handleLogin("google")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 text-white min-w-60 border border-white/10 hover:border-white/30 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out cursor-pointer relative group">
+                <h2 className="font-bold text-white/80">Choose a method to sign in.</h2>
+                {loading && <Loader />}
+                <button onClick={() => handleLogin("google")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 text-white min-w-60 border border-white/10 hover:border-white/30 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out cursor-pointer relative group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
                     <FaGoogle className="size-5" />
                     <p className="self-center">Continue with Google</p>
                     <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-300"></div>
                 </button>
-                <button onClick={() => handleLogin("github")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 text-white min-w-60 border border-white/10 hover:border-white/30 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out cursor-pointer relative group">
+                <button onClick={() => handleLogin("github")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 text-white min-w-60 border border-white/10 hover:border-white/30 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out cursor-pointer relative group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
                     <FaGithub className="size-5" />
                     <p className="self-center">Continue with GitHub</p>
                     <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-300"></div>
                 </button>
-                <button onClick={() => handleLogin("twitch")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 text-white min-w-60 border border-white/10 hover:border-white/30 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out cursor-pointer relative group">
+                <button onClick={() => handleLogin("twitch")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 text-white min-w-60 border border-white/10 hover:border-white/30 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out cursor-pointer relative group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
                     <FaTwitch className="size-5" />
                     <p className="self-center">Continue with Twitch</p>
                     <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-300"></div>
