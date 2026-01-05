@@ -1,65 +1,46 @@
 import { NavLink } from "react-router-dom";
-import { FaList, FaUser, FaHome } from "react-icons/fa";
+import { RxDashboard } from "react-icons/rx";
+import { useAuth } from "@auth/AuthProvider.jsx";
 
 export default function Sidebar() {
+  const { user } = useAuth();
+
   return (
-    <aside className="w-64 min-h-screen bg-dark border-r border-white/10 p-6 flex flex-col gap-4">
-      <div className="mb-8">
-        <a href="/" className="flex items-center gap-3 hoverable hover:scale-105 transition-transform active:scale-95">
-          <img src="/logo.webp" alt="Utools Logo" className="w-10 h-10" />
-          <h2 className="font-primary text-2xl text-white">Utools</h2>
+    <aside className=" h-screen sticky bg-bg border-r border-white/10 rounded-tr-xl rounded-br-xl p-6 flex flex-col items-center justify-between">
+        <a href="/" className="hoverable hover:scale-105 active:scale-95 transition-scale duration-200 ease-in-out">
+            <img src="/logo.webp" alt="Utools Logo" className="w-12 h-12" />
         </a>
-      </div>
+        
+        <nav className="flex flex-col items-center gap-4">
+            <NavLink
+                to="/dashboard/my-posts"
+                className={({ isActive }) => `hoverable flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${ isActive
+                        ? "bg-white text-dark font-semibold rounded-full"
+                        : "text-white hover:bg-white/10"
+                    }`
+                }
+            >
+                <RxDashboard className="text-lg" />
+            </NavLink>
+        </nav>
 
-      <nav className="flex flex-col gap-2">
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${
-              isActive
-                ? "bg-gradient-to-r from-light-blue via-purple to-pink text-dark font-semibold"
-                : "text-white hover:bg-white/10"
-            }`
-          }
-        >
-          <FaHome className="text-lg" />
-          <span>Home</span>
-        </NavLink>
+        <footer>
+            {user && (
+            <NavLink
+                to="/dashboard/profile"
+                className={({ isActive }) =>`hoverable relative block transition-transform rounded-full hover:scale-110 active:scale-95 ${isActive ? "ring-2 ring-offset-2 ring-pink/50 ring-offset-bg" : ""
+                }`
+                }
+            >
+                <img
+                    src={user.user_metadata.avatar_url || "/user-icon.svg"}
+                    alt={user.user_metadata.name || "User"}
+                    className="w-10 h-10 rounded-full object-cover border-2 border-white/20"
+                />
+            </NavLink>
+            )}
 
-        <NavLink
-          to="/dashboard/my-posts"
-          className={({ isActive }) =>
-            `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${
-              isActive
-                ? "bg-gradient-to-r from-light-blue via-purple to-pink text-dark font-semibold"
-                : "text-white hover:bg-white/10"
-            }`
-          }
-        >
-          <FaList className="text-lg" />
-          <span>My Posts</span>
-        </NavLink>
-
-        <NavLink
-          to="/dashboard/profile"
-          className={({ isActive }) =>
-            `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${
-              isActive
-                ? "bg-gradient-to-r from-light-blue via-purple to-pink text-dark font-semibold"
-                : "text-white hover:bg-white/10"
-            }`
-          }
-        >
-          <FaUser className="text-lg" />
-          <span>Profile</span>
-        </NavLink>
-      </nav>
-
-      <div className="mt-auto pt-6 border-t border-white/10">
-        <p className="text-xs text-white/50 text-center">
-          Dashboard v1.0
-        </p>
-      </div>
+        </footer>
     </aside>
   );
 }
