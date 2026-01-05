@@ -1,4 +1,4 @@
-import AnimatedBg from '@components/AnimatedBg.jsx';
+// import AnimatedBg from '@components/AnimatedBg.jsx';
 import { FaGithub } from "react-icons/fa";
 import { SiBuymeacoffee } from "react-icons/si";
 

@@ -1,8 +1,30 @@
 import { useAuth } from "@auth/AuthProvider.jsx";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar } from "@heroui/react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { RiUserFill } from "react-icons/ri";
+import { FaSignOutAlt } from "react-icons/fa";
+import { RxDashboard } from "react-icons/rx";
 
 export default function Header({ transparent = true, absolute = true }) {
   const { user, logout } = useAuth();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   return (
     <header
@@ -45,73 +67,57 @@ export default function Header({ transparent = true, absolute = true }) {
         </a>
 
         {user ? (
-          <Dropdown
-            placement="bottom-end"
-            classNames={{
-                // wrapper del popover (el que tiene bg-content1)
-                content: "bg-transparent backdrop-blur-md rounded-xl", 
-                // puedes ocultar la flechita si quieres
-                arrow: "hidden",
-            }}
-          >
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                classNames={{
-                    
-                  base: "hoverable relative transition-transform w-9 h-9 rounded-full hover:scale-110 active:scale-95 cursor-pointer",
-                  image: "rounded-full object-cover w-full h-full",
-
-                }}
+          <div className="relative flex" ref={dropdownRef}>
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="hoverable relative transition-transform duration-200 ease-in-out w-10 h-10 rounded-full hover:scale-105 active:scale-95 cursor-pointer overflow-hidden ring-2 ring-offset-2 ring-offset-bg ring-white/20"
+            >
+              <img
                 src={user.user_metadata.avatar_url || "/user-icon.svg"}
+                alt="User Avatar"
+                className="rounded-full object-cover w-full h-full "
               />
-            </DropdownTrigger>
+            </button>
 
-            <DropdownMenu
-              aria-label="Profile Actions"
-              variant="light"
-              classNames={{
-                base: " rounded-xl bg-dark backdrop-blur-sm p-2", // contenedor principal
-                list: "flex flex-col gap-2",                             // lista UL interna
-              }}
-              itemClasses={{
-                base: "rounded-lg py-1 px-2 text-sm text-white hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out",
-              }}
-            >
-              <DropdownItem key="profile" textValue="Profile info" isReadOnly classNames={{ base: "h-14 gap-2 bg-transparent hover:scale-100 cursor-default" }}>
-                <p className="text-xs text-white/80">Signed in as</p>
-                <p className="text-sm text-white">{user.user_metadata.name || user.user_metadata.email}</p>
-              </DropdownItem>
+            {isDropdownOpen && (
+              <div className="absolute right-0 top-12 w-56 rounded-xl bg-dark backdrop-blur-md border border-white/10 p-2 shadow-xl">
+                <div className="rounded-lg py-3 px-3 bg-transparent cursor-default">
+                  <p className="text-xs text-white/80">Signed in as</p>
+                  <p className="text-sm text-white truncate">{user.user_metadata.name || user.user_metadata.email}</p>
+                </div>
 
-              <DropdownItem
-              key="dashboard"
-              textValue="Dashboard"
-              href="/dashboard"
-              classNames={{
-                base: "group bg-transparent hover:bg-white",
-                title: "text-sm text-white group-hover:text-dark",
-              }}
-            >
-              Dashboard
-            </DropdownItem>
+                <hr className="my-2 border-white/10" />
 
-              <DropdownItem
-                key="logout"
-                textValue="Sign out"
-                classNames={{
-                  base: "group bg-transparent hover:bg-pink",
-                  title: "text-sm text-pink group-hover:text-dark",
-                }}
-                onPress={logout}
-              >
-                Sign Out
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+                <Link
+                  to="/dashboard/my-posts"
+                  className="hoverable group flex items-center gap-1 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  <RxDashboard />
+                  My Posts
+                </Link>
+                <Link
+                  to="/dashboard/profile"
+                  className="hoverable group flex items-center gap-1 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+                  onClick={() => setIsDropdownOpen(false)}
+                >
+                  <RiUserFill />
+                  Profile
+                </Link>
+
+                <button
+                  onClick={logout}
+                  className="hoverable group w-full flex gap-1 items-center rounded-lg py-2 px-3 text-sm text-pink bg-transparent hover:bg-pink hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 cursor-pointer"
+                >
+                  <FaSignOutAlt />
+                  Sign Out
+                </button>
+              </div>
+            )}
+          </div>
         ) : (
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="hoverable flex items-center gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/10 hover:border-white/30 hover:scale-105 transition-all duration-200 active:scale-95 relative group"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-all duration-200">
@@ -121,7 +127,7 @@ export default function Header({ transparent = true, absolute = true }) {
             </svg>
             <span className="text-white text-sm font-medium">Sign In</span>
             <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-300"></div>
-          </a>
+          </Link>
         )}
       </nav>
     </header>
