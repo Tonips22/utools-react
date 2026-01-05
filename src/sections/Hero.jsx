@@ -118,7 +118,7 @@ export default function Hero({searchTerm, setSearchTerm, activeCategories, setac
         <ul className="hoverable flex flex-row items-center justify-center flex-wrap gap-2 w-[350px] md:w-[500px] lg:w-[600px]">
           {loadingCategories ? (
             // Skeleton para categorías
-            Array.from({ length: 12 }).map((_, index) => (
+            Array.from({ length: 14 }).map((_, index) => (
               <div
                 key={index}
                 className="h-7 bg-gray-700 rounded-full animate-pulse"
