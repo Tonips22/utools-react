@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Header from "@sections/Header.jsx";
-import NavBar from "@components/NavBar.jsx";
+// import NavBar from "@components/NavBar.jsx";
 import Hero from "@sections/Hero.jsx";
 import Post from "@components/Post.jsx";
 import Loader from "@components/Loader.jsx";

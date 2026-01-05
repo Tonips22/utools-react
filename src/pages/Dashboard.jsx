@@ -1,148 +1,38 @@
-import { useState, useEffect, useRef } from "react";
-import Header from "@sections/Header.jsx";
-import Footer from "@sections/Footer.jsx";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, Outlet } from "react-router-dom";
 import { useAuth } from "@auth/AuthProvider.jsx";
-import Post from "@components/Post.jsx";
-import Loader from "@components/Loader.jsx";
-import { getUserPosts } from "@lib/db.js";
-import PostForm from "@components/PostForm.jsx";
-import Skeleton from "@components/Skeleton.jsx";
-
+import Sidebar from "@components/Sidebar.jsx";
+import Footer from "@sections/Footer.jsx";
 
 export default function Dashboard() {
     const navigate = useNavigate();
     const { user } = useAuth();
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [activeForm, setActiveForm] = useState(false); // para controlar el formulario activo
-
-    const hasFetched = useRef(false); // control de ejecución
-    const title = user?.user_metadata?.name
-      ? `${user.user_metadata.name}'s Dashboard`
-      : "Dashboard";
-
-    const SKELETON_COUNT = 8;
 
     useEffect(() => {
         if (!user) {
           navigate("/login");
-          return;
-        } 
-        // Solo ejecuta la carga si no se ha hecho antes
-        if (!hasFetched.current) {
-          hasFetched.current = true;
-          fetchPosts(); 
-
-          const title = user.user_metadata?.name
-            ? `${user.user_metadata.name}'s Dashboard`
-            : "Dashboard";
-          document.title = `${title} | Utools`;
         }
-      }, [user]);
+    }, [user, navigate]);
 
-      if(activeForm){
-        const body = document.querySelector("body");
-        body.style.overflow = "hidden"; // prevenir scroll cuando el formulario está activo
-      } else {
-        const body = document.querySelector("body");
-        body.style.overflow = "auto"; // permitir scroll cuando el formulario no está activo
-      }
-
-      const fetchPosts = async () => {
-        if (!user) return; // prevención extra
-      
-        setLoading(true);
-        try {
-          const data = await getUserPosts(user.id);
-          setPosts(data);
-        } catch (error) {
-          console.error("Error fetching posts:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-
-      // Función para refrescar posts sin loading
-      const refreshPosts = async () => {
-        if (!user) return;
-        try {
-          const data = await getUserPosts(user.id);
-          setPosts(data);
-        } catch (error) {
-          console.error("Error refreshing posts:", error);
-        }
-      }      
+    if (!user) return null;
 
     return (
-        <main className="min-h-screen flex flex-col gap-4">
-            <Header
-                transparent={false}
-                absolute={false}
-            />
-            <h1 className="font-primary text-5xl px-8 "> {title} </h1>
-            <main className=" min-h-[70vh] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 my-8 z-20">
-                {loading ? (
-                  Array.from({ length: SKELETON_COUNT }).map((_, index) => (
-                    <Skeleton key={index} />
-                  ))
-                ) : posts.length > 0 ? (
-                posts.map((post, index) => (
-                    <Post
-                      key={post.id}
-                      id={post.id}
-                      title={post.titulo}
-                      link={post.enlace}
-                      image={post.imagen}
-                      categories={post.post_categories}
-                      showStatus={true}
-                      status={post.estado}
-                      onPostDeleted={refreshPosts}
-                      onPostUpdated={refreshPosts}
-                    >
-                    {post.descripcion}
-                    </Post>
-                ))
-                ) : (
-                <p className="text-lg font-primary
-  ">You don't have any posts yet</p>
-                )}
-            </main>
-
-            <button
-            onClick={() => setActiveForm(true)}
-            className="bg-dark rounded-2xl cursor-pointer self-start px-6 py-3 font-semibold hover:bg-dark/80 transition-colors duration-300 z-10 group mx-8"
-          >
-            <span
-              className="hoverable text-transparent bg-clip-text 
-                        bg-gradient-to-r from-light-blue via-purple to-pink 
-                        bg-[length:200%_100%] bg-left 
-                        group-hover:bg-right 
-                        transition-[background-position] duration-200 ease-in-out"
-            >
-              New Post +
-            </span>
-          </button>
-
-            {activeForm && (
-                <div className="fixed top-0 left-0 w-full h-full z-[990]"
-                style={{
-                  background: `
-                    radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
-                    radial-gradient(ellipse 100% 60% at 30% 10%, rgba(0, 255, 255, 0.12), transparent 60%),
-                    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(138, 43, 226, 0.18), transparent 65%),
-                    radial-gradient(ellipse 110% 50% at 80% 30%, rgba(255, 215, 0, 0.08), transparent 40%),
-                    #000000
-                  `,
-                }}>
-                  <PostForm
-                    isNewPost={true}
-                    setActiveForm={setActiveForm}
-                    onPostCreated={refreshPosts}
-                  />
-                </div>
-            )}
-            <Footer />
-        </main>
+        <div className="min-h-screen flex"
+            style={{
+              background: `
+                radial-gradient(ellipse 180% 120% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 70%),
+                radial-gradient(ellipse 160% 100% at 30% 10%, rgba(0, 255, 255, 0.12), transparent 80%),
+                radial-gradient(ellipse 150% 110% at 50% 0%, rgba(138, 43, 226, 0.18), transparent 85%),
+                radial-gradient(ellipse 170% 80% at 80% 30%, rgba(255, 215, 0, 0.10), transparent 60%),
+                #000000
+              `,
+            }}
+        >
+            <Sidebar />
+            <div className="flex-1 flex flex-col">
+                <Outlet />
+                <Footer />
+            </div>
+        </div>
     );
 }

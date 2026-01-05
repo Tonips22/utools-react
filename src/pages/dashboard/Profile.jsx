@@ -1,0 +1,108 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@auth/AuthProvider.jsx";
+import { FaEnvelope, FaCalendar, FaSignOutAlt } from "react-icons/fa";
+import Button from "@components/Button.jsx";
+
+export default function Profile() {
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
+
+    useEffect(() => {
+        if (!user) {
+          navigate("/login");
+          return;
+        }
+        document.title = "Profile | Utools";
+    }, [user, navigate]);
+
+    if (!user) return null;
+
+    const { user_metadata } = user;
+    const joinDate = new Date(user.created_at).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    return (
+        <div className="flex-1 p-8">
+            <h1 className="font-primary text-5xl mb-8">Profile</h1>
+
+            <div className="max-w-2xl">
+                {/* Profile Card */}
+                <div className="bg-dark border border-white/10 rounded-2xl p-8 mb-6 relative overflow-hidden group hover:border-white/30 transition-all duration-300">
+                    <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-20 -z-10 transition-opacity duration-300"></div>
+                    
+                    <div className="flex items-start gap-6 mb-6">
+                        <div className="relative">
+                            <img 
+                                src={user_metadata.avatar_url || "/user-icon.svg"} 
+                                alt={user_metadata.name || "User"} 
+                                className="w-24 h-24 rounded-full object-cover border-2 border-white/20"
+                            />
+                            <div className="absolute -inset-1 bg-gradient-to-r from-light-blue via-purple to-pink rounded-full blur opacity-50 -z-10"></div>
+                        </div>
+                        
+                        <div className="flex-1">
+                            <h2 className="text-3xl font-bold text-white mb-2">
+                                {user_metadata.name || user_metadata.full_name || "User"}
+                            </h2>
+                            <div className="flex items-center gap-2 text-white/70 mb-3">
+                                <FaEnvelope className="text-sm" />
+                                <p className="text-sm">{user.email}</p>
+                            </div>
+                            <div className="flex items-center gap-2 text-white/70">
+                                <FaCalendar className="text-sm" />
+                                <p className="text-sm">Member since {joinDate}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Provider Info */}
+                    <div className="pt-6 border-t border-white/10">
+                        <p className="text-sm text-white/50 mb-2">Connected with</p>
+                        <div className="flex items-center gap-2">
+                            <span className="px-3 py-1 bg-white/10 rounded-full text-sm text-white capitalize">
+                                {user.app_metadata.provider}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Account Stats */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div className="bg-dark border border-white/10 rounded-xl p-6 hover:border-white/30 transition-colors">
+                        <h3 className="text-white/60 text-sm mb-2">Account ID</h3>
+                        <p className="text-white font-mono text-xs break-all">{user.id}</p>
+                    </div>
+                    
+                    <div className="bg-dark border border-white/10 rounded-xl p-6 hover:border-white/30 transition-colors">
+                        <h3 className="text-white/60 text-sm mb-2">Last Sign In</h3>
+                        <p className="text-white text-sm">
+                            {new Date(user.last_sign_in_at).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Actions */}
+                <div className="bg-dark border border-white/10 rounded-xl p-6">
+                    <h3 className="text-xl font-bold text-white mb-4">Account Actions</h3>
+                    <Button 
+                        onClick={logout}
+                        className="bg-red-600 hover:bg-red-700 text-white border-red-600 hover:border-red-700"
+                    >
+                        <FaSignOutAlt />
+                        <span>Sign Out</span>
+                    </Button>
+                </div>
+            </div>
+        </div>
+    );
+}
