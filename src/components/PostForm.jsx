@@ -3,6 +3,8 @@ import { addToast } from "@heroui/react";
 import { getAllCategories, userCreatePost, getPostById, updatePost, updatePostCategories, deleteImage } from "@lib/db.js";
 import { useAuth } from "@auth/AuthProvider.jsx";
 import Label from "@components/Label.jsx";
+import Button from "@components/Button.jsx";
+import Modal from "@components/Modal.jsx";
 import { supabase } from '@lib/supabase.js'
 import Post from "@components/Post.jsx";
 
@@ -16,6 +18,8 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   // Campos controlados
   const [title, setTitle] = useState("");
@@ -103,11 +107,11 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
     }
   };
 
-  // Submit (sin subida de imagen)
-  const handleSubmit = async (e) => {
+  // Validación del formulario antes de mostrar el modal
+  const handleSubmitClick = (e) => {
     e.preventDefault();
-
-    /* ─ 1) Validaciones básicas ───────────────────────── */
+    
+    // Validaciones básicas antes de abrir el modal
     if (!user) {
       addToast({ title: "Access denied", description: "You must be logged in", color: "danger" });
       return;
@@ -120,25 +124,31 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
       addToast({ title: "Image required", description: "Upload a .webp image", color: "warning" });
       return;
     }
-
     if (!isNewPost && !imageFile && !imagePreviewUrl) {
       addToast({ title: "Image required", description: "Upload a .webp image", color: "warning" });
       return;
     }
+    if (imageFile && imageFile.size > 100 * 1024) {
+      addToast({ title: "Image too heavy", description: "Must be less than 100 KB", color: "warning" });
+      return;
+    }
+    
+    // Si todas las validaciones pasan, mostrar el modal
+    setShowSubmitModal(true);
+  };
 
+  // Submit real (sin subida de imagen)
+  const handleSubmit = async () => {
+
+    /* ─ 1) Eliminar imagen antigua si hay nueva ───────────────────────── */
     if (!isNewPost && imageFile) {
       const oldPost = await getPostById(postId);
       if (oldPost?.imagen) {
         await deleteImage(oldPost.imagen);
       }
     }
-    
-    if (imageFile && imageFile.size > 100 * 1024) {          // 100 KB
-      addToast({ title: "Image too heavy", description: "Must be less than 100 KB", color: "warning" });
-      return;
-    }
 
-    /* ─ 4) Inserta post + relación categorías ─────────── */
+    /* ─ 2) Inserta post + relación categorías ─────────── */
     try {
       let imageToUse = "";
 
@@ -205,14 +215,17 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
       console.error(err);
       addToast({ title: "Error", description: "Could not save post", color: "danger" });
     }
+  };
 
+  const handleCancelClick = () => {
+    setShowCancelModal(true);
   };
 
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 p-8 rounded-2xl font-primary gap-6 w-full h-full mx-auto overflow-auto scrollbar-hide">
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6 text-sm">
+      <form onSubmit={handleSubmitClick} className="flex flex-col gap-6 text-sm">
         <h1 className="text-2xl font-bold text-white">{titleText}</h1>
         {/* Title + Link */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -314,27 +327,46 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
 
         {/* Buttons */}
         <div className="flex gap-4">
-          <button
+          <Button
             type="submit"
-            className="hoverable bg-dark rounded-lg cursor-pointer px-4 py-2 font-semibold hover:bg-dark/80 transition-colors duration-300 z-[990] group min-w-[80px] text-center"
+            className="text-white hover:opacity-80 border-transparent"
           >
-            <span
-                className=" text-transparent bg-clip-text bg-gradient-to-r from-light-blue via-purple to-pink bg-[length:200%_100%] bg-left group-hover:bg-right transition-[background-position] duration-200 ease-in-out">
-                {buttonText}
-              </span>
-          </button>
-          <button
+            {buttonText}
+          </Button>
+          <Button
             type="button"
-            className="hoverable bg-red-500/40 rounded-lg px-4 py-2 font-semibold transition-colors duration-300 z-[990] group text-white cursor-pointer min-w-[80px] text-center"
-            onClick={() => setActiveForm(false)}
+            onClick={handleCancelClick}
+            danger={true}
+            className="bg-pink text-dark hover:bg-pink/80 border-pink"
           >
-            <span
-                className=" text-transparent bg-clip-text bg-gradient-to-r from-pink via-red-500 to-pink bg-[length:200%_100%] bg-left group-hover:bg-right transition-[background-position] duration-200 ease-in-out">
-                Cancel
-              </span>
-          </button>
+            Cancel
+          </Button>
         </div>
       </form>
+
+      <Modal
+        isOpen={showSubmitModal}
+        onClose={() => setShowSubmitModal(false)}
+        onConfirm={handleSubmit}
+        title={isNewPost ? "Create Post" : "Update Post"}
+        message={isNewPost 
+          ? "Are you sure you want to create this post? It will be submitted for review." 
+          : "Are you sure you want to save the changes to this post? It will be resubmitted for review."}
+        confirmText={isNewPost ? "Create" : "Save"}
+        cancelText="Cancel"
+        danger={false}
+      />
+
+      <Modal
+        isOpen={showCancelModal}
+        onClose={() => setShowCancelModal(false)}
+        onConfirm={() => setActiveForm(false)}
+        title="Cancel Changes"
+        message="Are you sure you want to cancel? All unsaved changes will be lost."
+        confirmText="Yes, Cancel"
+        cancelText="Keep Editing"
+        danger={true}
+      />
 
       {/* Preview (sólo en pantallas grandes) */}
       <div className="hidden md:flex flex-col items-center justify-center gap-4">
