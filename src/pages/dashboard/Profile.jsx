@@ -124,7 +124,8 @@ export default function Profile() {
                     <h3 className="text-xl font-bold text-white mb-4">Account Actions</h3>
                     <Button 
                         onClick={logout}
-                        className="bg-red-600 hover:bg-red-700 text-white border-red-600 hover:border-red-700"
+                        danger={true}
+                        className="bg-pink text-dark hover:bg-pink/50 hover:text-dark"
                     >
                         <FaSignOutAlt />
                         <span>Sign Out</span>

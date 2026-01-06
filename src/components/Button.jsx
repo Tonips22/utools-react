@@ -1,7 +1,8 @@
 export default function Button({ 
   children, 
   onClick, 
-  disabled = false, 
+  disabled = false,
+  danger = false, 
   className = "",
   ...props 
 }) {
@@ -17,7 +18,7 @@ export default function Button({
       {...props}
     >
       {children}
-      <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-200 ease-in-out"></div>
+      <div className={`absolute -inset-[1px] rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-200 ease-in-out ${danger ? "bg-gradient-to-r from-red-500 via-pink-500 to-red-500" : "bg-gradient-to-r from-light-blue via-purple to-pink"}`}></div>
     </button>
   );
 }
