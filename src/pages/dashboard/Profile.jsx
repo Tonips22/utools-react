@@ -1,12 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@auth/AuthProvider.jsx";
-import { FaEnvelope, FaCalendar, FaSignOutAlt } from "react-icons/fa";
+import { FaEnvelope, FaCalendar, FaSignOutAlt, FaFileAlt } from "react-icons/fa";
 import Button from "@components/Button.jsx";
+import { getUserPublishedPostsCount } from "@lib/db.js";
 
 export default function Profile() {
     const navigate = useNavigate();
     const { user, logout } = useAuth();
+    const [publishedPostsCount, setPublishedPostsCount] = useState(0);
+    const [loadingCount, setLoadingCount] = useState(true);
 
     useEffect(() => {
         if (!user) {
@@ -14,6 +17,21 @@ export default function Profile() {
           return;
         }
         document.title = "Profile | Utools";
+        
+        // Cargar el conteo de posts publicados
+        const fetchPublishedCount = async () => {
+            try {
+                setLoadingCount(true);
+                const count = await getUserPublishedPostsCount(user.id);
+                setPublishedPostsCount(count);
+            } catch (error) {
+                console.error("Error al cargar posts publicados:", error);
+            } finally {
+                setLoadingCount(false);
+            }
+        };
+        
+        fetchPublishedCount();
     }, [user, navigate]);
 
     if (!user) return null;
@@ -71,7 +89,17 @@ export default function Profile() {
                 </div>
 
                 {/* Account Stats */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div className="bg-dark border border-white/10 rounded-xl p-6 hover:border-white/30 transition-colors">
+                        <h3 className="text-white/60 text-sm mb-2">Published Posts</h3>
+                        <div className="flex items-center gap-2">
+                            <FaFileAlt className="text-light-blue text-xl" />
+                            <p className="text-white text-2xl font-bold">
+                                {loadingCount ? "..." : publishedPostsCount}
+                            </p>
+                        </div>
+                    </div>
+                    
                     <div className="bg-dark border border-white/10 rounded-xl p-6 hover:border-white/30 transition-colors">
                         <h3 className="text-white/60 text-sm mb-2">Account ID</h3>
                         <p className="text-white font-mono text-xs break-all">{user.id}</p>
