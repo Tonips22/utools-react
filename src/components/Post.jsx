@@ -88,7 +88,7 @@ export default function Post({id, title, link, children, image, categories = ["n
         </a>
 
         {showStatus && (
-            <div className="absolute top-0 right-0 flex flex-row items-center justify-center bg-gray-50/40 backdrop-blur-xl backdrop-saturate-150 rounded-bl-2xl rounded-tr-2xl px-4 py-2 gap-4 cursor-default z-20">
+            <div className="absolute top-0 right-0 flex flex-row items-center justify-center bg-white/20 backdrop-blur-xs backdrop-saturate-150 rounded-bl-2xl rounded-tr-2xl px-4 py-2 gap-4 cursor-default z-20">
                 <Label
                     text={status}
                     color={statusColors[status]}
