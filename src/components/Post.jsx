@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Label from "@components/Label.jsx";
 import { TbDotsVertical } from "react-icons/tb";
-import { CiEdit } from "react-icons/ci";
+import { FaPen } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, addToast} from "@heroui/react";
+import { addToast } from "@heroui/react";
 import { deletePostCascade } from "@lib/db.js";
 import PostForm from "@components/PostForm.jsx";
+import Modal from "@components/Modal.jsx";
 
 export default function Post({id, title, link, children, image, categories = ["non-stablished"], name="", showStatus=false, status="pending", noLink=false, onPostDeleted, onPostUpdated}) {
     const statusColors = {
@@ -13,8 +14,26 @@ export default function Post({id, title, link, children, image, categories = ["n
         "published": "#53FA53cc",
         "rejected": "#F46058CC",
     };
-    const [openModal, setOpenModal] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [activeForm, setActiveForm] = useState(false);
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        if (isDropdownOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isDropdownOpen]);
 
     const handleDelete = async () => {
         try {
@@ -76,109 +95,58 @@ export default function Post({id, title, link, children, image, categories = ["n
                     className="text-xs font-bold"
                 />
 
-                <Dropdown
-                    classNames={{
-                        // wrapper del popover (el que tiene bg-content1)
-                        content: "bg-transparent backdrop-blur-md rounded-xl", 
-                        // puedes ocultar la flechita si quieres
-                        arrow: "hidden",
-                        base: "w-36 bg-transparent border-none outline-none",
-                        trigger: "flex items-center gap-2",
-                    }}
-                    
-                >
-                    <DropdownTrigger>
-                        <button
-                            type="button"
-                            aria-label="post options"
-                            className="p-0 m-0 bg-transparent leading-none cursor-pointer hover:scale-110 active:scale-95 transition-transform"
-                        >
-                            <TbDotsVertical className="text-dark text-xl" />
-                        </button>
-                    </DropdownTrigger>
-                    <DropdownMenu 
-                        aria-label="Static Actions"
-                        classNames={{
-                            base: "bg-dark backdrop-blur-sm rounded-xl p-2",
-                            list: "flex flex-col gap-2",
-                        }}
-                        itemClasses={{
-                            base: "rounded-lg py-1 px-2 text-sm text-white hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out",
-                        }}
-                        variant="light"
+                <div className="relative flex" ref={dropdownRef}>
+                    <button
+                        type="button"
+                        aria-label="post options"
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="hoverable p-0 m-0 bg-transparent leading-none cursor-pointer hover:scale-110 active:scale-95 transition-transform"
                     >
-                        <DropdownItem
-                            key="edit"
-                            textValue="Edit post"
-                            classNames={{ 
-                                base: "group flex flex-row items-center gap-2 bg-dark bg-transparent hover:bg-pink", 
-                                title: "text-sm text-white group-hover:text-dark",
-                            }}
-                        >
+                        <TbDotsVertical className="text-dark text-xl" />
+                    </button>
 
+                    {isDropdownOpen && (
+                        <div className="absolute right-0 top-8 w-40 rounded-xl bg-dark backdrop-blur-md border border-white/10 p-2 shadow-xl">
                             <button
                                 type="button"
-                                aria-label="post options"
-                                className="flex flex-row items-center gap-2 cursor-pointer bg-transparent hover:bg-pink text-white transition-colors duration-200 ease-in-out"
-                                variant="light"
-                                onClick={() => setActiveForm(true)}
+                                onClick={() => {
+                                    setIsDropdownOpen(false);
+                                    setActiveForm(true);
+                                }}
+                                className="hoverable group w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 cursor-pointer"
                             >
-                                <CiEdit className="text-pink text-xl group-hover:text-dark rounded-md transition-colors duration-200 ease-in-out" />
+                                <FaPen className="text-lg" />
                                 Edit post
                             </button>
-                        </DropdownItem>
-                        <DropdownItem
-                            key="delete"
-                            textValue="Delete post"
-                            classNames={{ 
-                                base: "group flex flex-row items-center gap-2 bg-dark bg-transparent hover:bg-red-700 cursor-pointer", 
-                                title: "text-sm text-white",
-                            }}
-                        >
+                            
                             <button
                                 type="button"
-                                aria-label="post options"
-                                className="flex flex-row items-center gap-2 cursor-pointer bg-transparent hover:bg-red-700 text-white transition-colors duration-200 ease-in-out"
-                                variant="light"
-                                onClick={() => setOpenModal(true)}
+                                onClick={() => {
+                                    setIsDropdownOpen(false);
+                                    setShowDeleteModal(true);
+                                }}
+                                className="hoverable group w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-pink bg-transparent hover:bg-pink hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 cursor-pointer"
                             >
-                                <FaTrashAlt className="text-red-700 text-lg group-hover:text-white rounded-md transition-colors duration-200 ease-in-out" />
+                                <FaTrashAlt className="text-lg" />
                                 Delete post
                             </button>
-                        </DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
+                        </div>
+                    )}
+                </div>
             </div>
         )}
         </div>
 
-        {openModal && (
-            <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-[99999]">
-                <div className="bg-dark rounded-xl p-6 w-96 flex flex-col gap-4">
-                    <h2 className="text-2xl font-bold">Delete Post</h2>
-                    <p className="">Are you sure you want to delete <span className="font-bold">{title}</span>?</p>
-                    <div className="flex justify-end gap-2">
-                        <Button
-                            variant="light"
-                            color="default"
-                            onClick={() => setOpenModal(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            variant="flat"
-                            color="danger"
-                                onClick={() => {
-                                    handleDelete();
-                                    setOpenModal(false);
-                            }}
-                        >
-                            Delete
-                        </Button>
-                    </div>
-                </div>
-            </div>
-        )}
+        <Modal
+            isOpen={showDeleteModal}
+            onClose={() => setShowDeleteModal(false)}
+            onConfirm={handleDelete}
+            title="Delete Post"
+            message={`Are you sure you want to delete "${title}"? This action cannot be undone.`}
+            confirmText="Delete"
+            cancelText="Cancel"
+            danger={true}
+        />
 
         {activeForm && (
                 <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[999]">
