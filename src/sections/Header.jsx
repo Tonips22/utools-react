@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import { RiUserFill } from "react-icons/ri";
 import { FaSignOutAlt } from "react-icons/fa";
 import { RxDashboard } from "react-icons/rx";
+import Modal from "@components/Modal.jsx";
 
 export default function Header({ transparent = true, absolute = true }) {
   const { user, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -106,7 +108,10 @@ export default function Header({ transparent = true, absolute = true }) {
                 </Link>
 
                 <button
-                  onClick={logout}
+                  onClick={() => {
+                    setIsDropdownOpen(false);
+                    setShowLogoutModal(true);
+                  }}
                   className="hoverable group w-full flex gap-1 items-center rounded-lg py-2 px-3 text-sm text-pink bg-transparent hover:bg-pink hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 cursor-pointer"
                 >
                   <FaSignOutAlt />
@@ -130,6 +135,17 @@ export default function Header({ transparent = true, absolute = true }) {
           </Link>
         )}
       </nav>
+
+      <Modal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={logout}
+        title="Sign Out"
+        message="Are you sure you want to sign out of your account?"
+        confirmText="Sign Out"
+        cancelText="Cancel"
+        danger={true}
+      />
     </header>
   );
 }

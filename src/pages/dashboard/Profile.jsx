@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@auth/AuthProvider.jsx";
 import { FaEnvelope, FaCalendar, FaSignOutAlt, FaFileAlt } from "react-icons/fa";
 import Button from "@components/Button.jsx";
+import Modal from "@components/Modal.jsx";
 import { getUserPublishedPostsCount } from "@lib/db.js";
 
 export default function Profile() {
@@ -10,6 +11,7 @@ export default function Profile() {
     const { user, logout } = useAuth();
     const [publishedPostsCount, setPublishedPostsCount] = useState(0);
     const [loadingCount, setLoadingCount] = useState(true);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     useEffect(() => {
         if (!user) {
@@ -123,7 +125,7 @@ export default function Profile() {
                 <div className="bg-dark border border-white/10 rounded-xl p-6">
                     <h3 className="text-xl font-bold text-white mb-4">Account Actions</h3>
                     <Button 
-                        onClick={logout}
+                        onClick={() => setShowLogoutModal(true)}
                         danger={true}
                         className="bg-pink text-dark hover:bg-pink/50 hover:text-dark"
                     >
@@ -132,6 +134,17 @@ export default function Profile() {
                     </Button>
                 </div>
             </div>
+
+            <Modal
+                isOpen={showLogoutModal}
+                onClose={() => setShowLogoutModal(false)}
+                onConfirm={logout}
+                title="Sign Out"
+                message="Are you sure you want to sign out of your account?"
+                confirmText="Sign Out"
+                cancelText="Cancel"
+                danger={true}
+            />
         </div>
     );
 }
