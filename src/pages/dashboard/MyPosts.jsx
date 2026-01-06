@@ -6,6 +6,7 @@ import Button from "@components/Button.jsx";
 import Skeleton from "@components/Skeleton.jsx";
 import { getUserPosts } from "@lib/db.js";
 import PostForm from "@components/PostForm.jsx";
+import { FaMagic } from "react-icons/fa";
 
 export default function MyPosts() {
     const navigate = useNavigate();
@@ -74,7 +75,8 @@ export default function MyPosts() {
                     onClick={() => setActiveForm(true)}
                     className="font-semibold text-white"
                 >
-                    <span>New Post +</span>
+                    <FaMagic />
+                    <span>New Post</span>
                 </Button>
             </div>
 
