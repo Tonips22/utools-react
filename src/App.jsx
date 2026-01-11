@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from '@pages/Home.jsx';
-import Init from '@pages/Init.jsx';
+import Search from '@pages/Search.jsx';
 import Dashboard from '@pages/Dashboard.jsx';
 import MyPosts from '@pages/dashboard/MyPosts.jsx';
 import Profile from '@pages/dashboard/Profile.jsx';
@@ -21,7 +21,7 @@ function App() {
           <Analytics />
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/init" element={<Init />} />
+                <Route path="/search" element={<Search />} />
                 <Route path="/dashboard" element={<Dashboard />}>
                     <Route index element={<Navigate to="/dashboard/my-posts" replace />} />
                     <Route path="my-posts" element={<MyPosts />} />
