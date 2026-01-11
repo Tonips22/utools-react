@@ -9,37 +9,37 @@ import { MdAnimation, MdSpeed } from 'react-icons/md';
 
 export default function Init() {
     const categories = [
-        { name: 'Images', icon: <FaImage />, description: 'Herramientas para optimización y gestión de imágenes' },
-        { name: 'Videos', icon: <FaVideo />, description: 'Recursos y servicios para contenido multimedia' },
-        { name: 'Optimization', icon: <MdSpeed />, description: 'Herramientas para la optimización y mejora de recursos' },
-        { name: 'Hosting', icon: <FaServer />, description: 'Servicios de alojamiento y servidores' },
-        { name: 'Design', icon: <FaPencilRuler />, description: 'Herramientas de diseño y prototipado' },
-        { name: 'Deployment', icon: <FaRocket />, description: 'Plataformas y herramientas de despliegue' },
-        { name: 'Components', icon: <FaReact />, description: 'Librerías de componentes UI (React, Vue, etc.)' },
-        { name: 'Colors', icon: <FaPalette />, description: 'Paletas de colores y herramientas de diseño' },
-        { name: 'Typography', icon: <FaFont />, description: 'Fuentes web y herramientas tipográficas' },
-        { name: 'Icons', icon: <FaIcons />, description: 'Colecciones de iconos y recursos gráficos' },
-        { name: 'Mockups', icon: <FaFileAlt />, description: 'Plantillas y mockups para presentaciones' },
-        { name: 'API', icon: <FaCode />, description: 'APIs y servicios para desarrollo' },
-        { name: 'Animations', icon: <MdAnimation />, description: 'Librerías y herramientas de animación' },
-        { name: 'Learning', icon: <FaGraduationCap />, description: 'Recursos educativos y tutoriales' }
+        { name: 'Images', icon: <FaImage />, description: 'Tools for image optimization and management' },
+        { name: 'Videos', icon: <FaVideo />, description: 'Resources and services for multimedia content' },
+        { name: 'Optimization', icon: <MdSpeed />, description: 'Tools for resource optimization and improvement' },
+        { name: 'Hosting', icon: <FaServer />, description: 'Hosting services and servers' },
+        { name: 'Design', icon: <FaPencilRuler />, description: 'Design and prototyping tools' },
+        { name: 'Deployment', icon: <FaRocket />, description: 'Deployment platforms and tools' },
+        { name: 'Components', icon: <FaReact />, description: 'UI component libraries (React, Vue, etc.)' },
+        { name: 'Colors', icon: <FaPalette />, description: 'Color palettes and design tools' },
+        { name: 'Typography', icon: <FaFont />, description: 'Web fonts and typography tools' },
+        { name: 'Icons', icon: <FaIcons />, description: 'Icon collections and graphic resources' },
+        { name: 'Mockups', icon: <FaFileAlt />, description: 'Templates and mockups for presentations' },
+        { name: 'API', icon: <FaCode />, description: 'APIs and development services' },
+        { name: 'Animations', icon: <MdAnimation />, description: 'Animation libraries and tools' },
+        { name: 'Learning', icon: <FaGraduationCap />, description: 'Educational resources and tutorials' }
     ];
 
     const features = [
         {
             icon: <RiSearchLine className="text-4xl" />,
-            title: 'Búsqueda Inteligente',
-            description: 'Encuentra recursos en tiempo real por título, descripción y categorías con filtrado avanzado.'
+            title: 'Smart Search',
+            description: 'Find resources in real-time by title and categories with advanced filtering.'
         },
         {
             icon: <RiDashboardLine className="text-4xl" />,
-            title: 'Dashboard Personal',
-            description: 'Gestiona tus propios recursos con un sistema completo de publicación y moderación.'
+            title: 'Personal Dashboard',
+            description: 'Manage your own resources with a complete publishing and moderation system.'
         },
         {
             icon: <RiUserAddLine className="text-4xl" />,
-            title: 'Autenticación Multi-Plataforma',
-            description: 'Inicia sesión rápidamente con Google, GitHub o Twitch para acceder a todas las funciones.'
+            title: 'Multi-Platform Authentication',
+            description: 'Sign in quickly with Google, GitHub, or Twitch to access all features.'
         }
     ];
 
@@ -51,7 +51,7 @@ export default function Init() {
             <section className="min-h-screen relative flex flex-col items-center justify-center gap-12 px-8 py-20 max-w-5xl mx-auto">
                 <h1 className="text-6xl md:text-3xl lg:text-5xl font-bold cursor-default text-center">
                     <GradientText animated={true}>
-                        Descubre las mejores herramientas, componentes UI, librerías y recursos esenciales para desarrollo web.
+                        Discover the best tools, UI components, libraries, and essential resources for web development.
                     </GradientText>
                 </h1>
 
@@ -60,14 +60,14 @@ export default function Init() {
                     <Link to="/">
                         <Button className="text-lg px-8 py-4 font-semibold text-white min-w-[200px]">
                             <RiSearchLine className="text-xl" />
-                            Explorar Recursos
+                            Explore Resources
                         </Button>
                     </Link>
                     
                     <Link to="/login">
                         <Button className="text-lg px-8 py-4 font-semibold text-white min-w-[200px]">
                             <RiUserAddLine className="text-xl" />
-                            Comenzar Gratis
+                            Get Started Free
                         </Button>
                     </Link>
                 </div>
@@ -78,19 +78,19 @@ export default function Init() {
                         <p className="text-4xl font-bold">
                             <GradientText animated={true}>100+</GradientText>
                         </p>
-                        <p className="text-sm text-white/60">Recursos Disponibles</p>
+                        <p className="text-sm text-white/60">Available Resources</p>
                     </div>
                     <div className="flex flex-col items-center gap-2">
                         <p className="text-4xl font-bold">
                             <GradientText animated={true}>14</GradientText>
                         </p>
-                        <p className="text-sm text-white/60">Categorías</p>
+                        <p className="text-sm text-white/60">Categories</p>
                     </div>
                     <div className="flex flex-col items-center gap-2">
                         <p className="text-4xl font-bold">
                             <GradientText animated={true}>24/7</GradientText>
                         </p>
-                        <p className="text-sm text-white/60">Acceso Continuo</p>
+                        <p className="text-sm text-white/60">Continuous Access</p>
                     </div>
                 </div>
             </section>
@@ -99,7 +99,7 @@ export default function Init() {
                 <section className="py-20 px-8">
                     <div className="max-w-6xl mx-auto">
                         <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
-                            <GradientText animated={true}>Características Principales</GradientText>
+                            <GradientText animated={true}>Key Features</GradientText>
                         </h2>
                         
                         <div className="grid md:grid-cols-3 gap-8">
@@ -133,12 +133,12 @@ export default function Init() {
                 <section className="py-20 px-8">
                     <div className="max-w-6xl mx-auto">
                         <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
-                            <GradientText animated={true}>Categorías Organizadas</GradientText>
+                            <GradientText animated={true}>Organized Categories</GradientText>
                         </h2>
                         
                         <p className="text-center text-white/70 text-lg mb-16 max-w-2xl mx-auto">
-                            Explora recursos cuidadosamente organizados en categorías para encontrar 
-                            exactamente lo que necesitas para tu proyecto.
+                            Explore carefully organized resources in categories to find 
+                            exactly what you need for your project.
                         </p>
                         
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -173,18 +173,18 @@ export default function Init() {
                 <section className="py-20 px-8">
                     <div className="max-w-4xl mx-auto text-center space-y-8">
                         <h2 className="text-4xl md:text-5xl font-bold">
-                            ¿Listo para potenciar tu desarrollo?
+                            Ready to boost your development?
                         </h2>
                         
                         <p className="text-xl text-white/70 max-w-2xl mx-auto">
-                            Únete a la comunidad de desarrolladores que optimizan su flujo de trabajo 
-                            con las mejores herramientas y recursos.
+                            Join the community of developers optimizing their workflow 
+                            with the best tools and resources.
                         </p>
                         
                         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
                             <Link to="/">
                                 <Button className="text-lg px-8 py-4 font-semibold text-white min-w-[200px]">
-                                    Comenzar Ahora
+                                    Get Started Now
                                 </Button>
                             </Link>
                         </div>
