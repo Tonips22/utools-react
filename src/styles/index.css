@@ -34,7 +34,7 @@
     font-size: 16px;
     scroll-behavior: smooth;
     scrollbar-width: thin;
-    scrollbar-color: #FE4BA560 black;
+    scrollbar-color: var(--white) var(--bg);
   }
   body {
     margin: 0 auto;

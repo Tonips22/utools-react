@@ -18,6 +18,7 @@ function Search() {
   const [hasMore, setHasMore] = useState(true);
   const [activeCategories, setactiveCategories] = useState([]);
 
+  // Constantes de paginación y esqueleto
   const PAGINATION = 12;
   const SKELETON_COUNT = 8;
 
