@@ -42,7 +42,7 @@ export default function SearchBar({ searchText = "", setSearchText }: SearchBarP
         <input
         type="text"
         autoFocus
-        className="hoverable text-white bg-transparent rounded-full outline-none w-full px-1"
+        className="text-white bg-transparent rounded-full outline-none w-full px-1"
         defaultValue={searchText}
         onChange={handleInputChange}
         ref={inputRef}
