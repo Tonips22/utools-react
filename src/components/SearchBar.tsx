@@ -1,17 +1,25 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { RxCross2 } from "react-icons/rx";
 
 interface SearchBarProps {
   searchText: string;
+  setSearchText: (text: string) => void;
 }
 
-export default function SearchBar({ searchText: initialSearchText = "" }: SearchBarProps) {
-
+export default function SearchBar({ searchText = "", setSearchText }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [searchText, setSearchText] = useState(initialSearchText);
+  const timeOutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID for debouncing
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
+    const inputText = e.target.value;
+
+    // Debounce the parent state update
+    if (timeOutRef.current) {
+      clearTimeout(timeOutRef.current);
+    }
+    timeOutRef.current = setTimeout(() => {
+      setSearchText(inputText);
+    }, 500);
   };
 
   const handleInputClear = () => {
@@ -35,7 +43,7 @@ export default function SearchBar({ searchText: initialSearchText = "" }: Search
         type="text"
         autoFocus
         className="hoverable text-white bg-transparent rounded-full border-none outline-none w-full px-1"
-        value={searchText}
+        defaultValue={searchText}
         onChange={handleInputChange}
         ref={inputRef}
         placeholder="Type something to find..."
