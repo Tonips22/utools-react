@@ -1,14 +1,16 @@
+import { lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Home from '@pages/Home.jsx';
-import Search from '@pages/Search.jsx';
-import Dashboard from '@pages/Dashboard.jsx';
-import MyPosts from '@pages/dashboard/MyPosts.jsx';
-import Profile from '@pages/dashboard/Profile.jsx';
-import Login from '@pages/Login.jsx';
-import NotFound from '@pages/NotFound.jsx';
-import Cursor from "@components/Cursor.jsx";
-import Privacy from '@pages/terms/Privacy.jsx';
-import Service from '@pages/terms/Service.jsx';
+// import Home from '@pages/Home.jsx';
+const Home = lazy(() => import('@pages/Home.jsx'));
+const Search = lazy(() => import('@pages/Search.jsx'));
+const Login = lazy(() => import('@pages/Login.jsx'));
+const Dashboard = lazy(() => import('@pages/Dashboard.jsx'));
+const MyPosts = lazy(() => import('@pages/dashboard/MyPosts.jsx'));
+const Profile = lazy(() => import('@pages/dashboard/Profile.jsx'));
+const NotFound = lazy(() => import('@pages/NotFound.jsx'));
+const Cursor = lazy(() => import('@components/Cursor.jsx'));
+const Privacy = lazy(() => import('@pages/terms/Privacy.jsx'));
+const Service = lazy(() => import('@pages/terms/Service.jsx'));
 import { ToastProvider } from '@heroui/react';
 import { Analytics } from "@vercel/analytics/react";
 
