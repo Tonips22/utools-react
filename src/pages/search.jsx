@@ -8,19 +8,17 @@ import Footer from "@sections/Footer.jsx";
 import { getAllPublishedPosts, getSearchedPublishedPosts, getFilteredPostsByCategories } from "@lib/db.js";
 import Skeleton from "@components/Skeleton.jsx";
 import SearchBar from "@components/SearchBar.tsx";
-import { FaChevronDown } from "react-icons/fa6";
+import Dropdown from "@components/Dropdown.tsx";
 
 function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState(() => searchParams.get("title") || "");
   const [loading, setLoading] = useState(false);
+  
   // Constantes de paginación y esqueleto
-
   const PAGINATION = 12;
   const SKELETON_COUNT = 8;
-
-  
 
   useEffect(() => {
 
@@ -54,18 +52,89 @@ function Search() {
         <h1 className="font-primary text-7xl font-bold pointer-events-none mb-8">Utools</h1>
         <SearchBar searchText={searchTerm} setSearchText={setSearchTerm} setSearchParams={setSearchParams} />
         <div className="mt-4 flex items-center gap-4 text-white">
-          <span className="hoverable flex flex-row items-center justify-center gap-2 bg-dark px-3 py-1 rounded-full min-w-[120px] text-sm font-medium border border-white/10 hover:border-white/30 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out cursor-pointer ">
-            Categories
-            <FaChevronDown/>
-          </span>
-          <span className="hoverable flex flex-row items-center justify-center gap-2 bg-dark px-3 py-1 rounded-full min-w-[120px] text-sm font-medium border border-white/10 hover:border-white/30 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out cursor-pointer z-1000">
-            Order
-            <FaChevronDown/>
-          </span>
-          <span className="hoverable flex flex-row items-center justify-center gap-2 bg-dark px-3 py-1 rounded-full min-w-[120px] text-sm font-medium border border-white/10 hover:border-white/30 hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out cursor-pointer ">
-            Limit
-            <FaChevronDown/>
-          </span>
+          {/* Categories Dropdown */}
+          <Dropdown label="Categories">
+            <button
+              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+              onClick={() => {
+                // Implementar lógica de filtro
+              }}
+            >
+              All Categories
+            </button>
+            <button
+              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+              onClick={() => {
+                // Implementar lógica de filtro
+              }}
+            >
+              Development
+            </button>
+            <button
+              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+              onClick={() => {
+                // Implementar lógica de filtro
+              }}
+            >
+              Design
+            </button>
+          </Dropdown>
+
+          {/* Order Dropdown */}
+          <Dropdown label="Order">
+            <button
+              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+              onClick={() => {
+                // Implementar lógica de ordenamiento
+              }}
+            >
+              Newest First
+            </button>
+            <button
+              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+              onClick={() => {
+                // Implementar lógica de ordenamiento
+              }}
+            >
+              Oldest First
+            </button>
+            <button
+              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+              onClick={() => {
+                // Implementar lógica de ordenamiento
+              }}
+            >
+              Alphabetical
+            </button>
+          </Dropdown>
+
+          {/* Limit Dropdown */}
+          <Dropdown label="Limit">
+            <button
+              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+              onClick={() => {
+                // Implementar lógica de límite
+              }}
+            >
+              12 items
+            </button>
+            <button
+              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+              onClick={() => {
+                // Implementar lógica de límite
+              }}
+            >
+              24 items
+            </button>
+            <button
+              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+              onClick={() => {
+                // Implementar lógica de límite
+              }}
+            >
+              48 items
+            </button>
+          </Dropdown>
         </div>
       </section>
 
