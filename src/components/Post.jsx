@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import Label from "@components/Label.jsx";
 import { TbDotsVertical } from "react-icons/tb";
 import { FaPen } from "react-icons/fa";
@@ -7,6 +7,7 @@ import { addToast } from "@heroui/react";
 import { deletePostCascade } from "@lib/db.js";
 import PostForm from "@components/PostForm.jsx";
 import Modal from "@components/Modal.jsx";
+import Dropdown from "@components/Dropdown.tsx";
 
 export default function Post({id, title, link, children, image, categories = ["non-stablished"], name="", showStatus=false, status="pending", noLink=false, onPostDeleted, onPostUpdated}) {
     const statusColors = {
@@ -14,26 +15,8 @@ export default function Post({id, title, link, children, image, categories = ["n
         "published": "#53FA53cc",
         "rejected": "#F46058CC",
     };
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [activeForm, setActiveForm] = useState(false);
-    const dropdownRef = useRef(null);
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsDropdownOpen(false);
-            }
-        };
-
-        if (isDropdownOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [isDropdownOpen]);
 
     const handleDelete = async () => {
         try {
@@ -95,44 +78,38 @@ export default function Post({id, title, link, children, image, categories = ["n
                     className="text-xs font-bold"
                 />
 
-                <div className="relative flex" ref={dropdownRef}>
+                <Dropdown
+                    position="right"
+                    width="w-40"
+                    top="top-8"
+                    customButton={
+                        <button
+                            type="button"
+                            aria-label="post options"
+                            className="hoverable p-0 m-0 bg-transparent leading-none cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+                        >
+                            <TbDotsVertical className="text-dark text-xl" />
+                        </button>
+                    }
+                >
                     <button
                         type="button"
-                        aria-label="post options"
-                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        className="hoverable p-0 m-0 bg-transparent leading-none cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+                        onClick={() => setActiveForm(true)}
+                        className="hoverable group w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 cursor-pointer"
                     >
-                        <TbDotsVertical className="text-dark text-xl" />
+                        <FaPen />
+                        Edit post
                     </button>
-
-                    {isDropdownOpen && (
-                        <div className="absolute right-0 top-8 w-40 rounded-xl bg-dark backdrop-blur-md border border-white/10 p-2 shadow-xl">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setIsDropdownOpen(false);
-                                    setActiveForm(true);
-                                }}
-                                className="hoverable group w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 cursor-pointer"
-                            >
-                                <FaPen />
-                                Edit post
-                            </button>
-                            
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setIsDropdownOpen(false);
-                                    setShowDeleteModal(true);
-                                }}
-                                className="hoverable group w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-pink bg-transparent hover:bg-pink hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 cursor-pointer"
-                            >
-                                <FaTrashAlt />
-                                Delete post
-                            </button>
-                        </div>
-                    )}
-                </div>
+                    
+                    <button
+                        type="button"
+                        onClick={() => setShowDeleteModal(true)}
+                        className="hoverable group w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-pink bg-transparent hover:bg-pink hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 cursor-pointer"
+                    >
+                        <FaTrashAlt />
+                        Delete post
+                    </button>
+                </Dropdown>
             </div>
         )}
         </div>
