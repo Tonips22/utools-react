@@ -57,7 +57,7 @@ export default function Dropdown({
         </button>
       )}
       {isOpen && (
-        <div className={`absolute ${positionClass} ${top} ${width} ${flexWrap ? "grid grid-cols-4 gap-2" : ""} rounded-2xl bg-dark backdrop-blur-md border border-white/10 p-2 shadow-xl z-50`}>
+        <div className={`absolute ${positionClass} ${top} ${width} ${flexWrap ? "grid grid-cols-4 gap-2" : "flex flex-col gap-2"} rounded-2xl bg-dark backdrop-blur-md border border-white/10 p-2 shadow-xl z-50`}>
           {children}
         </div>
       )}
