@@ -25,6 +25,11 @@ export default function InputCheck({
     setIsChecked(!isChecked);
   }
 
+  const textColor = (() => {
+    if (color === "var(--white)" && isChecked)  return "var(--dark)";
+    return "var(--white)";
+  })();
+
   const baseClasses = `hoverable text-sm flex items-center justify-center gap-2 backdrop-blur-sm rounded-xl px-4 py-2 border border-dark ${isChecked ? `border-white/30` : ""} hover:border-white/30 hover:scale-105 overflow-hidden active:scale-95 transition-all duration-200 relative disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 cursor-pointer`;
   
   const combinedClasses = `${baseClasses} ${className}`;
@@ -35,6 +40,7 @@ export default function InputCheck({
       className={combinedClasses}
       style={{
         backgroundColor: isChecked ? color : "var(--dark)",
+        color: textColor,
       }}
     >
       <input
