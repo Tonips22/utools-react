@@ -4,6 +4,7 @@ import Header from "@sections/Header.jsx";
 import Post from "@components/Post.jsx";
 // import Loader from "@components/Loader.jsx";
 import Button from "@components/Button.jsx";
+import InputCheck from "@components/InputCheck.tsx";
 import Footer from "@sections/Footer.jsx";
 import { getAllPublishedPosts, getSearchedPublishedPosts } from "@lib/db.js";
 import Skeleton from "@components/Skeleton.jsx";
@@ -20,22 +21,65 @@ function Search() {
   const PAGINATION = 12;
   const SKELETON_COUNT = 8;
 
-  const CATEGORIES = [
-    "Images",
-    "Videos",
-    "Optimization",
-    "Hosting",
-    "Design",
-    "Deployment",
-    "Components",
-    "Colors",
-    "Typography",
-    "Icons",
-    "Mockups",
-    "API",
-    "Animations",
-    "Learning",
-  ]
+  const CATEGORIES = {
+    Images: {
+      label: "Images",
+      color: "#334155cc",
+    },
+    Videos: {
+      label: "Videos",
+      color: "#374151cc",
+    },
+    Optimization: {
+      label: "Optimization",
+      color: "#4D7c0fcc",
+      checked: true,
+    },
+    Hosting: {
+      label: "Hosting",
+      color: "#1E40AFcc",
+    },
+    Design: {
+      label: "Design",
+      color: "#7C3AEDcc",
+    },
+    Deployment: {
+      label: "Deployment",
+      color: "#059669cc",
+    },
+    Components: {
+      label: "Components",
+      color: "#B45309cc",
+    },
+    Colors: {
+      label: "Colors",
+      color: "#D97706cc",
+    },
+    Typography: {
+      label: "Typography",
+      color: "#DC2626cc",
+    },
+    Icons: {
+      label: "Icons",
+      color: "#E11D48cc",
+    },
+    Mockups: {
+      label: "Mockups",
+      color: "#BE185Dcc",
+    },
+    API: {
+      label: "API",
+      color: "#DB2777cc",
+    },
+    Animations: {
+      label: "Animations",
+      color: "#9D174Dcc",
+    },
+    Learning: {
+      label: "Learning",
+      color: "#7E22CEcc",
+    },
+  };
 
   useEffect(() => {
 
@@ -73,75 +117,51 @@ function Search() {
           <Dropdown label="Categories" width="w-[500px]" flexWrap={true}>
 
             {
-              CATEGORIES.map((category, index) => (
-                <Button
+              Object.keys(CATEGORIES).map((categoryKey, index) => (
+                <InputCheck
                   key={index}
-                  className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-                  hoverColor="#ef4444cc"
-                  onClick={() => {
-                    // Implementar lógica de filtro
-                  }}
-                >
-                  {category}
-                </Button>
+                  label={CATEGORIES[categoryKey].label}
+                  color={CATEGORIES[categoryKey].color}
+                  checked={CATEGORIES[categoryKey].checked || false}
+                />
               ))
             }
           </Dropdown>
 
           {/* Order Dropdown */}
           <Dropdown label="Order">
-            <button
-              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-              onClick={() => {
-                // Implementar lógica de ordenamiento
-              }}
-            >
-              Newest First
-            </button>
-            <button
-              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-              onClick={() => {
-                // Implementar lógica de ordenamiento
-              }}
-            >
-              Oldest First
-            </button>
-            <button
-              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-              onClick={() => {
-                // Implementar lógica de ordenamiento
-              }}
-            >
-              Alphabetical
-            </button>
+            <InputCheck
+              label="Newest First"
+              checked={false}
+            />
+            <InputCheck
+              label="Oldest First"
+              checked={false}
+            />
+            <InputCheck
+              label="Alphabetical A-Z"
+              checked={true}
+            />
+            <InputCheck
+              label="Alphabetical Z-A"
+              checked={false}
+            />
           </Dropdown>
 
           {/* Limit Dropdown */}
           <Dropdown label="Limit">
-            <button
-              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-              onClick={() => {
-                // Implementar lógica de límite
-              }}
-            >
-              12 items
-            </button>
-            <button
-              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-              onClick={() => {
-                // Implementar lógica de límite
-              }}
-            >
-              24 items
-            </button>
-            <button
-              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-              onClick={() => {
-                // Implementar lógica de límite
-              }}
-            >
-              48 items
-            </button>
+            <InputCheck
+              label="12 items"
+              checked={true}
+            />
+            <InputCheck
+              label="24 items"
+              checked={false}
+            />
+            <InputCheck
+              label="48 items"
+              checked={false}
+            />
           </Dropdown>
         </div>
       </section>
