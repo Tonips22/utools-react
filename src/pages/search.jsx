@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Header from "@sections/Header.jsx";
 import Post from "@components/Post.jsx";
 // import Loader from "@components/Loader.jsx";
 import Button from "@components/Button.jsx";
 import Footer from "@sections/Footer.jsx";
-import { getAllPublishedPosts, getSearchedPublishedPosts, getFilteredPostsByCategories } from "@lib/db.js";
+import { getAllPublishedPosts, getSearchedPublishedPosts } from "@lib/db.js";
 import Skeleton from "@components/Skeleton.jsx";
 import SearchBar from "@components/SearchBar.tsx";
 import Dropdown from "@components/Dropdown.tsx";
@@ -19,6 +19,23 @@ function Search() {
   // Constantes de paginación y esqueleto
   const PAGINATION = 12;
   const SKELETON_COUNT = 8;
+
+  const CATEGORIES = [
+    "Images",
+    "Videos",
+    "Optimization",
+    "Hosting",
+    "Design",
+    "Deployment",
+    "Components",
+    "Colors",
+    "Typography",
+    "Icons",
+    "Mockups",
+    "API",
+    "Animations",
+    "Learning",
+  ]
 
   useEffect(() => {
 
@@ -53,31 +70,22 @@ function Search() {
         <SearchBar searchText={searchTerm} setSearchText={setSearchTerm} setSearchParams={setSearchParams} />
         <div className="mt-4 flex items-center gap-4 text-white">
           {/* Categories Dropdown */}
-          <Dropdown label="Categories">
-            <button
-              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-              onClick={() => {
-                // Implementar lógica de filtro
-              }}
-            >
-              All Categories
-            </button>
-            <button
-              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-              onClick={() => {
-                // Implementar lógica de filtro
-              }}
-            >
-              Development
-            </button>
-            <button
-              className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-              onClick={() => {
-                // Implementar lógica de filtro
-              }}
-            >
-              Design
-            </button>
+          <Dropdown label="Categories" width="w-[500px]" flexWrap={true}>
+
+            {
+              CATEGORIES.map((category, index) => (
+                <Button
+                  key={index}
+                  className="hoverable w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
+                  hoverColor="#ef4444cc"
+                  onClick={() => {
+                    // Implementar lógica de filtro
+                  }}
+                >
+                  {category}
+                </Button>
+              ))
+            }
           </Dropdown>
 
           {/* Order Dropdown */}
