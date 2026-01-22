@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
+import { FaHome } from "react-icons/fa";
 import { useAuth } from "@auth/AuthProvider.jsx";
+import { CiSearch } from "react-icons/ci";
 
 export default function Sidebar() {
   const { user } = useAuth();
@@ -15,11 +17,28 @@ export default function Sidebar() {
             #00000000
     `,
     }}>
-        <a href="/" className="hoverable hover:scale-105 active:scale-95 transition-scale duration-200 ease-in-out">
-            <img src="/logo.webp" alt="Utools Logo" className="w-12 h-12" />
-        </a>
         
         <nav className="flex flex-col items-center gap-4">
+            <NavLink
+                to="/"
+                className={({ isActive }) => `hoverable flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${ isActive
+                        ? "bg-white text-dark font-semibold rounded-full"
+                        : "text-white hover:bg-white/10"
+                    }`
+                }
+            >
+                <FaHome className="text-lg" />
+            </NavLink>
+            <NavLink
+                to="/search"
+                className={({ isActive }) => `hoverable flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${ isActive
+                        ? "bg-white text-dark font-semibold rounded-full"
+                        : "text-white hover:bg-white/10"
+                    }`
+                }
+            >
+                <CiSearch className="text-lg" />
+            </NavLink>
             <NavLink
                 to="/dashboard/my-posts"
                 className={({ isActive }) => `hoverable flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${ isActive
