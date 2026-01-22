@@ -8,6 +8,7 @@ interface DropdownProps {
   position?: "left" | "right";
   width?: string;
   top?: string;
+  flexWrap?: boolean;
 }
 
 export default function Dropdown({ 
@@ -16,7 +17,8 @@ export default function Dropdown({
   customButton, 
   position = "left", 
   width = "w-48",
-  top = "top-12"
+  top = "top-12",
+  flexWrap = false
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -55,7 +57,7 @@ export default function Dropdown({
         </button>
       )}
       {isOpen && (
-        <div className={`absolute ${positionClass} ${top} ${width} rounded-xl bg-dark backdrop-blur-md border border-white/10 p-2 shadow-xl z-50`}>
+        <div className={`absolute ${positionClass} ${top} ${width} ${flexWrap ? "grid grid-cols-4 gap-2" : ""} rounded-2xl bg-dark backdrop-blur-md border border-white/10 p-2 shadow-xl z-50`}>
           {children}
         </div>
       )}
