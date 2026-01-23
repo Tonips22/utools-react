@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import Header from '@sections/Header.jsx';
 import Footer from '@sections/Footer.jsx';
 import GradientText from '@components/GradientText.jsx';
@@ -42,6 +43,10 @@ export default function Home() {
             description: 'Sign in quickly with Google, GitHub, or Twitch to access all features.'
         }
     ];
+
+    useEffect(() => {
+        document.title = "Home | Utools";
+    }, []);
 
     return (
         <>

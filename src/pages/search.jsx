@@ -81,6 +81,11 @@ function Search() {
     },
   };
 
+  // UseEffect para actualizar el título de la página
+  useEffect(() => {
+      document.title = "Search | Utools";
+  }, []);
+
   useEffect(() => {
 
     const fetchPosts = async () => {
