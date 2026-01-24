@@ -4,10 +4,11 @@ import { RxCross2 } from "react-icons/rx";
 interface SearchBarProps {
   searchText: string;
   setSearchText: (text: string) => void;
-  setSearchParams: (params: any) => void;
+  searchParams: URLSearchParams;
+  setSearchParams: (params: URLSearchParams) => void;
 }
 
-export default function SearchBar({ searchText = "", setSearchText, setSearchParams }: SearchBarProps) {
+export default function SearchBar({ searchText = "", setSearchText, searchParams, setSearchParams }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const timeOutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID for debouncing
 
@@ -19,14 +20,22 @@ export default function SearchBar({ searchText = "", setSearchText, setSearchPar
       clearTimeout(timeOutRef.current);
     }
     timeOutRef.current = setTimeout(() => {
+      const NewParams = new URLSearchParams(searchParams.toString());
+      if (inputText === "") {
+        NewParams.delete("title");
+      }else{
+        NewParams.set("title", inputText);
+      }
+      setSearchParams(NewParams);
       setSearchText(inputText);
-      setSearchParams({ title: inputText });
     }, 500);
   };
 
   const handleInputClear = () => {
     setSearchText("");
-    setSearchParams({title: ""});
+    const NewParams = new URLSearchParams(searchParams.toString());
+    NewParams.delete("title");
+    setSearchParams(NewParams);
     
     if (inputRef.current) {
       inputRef.current.value = "";
