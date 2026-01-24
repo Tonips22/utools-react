@@ -15,10 +15,15 @@ function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState(() => searchParams.get("title") || "");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(() => {
+    const paramLimit = searchParams.get("limit");
+    return paramLimit ? parseInt(paramLimit) : 12;
+  });
+  const [orderBy, setOrderBy] = useState("alphabetical-az");
+  const [limit, setLimit] = useState(() => searchParams.get("limit") || 12);
   
   // Constantes de paginación y esqueleto
-  const PAGINATION = 12;
+  // const PAGINATION = 12;
   const SKELETON_COUNT = 8;
 
   const CATEGORIES = {
@@ -93,9 +98,9 @@ function Search() {
       try {
         let data = [];
         if (searchTerm.trim() === "") {
-          data = await getAllPublishedPosts(1, PAGINATION);
+          data = await getAllPublishedPosts(1, limit);
         } else {
-          data = await getSearchedPublishedPosts(searchTerm, 1, PAGINATION);
+          data = await getSearchedPublishedPosts(searchTerm, 1, limit);
         }
         setPosts(data);
       } catch (error) {
@@ -106,7 +111,15 @@ function Search() {
     };
 
     fetchPosts();
-  }, [searchTerm, searchParams]);
+  }, [searchTerm, limit]);
+
+
+  const handleInputCheckChange = (limit) => {
+    setLimit(limit);
+    searchParams.set("limit", limit);
+    setSearchParams(searchParams);
+  }
+  
 
   return (
     <>
@@ -116,9 +129,9 @@ function Search() {
 
       <section className="min-h-[75vh] flex flex-col items-center justify-center">
         <h1 className="font-primary text-7xl font-bold pointer-events-none mb-8">Utools</h1>
-        <SearchBar searchText={searchTerm} setSearchText={setSearchTerm} setSearchParams={setSearchParams} />
+        <SearchBar searchText={searchTerm} setSearchText={setSearchTerm} searchParams={searchParams} setSearchParams={setSearchParams} />
         <div className="mt-4 flex items-center gap-4 text-white">
-          {/* Categories Dropdown */}
+          {/* Categories Dropdo imwn */}
           <Dropdown label="Categories" width="w-[500px]" flexWrap={true}>
 
             {
@@ -136,36 +149,57 @@ function Search() {
           {/* Order Dropdown */}
           <Dropdown label="Order">
             <InputCheck
+              type="radio"
+              name="order"
               label="Newest First"
-              checked={false}
+              checked={orderBy === "newest"}
+              onChange={() => setOrderBy("newest")}
             />
             <InputCheck
+              type="radio"
+              name="order"
               label="Oldest First"
-              checked={false}
+              checked={orderBy === "oldest"}
+              onChange={() => setOrderBy("oldest")}
             />
             <InputCheck
+              type="radio"
+              name="order"
               label="Alphabetical A-Z"
-              checked={true}
+              checked={orderBy === "alphabetical-az"}
+              onChange={() => setOrderBy("alphabetical-az")}
             />
             <InputCheck
+              type="radio"
+              name="order"
               label="Alphabetical Z-A"
-              checked={false}
+              checked={orderBy === "alphabetical-za"}
+              onChange={() => setOrderBy("alphabetical-za")}
             />
           </Dropdown>
 
           {/* Limit Dropdown */}
           <Dropdown label="Limit">
             <InputCheck
+              type="radio"
+              name="limit"
               label="12 items"
-              checked={true}
+              checked={limit === 12}
+              onChange={() => handleInputCheckChange(12)}
             />
             <InputCheck
+              type="radio"
+              name="limit"
               label="24 items"
-              checked={false}
+              checked={limit === 24}
+              onChange={() => handleInputCheckChange(24)}
             />
             <InputCheck
+              type="radio"
+              name="limit"
               label="48 items"
-              checked={false}
+              checked={limit === 48}
+              onChange={() => handleInputCheckChange(48)}
             />
           </Dropdown>
         </div>
