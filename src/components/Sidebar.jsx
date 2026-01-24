@@ -1,68 +1,63 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
 import { FaHome } from "react-icons/fa";
 import { useAuth } from "@auth/AuthProvider.jsx";
 import { CiSearch } from "react-icons/ci";
+import Button from "@components/Button.jsx";
 
 export default function Sidebar() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
-    <aside className="fixed left-0 top-0 h-screen border-r border-white/10 rounded-tr-xl rounded-br-xl p-6 flex flex-col items-center justify-between" style={{
-        background: `
-            radial-gradient(ellipse 200% 120% at 20% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
-            radial-gradient(ellipse 180% 100% at 10% 50%, rgba(0, 255, 255, 0.12), transparent 60%),
-            radial-gradient(ellipse 170% 90% at 0% 70%, rgba(138, 43, 226, 0.18), transparent 65%),
-            radial-gradient(ellipse 150% 110% at 30% 40%, rgba(255, 215, 0, 0.08), transparent 40%),
-            #00000000
-    `,
-    }}>
+    <aside className="fixed left-0 top-0 h-screen bg-bg border-r border-white/10 rounded-tr-xl rounded-br-xl p-6 flex flex-col items-center justify-between">
         
         <nav className="flex flex-col items-center gap-4">
-            <NavLink
-                to="/"
-                className={({ isActive }) => `hoverable flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${ isActive
-                        ? "bg-white text-dark font-semibold rounded-full"
-                        : "text-white hover:bg-white/10"
-                    }`
-                }
+            <Button
+                onClick={() => navigate("/")}
+                className={`rounded-full p-2 w-14 h-14 ${
+                    location.pathname === "/"
+                        ? "bg-white text-dark"
+                        : "text-white"
+                }`}
             >
                 <FaHome className="text-lg" />
-            </NavLink>
-            <NavLink
-                to="/search"
-                className={({ isActive }) => `hoverable flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${ isActive
-                        ? "bg-white text-dark font-semibold rounded-full"
-                        : "text-white hover:bg-white/10"
-                    }`
-                }
+            </Button>
+            <Button
+                onClick={() => navigate("/search")}
+                className={`rounded-full p-2 w-14 h-14 ${
+                    location.pathname === "/search"
+                        ? "bg-white text-dark"
+                        : "text-white"
+                }`}
             >
-                <CiSearch className="text-lg" />
-            </NavLink>
-            <NavLink
-                to="/dashboard/my-posts"
-                className={({ isActive }) => `hoverable flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 ${ isActive
-                        ? "bg-white text-dark font-semibold rounded-full"
-                        : "text-white hover:bg-white/10"
-                    }`
-                }
+                <CiSearch className="text-lg font-bold" />
+            </Button>
+            <Button
+                onClick={() => navigate("/dashboard/my-posts")}
+                className={`rounded-full p-2 w-14 h-14 ${
+                    location.pathname === "/dashboard/my-posts"
+                        ? "bg-white text-dark"
+                        : "text-white"
+                }`}
             >
                 <RxDashboard className="text-lg" />
-            </NavLink>
+            </Button>
         </nav>
 
         <footer>
             {user && (
             <NavLink
                 to="/dashboard/profile"
-                className={({ isActive }) =>`hoverable relative block transition-transform rounded-full hover:scale-110 active:scale-95 ${isActive ? "ring-2 ring-offset-2 ring-pink/50 ring-offset-bg" : ""
+                className={({ isActive }) =>`hoverable relative block transition-transform rounded-full hover:scale-110 active:scale-95 ${isActive ? "ring-2 ring-offset-2 ring-white/50 ring-offset-bg" : ""
                 }`
                 }
             >
                 <img
                     src={user.user_metadata.avatar_url || "/user-icon.svg"}
                     alt={user.user_metadata.name || "User"}
-                    className="w-10 h-10 rounded-full object-cover border-2 border-white/20"
+                    className="w-14 h-14 rounded-full object-cover border-2 border-white/20"
                 />
             </NavLink>
             )}
