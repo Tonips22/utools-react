@@ -6,6 +6,9 @@ interface InputCheckProps {
   disabled?: boolean;
   color?: string;
   className?: string;
+  type?: 'checkbox' | 'radio';
+  name?: string;
+  onChange?: (checked: boolean) => void;
 }
 
 
@@ -15,14 +18,32 @@ export default function InputCheck({
   disabled = false,
   color = "var(--white)",
   className = "",
+  type = "checkbox",
+  name,
+  onChange,
   ...props 
 }: InputCheckProps) {
-  const [isChecked, setIsChecked] = useState(checked);
+  const [isChecked, setIsChecked] = useState<boolean>(checked);
 
   const labelRef = useRef<HTMLLabelElement>(null);
 
+  useEffect(() => {
+    setIsChecked(checked);
+  }, [checked]);
+
   const handleInputChange = () => {
-    setIsChecked(!isChecked);
+    if (type === 'radio') {
+      // Para radio buttons, siempre se activa (nunca se desactiva)
+      if (!isChecked) {
+        setIsChecked(true);
+        onChange?.(true);
+      }
+    } else {
+      // Para checkboxes, se hace toggle
+      const newValue = !isChecked;
+      setIsChecked(newValue);
+      onChange?.(newValue);
+    }
   }
 
   const textColor = (() => {
@@ -44,7 +65,8 @@ export default function InputCheck({
       }}
     >
       <input
-        type="checkbox"
+        type={type}
+        name={name}
         checked={isChecked}
         disabled={disabled}
         className="hidden"
