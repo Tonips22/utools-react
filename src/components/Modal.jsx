@@ -67,10 +67,6 @@ export default function Modal({
                                 onClose();
                             }}
                             danger={danger}
-                            className={danger 
-                                ? "bg-pink text-dark hover:bg-pink/80 border-pink" 
-                                : "bg-light-blue text-dark hover:bg-light-blue/80 border-light-blue"
-                            }
                         >
                             {confirmText}
                         </Button>
