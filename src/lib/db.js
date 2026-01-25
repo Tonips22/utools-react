@@ -1,14 +1,14 @@
 import { supabase } from '@lib/supabase.js'
 
 // Obtener todos los posts publicados (paginado)
-export async function getAllPublishedPosts(page = 1, limit = 12) {
+export async function getAllPosts(page = 1, limit = 12, orderBy = "alphabetical-az", state = "published") {
   const offset = (page - 1) * limit;
 
   const { data, error } = await supabase
     .from("posts")
     .select("*, post_categories(categories(nombre, color))")
-    .eq("estado", "published")
-    .order("titulo", { ascending: true })
+    .eq("estado", state)
+    .order("titulo", { ascending: orderBy === "alphabetical-az" })
     .range(offset, offset + limit - 1);
 
   if (error) throw error;
@@ -16,36 +16,41 @@ export async function getAllPublishedPosts(page = 1, limit = 12) {
 }
 
 // Obtener posts de un usuario específico
-export const getUserPosts = async (userId) => {
+export const getUserPosts = async (userId, state = "published") => {
   const { data, error } = await supabase
     .from("posts")
     .select(`*, post_categories( categories (nombre, color) )`)
-    .eq("usuario_id", userId);
+    .eq("usuario_id", userId)
+    .eq("estado", state);
 
   if (error) throw error;
   return data;
 }
 
 // Obtener número de posts publicados por un usuario
-export const getUserPublishedPostsCount = async (userId) => {
+export const getUserPostsCount = async (userId, state = "published") => {
   const { count, error } = await supabase
     .from("posts")
     .select("id", { count: "exact", head: true })
     .eq("usuario_id", userId)
-    .eq("estado", "published");
+    .eq("estado", state);
   if (error) throw error;
   return count;
 }
 
-export async function getSearchedPublishedPosts(searchTerm, page = 1, limit = 12) {
+export async function getSearchedPosts(searchTerm, page = 1, limit = 12, orderBy = "alphabetical-az", state = "published") {
   const offset = (page - 1) * limit;
+
+  if (!searchTerm || searchTerm.trim() === "") {
+    return getAllPosts(page, limit, orderBy, state);
+  }
 
   const { data, error } = await supabase
     .from("posts")
     .select("*, post_categories(categories(nombre, color))")
-    .eq("estado", "published")
+    .eq("estado", state)
     .ilike("titulo", `%${searchTerm}%`)
-    .order("titulo", { ascending: true })
+    .order("titulo", { ascending: orderBy === "alphabetical-az" })
     .range(offset, offset + limit - 1);
 
   if (error) throw error;
