@@ -6,7 +6,7 @@ import Post from "@components/Post.jsx";
 import Button from "@components/Button.jsx";
 import InputCheck from "@components/InputCheck.tsx";
 import Footer from "@sections/Footer.jsx";
-import { getAllPublishedPosts, getSearchedPublishedPosts } from "@lib/db.js";
+import { getSearchedPosts } from "@lib/db.js";
 import Skeleton from "@components/Skeleton.jsx";
 import SearchBar from "@components/SearchBar.tsx";
 import Dropdown from "@components/Dropdown.tsx";
@@ -19,7 +19,7 @@ function Search() {
     const paramLimit = searchParams.get("limit");
     return paramLimit ? parseInt(paramLimit) : 12;
   });
-  const [orderBy, setOrderBy] = useState("alphabetical-az");
+  const [orderBy, setOrderBy] = useState(() => searchParams.get("orderBy") || "alphabetical-az");
   const [limit, setLimit] = useState(() => searchParams.get("limit") || 12);
   
   // Constantes de paginación y esqueleto
@@ -97,11 +97,7 @@ function Search() {
       setLoading(true);
       try {
         let data = [];
-        if (searchTerm.trim() === "") {
-          data = await getAllPublishedPosts(1, limit);
-        } else {
-          data = await getSearchedPublishedPosts(searchTerm, 1, limit);
-        }
+        data = await getSearchedPosts(searchTerm, 1, limit, orderBy);
         setPosts(data);
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -111,12 +107,18 @@ function Search() {
     };
 
     fetchPosts();
-  }, [searchTerm, limit]);
+  }, [searchTerm, limit, orderBy]);
 
 
-  const handleInputCheckChange = (limit) => {
+  const handleInputLimitChange = (limit) => {
     setLimit(limit);
     searchParams.set("limit", limit);
+    setSearchParams(searchParams);
+  }
+
+  const handleInputOrderChange = (order) => {
+    setOrderBy(order);
+    searchParams.set("orderBy", order);
     setSearchParams(searchParams);
   }
   
@@ -148,7 +150,7 @@ function Search() {
 
           {/* Order Dropdown */}
           <Dropdown label="Order">
-            <InputCheck
+            {/* <InputCheck
               type="radio"
               name="order"
               label="Newest First"
@@ -161,20 +163,20 @@ function Search() {
               label="Oldest First"
               checked={orderBy === "oldest"}
               onChange={() => setOrderBy("oldest")}
-            />
+            /> */}
             <InputCheck
               type="radio"
               name="order"
               label="Alphabetical A-Z"
               checked={orderBy === "alphabetical-az"}
-              onChange={() => setOrderBy("alphabetical-az")}
+              onChange={() => handleInputOrderChange("alphabetical-az")}
             />
             <InputCheck
               type="radio"
               name="order"
               label="Alphabetical Z-A"
               checked={orderBy === "alphabetical-za"}
-              onChange={() => setOrderBy("alphabetical-za")}
+              onChange={() => handleInputOrderChange("alphabetical-za")}
             />
           </Dropdown>
 
@@ -185,21 +187,21 @@ function Search() {
               name="limit"
               label="12 items"
               checked={limit === 12}
-              onChange={() => handleInputCheckChange(12)}
+              onChange={() => handleInputLimitChange(12)}
             />
             <InputCheck
               type="radio"
               name="limit"
               label="24 items"
               checked={limit === 24}
-              onChange={() => handleInputCheckChange(24)}
+              onChange={() => handleInputLimitChange(24)}
             />
             <InputCheck
               type="radio"
               name="limit"
               label="48 items"
               checked={limit === 48}
-              onChange={() => handleInputCheckChange(48)}
+              onChange={() => handleInputLimitChange(48)}
             />
           </Dropdown>
         </div>
