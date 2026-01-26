@@ -20,7 +20,7 @@ function Search() {
     return paramLimit ? parseInt(paramLimit) : 12;
   });
   const [orderBy, setOrderBy] = useState(() => searchParams.get("orderBy") || "alphabetical-az");
-  const [limit, setLimit] = useState(() => searchParams.get("limit") || 12);
+  const [limit, setLimit] = useState(() => searchParams.get("limit") || 24);
   
   // Constantes de paginación y esqueleto
   // const PAGINATION = 12;
@@ -91,6 +91,7 @@ function Search() {
       document.title = "Search | Utools";
   }, []);
 
+  // UseEffect para cargar los posts según los parámetros de búsqueda
   useEffect(() => {
 
     const fetchPosts = async () => {
@@ -185,13 +186,6 @@ function Search() {
             <InputCheck
               type="radio"
               name="limit"
-              label="12 items"
-              checked={limit === 12}
-              onChange={() => handleInputLimitChange(12)}
-            />
-            <InputCheck
-              type="radio"
-              name="limit"
               label="24 items"
               checked={limit === 24}
               onChange={() => handleInputLimitChange(24)}
@@ -202,6 +196,13 @@ function Search() {
               label="48 items"
               checked={limit === 48}
               onChange={() => handleInputLimitChange(48)}
+            />
+            <InputCheck
+              type="radio"
+              name="limit"
+              label="96 items"
+              checked={limit === 96}
+              onChange={() => handleInputLimitChange(96)}
             />
           </Dropdown>
         </div>
@@ -232,11 +233,17 @@ function Search() {
       </main>
 
       <div className="flex justify-center mt-8">
-          <Button
+          {/* <Button
             className="font-semibold z-[990] min-w-[120px] min-h-[48px] text-white"
+            onClick={() => {
+              const newLimit = parseInt(limit) * 2;
+              setLimit(newLimit);
+              searchParams.set("limit", newLimit);
+              setSearchParams(searchParams);
+            }}
           >
             Load More
-          </Button>
+          </Button> */}
       </div>
 
       <Footer />
