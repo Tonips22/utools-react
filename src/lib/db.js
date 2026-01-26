@@ -38,7 +38,7 @@ export const getUserPostsCount = async (userId, state = "published") => {
   return count;
 }
 
-export async function getSearchedPosts(searchTerm, page = 1, limit = 12, orderBy = "alphabetical-az", state = "published") {
+export async function getSearchedPosts(searchTerm, page = 1, limit = 24, orderBy = "alphabetical-az", state = "published") {
   const offset = (page - 1) * limit;
 
   if (!searchTerm || searchTerm.trim() === "") {
