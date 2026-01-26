@@ -3,88 +3,32 @@ import { useSearchParams } from "react-router-dom";
 import Header from "@sections/Header.jsx";
 import Post from "@components/Post.jsx";
 // import Loader from "@components/Loader.jsx";
-import Button from "@components/Button.jsx";
+// import Button from "@components/Button.jsx";
 import InputCheck from "@components/InputCheck.tsx";
 import Footer from "@sections/Footer.jsx";
-import { getSearchedPosts } from "@lib/db.js";
+import { getSearchedPosts, getAllCategories } from "@lib/db.js";
 import Skeleton from "@components/Skeleton.jsx";
 import SearchBar from "@components/SearchBar.tsx";
 import Dropdown from "@components/Dropdown.tsx";
 
 function Search() {
+  // Parámetros de url
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Post y categorías
   const [posts, setPosts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  // Estados de búsqueda y filtros
   const [searchTerm, setSearchTerm] = useState(() => searchParams.get("title") || "");
-  const [loading, setLoading] = useState(() => {
-    const paramLimit = searchParams.get("limit");
-    return paramLimit ? parseInt(paramLimit) : 12;
-  });
+  const [loading, setLoading] = useState(false);
   const [orderBy, setOrderBy] = useState(() => searchParams.get("orderBy") || "alphabetical-az");
-  const [limit, setLimit] = useState(() => searchParams.get("limit") || 24);
+  const [limit, setLimit] = useState(() => parseInt(searchParams.get("limit")) || 24);
+  const [selectedCategories, setSelectedCategories] = useState(() => searchParams.getAll("categories") || []);
   
   // Constantes de paginación y esqueleto
   // const PAGINATION = 12;
   const SKELETON_COUNT = 8;
-
-  const CATEGORIES = {
-    Images: {
-      label: "Images",
-      color: "#334155cc",
-    },
-    Videos: {
-      label: "Videos",
-      color: "#374151cc",
-    },
-    Optimization: {
-      label: "Optimization",
-      color: "#4D7c0fcc",
-      checked: true,
-    },
-    Hosting: {
-      label: "Hosting",
-      color: "#1E40AFcc",
-    },
-    Design: {
-      label: "Design",
-      color: "#7C3AEDcc",
-    },
-    Deployment: {
-      label: "Deployment",
-      color: "#059669cc",
-    },
-    Components: {
-      label: "Components",
-      color: "#B45309cc",
-    },
-    Colors: {
-      label: "Colors",
-      color: "#D97706cc",
-    },
-    Typography: {
-      label: "Typography",
-      color: "#DC2626cc",
-    },
-    Icons: {
-      label: "Icons",
-      color: "#E11D48cc",
-    },
-    Mockups: {
-      label: "Mockups",
-      color: "#BE185Dcc",
-    },
-    API: {
-      label: "API",
-      color: "#DB2777cc",
-    },
-    Animations: {
-      label: "Animations",
-      color: "#9D174Dcc",
-    },
-    Learning: {
-      label: "Learning",
-      color: "#7E22CEcc",
-    },
-  };
 
   // UseEffect para actualizar el título de la página
   useEffect(() => {
@@ -110,7 +54,26 @@ function Search() {
     fetchPosts();
   }, [searchTerm, limit, orderBy]);
 
+  // useEffect para cargar las categrorías
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try{
+        let data = [];
+        data = await getAllCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    }
 
+    fetchCategories();
+  }, []);
+
+  const isSelectedCategory = (categoryName) => {
+    return selectedCategories.includes(categoryName.toLowerCase());
+  }
+
+  // Handlers para cambios en los inputs de límite y orden
   const handleInputLimitChange = (limit) => {
     if (limit === 24){
       searchParams.delete("limit");
@@ -142,19 +105,20 @@ function Search() {
         <h1 className="font-primary text-7xl font-bold pointer-events-none mb-8">Utools</h1>
         <SearchBar searchText={searchTerm} setSearchText={setSearchTerm} searchParams={searchParams} setSearchParams={setSearchParams} />
         <div className="mt-4 flex items-center gap-4 text-white">
-          {/* Categories Dropdo imwn */}
+          {/* Categories Dropdown */}
           <Dropdown label="Categories" width="w-[500px]" flexWrap={true}>
 
             {
-              Object.keys(CATEGORIES).map((categoryKey, index) => (
+              categories.map((category) => (
                 <InputCheck
-                  key={index}
-                  label={CATEGORIES[categoryKey].label}
-                  color={CATEGORIES[categoryKey].color}
-                  checked={CATEGORIES[categoryKey].checked || false}
+                  key={category.id}
+                  type="checkbox"
+                  name="categories"
+                  label={category.nombre}
+                  color={category.color}
+                  checked={isSelectedCategory(category.nombre)}
                 />
-              ))
-            }
+            ))}
           </Dropdown>
 
           {/* Order Dropdown */}
