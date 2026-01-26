@@ -4,7 +4,7 @@ import { useAuth } from "@auth/AuthProvider.jsx";
 import { FaEnvelope, FaCalendar, FaSignOutAlt, FaFileAlt } from "react-icons/fa";
 import Button from "@components/Button.jsx";
 import Modal from "@components/Modal.jsx";
-import { getUserPublishedPostsCount } from "@lib/db.js";
+import { getUserPostsCount } from "@lib/db.js";
 
 export default function Profile() {
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function Profile() {
         const fetchPublishedCount = async () => {
             try {
                 setLoadingCount(true);
-                const count = await getUserPublishedPostsCount(user.id);
+                const count = await getUserPostsCount(user.id);
                 setPublishedPostsCount(count);
             } catch (error) {
                 console.error("Error al cargar posts publicados:", error);
