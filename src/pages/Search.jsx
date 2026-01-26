@@ -112,14 +112,22 @@ function Search() {
 
 
   const handleInputLimitChange = (limit) => {
+    if (limit === 24){
+      searchParams.delete("limit");
+    }else{
+      searchParams.set("limit", limit);
+    }
     setLimit(limit);
-    searchParams.set("limit", limit);
     setSearchParams(searchParams);
   }
 
   const handleInputOrderChange = (order) => {
+    if (order === "alphabetical-az"){
+      searchParams.delete("orderBy");
+    }else{
+      searchParams.set("orderBy", order);
+    }
     setOrderBy(order);
-    searchParams.set("orderBy", order);
     setSearchParams(searchParams);
   }
   
