@@ -1,32 +1,18 @@
 import { useAuth } from "@auth/AuthProvider.jsx";
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiUserFill } from "react-icons/ri";
 import { FaSignOutAlt } from "react-icons/fa";
 import { RxDashboard } from "react-icons/rx";
 import Modal from "@components/Modal.jsx";
+import Button from "@components/Button.jsx";
+import Dropdown from "@components/Dropdown.tsx";
 
 export default function Header({ absolute = true }) {
   const { user, logout } = useAuth();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    if (isDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isDropdownOpen]);
 
   return (
     <header
@@ -39,7 +25,7 @@ export default function Header({ absolute = true }) {
       </a> */}
 
       <Link to="/" className="hoverable hover:scale-105 transition-transform duration-200 ease-in-out relative active:scale-95 text-white font-bold text-2xl z-10 font-primary">
-        Utools
+        <img src="/utools-logo.png" alt="Utools Logo" className="w-24 h-auto" />
       </Link>
 
 
@@ -59,57 +45,52 @@ export default function Header({ absolute = true }) {
         </a>
 
         {user ? (
-          <div className="relative flex" ref={dropdownRef}>
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="hoverable relative transition-transform duration-200 ease-in-out w-10 h-10 rounded-full hover:scale-105 active:scale-95 cursor-pointer overflow-hidden ring-2 ring-offset-2 ring-offset-bg ring-white/20"
+          <Dropdown
+            position="right"
+            width="w-56"
+            customButton={
+              <button
+                className="hoverable relative transition-transform duration-200 ease-in-out w-10 h-10 rounded-full hover:scale-105 active:scale-95 cursor-pointer overflow-hidden ring-2 ring-offset-2 ring-offset-bg ring-white/20"
+              >
+                <img
+                  src={user.user_metadata.avatar_url || "/user-icon.svg"}
+                  alt="User Avatar"
+                  className="rounded-full object-cover w-full h-full "
+                />
+              </button>
+            }
+          >
+            <div className="rounded-lg py-3 px-3 bg-transparent cursor-default">
+              <p className="text-xs text-white/80">Signed in as</p>
+              <p className="text-sm text-white truncate">{user.user_metadata.name || user.user_metadata.email}</p>
+            </div>
+
+            <hr className="my-2 border-white/10" />
+
+            <Button
+              onClick={() => navigate("/dashboard/my-posts")}
+              className="w-full text-sm rounded-lg"
             >
-              <img
-                src={user.user_metadata.avatar_url || "/user-icon.svg"}
-                alt="User Avatar"
-                className="rounded-full object-cover w-full h-full "
-              />
-            </button>
+              <RxDashboard />
+              My Posts
+            </Button>
+            <Button
+              onClick={() => navigate("/dashboard/profile")}
+              className="w-full text-sm rounded-lg"
+            >
+              <RiUserFill />
+              Profile
+            </Button>
 
-            {isDropdownOpen && (
-              <div className="absolute right-0 top-12 w-56 rounded-xl bg-dark backdrop-blur-md border border-white/10 p-2 shadow-xl">
-                <div className="rounded-lg py-3 px-3 bg-transparent cursor-default">
-                  <p className="text-xs text-white/80">Signed in as</p>
-                  <p className="text-sm text-white truncate">{user.user_metadata.name || user.user_metadata.email}</p>
-                </div>
-
-                <hr className="my-2 border-white/10" />
-
-                <Link
-                  to="/dashboard/my-posts"
-                  className="hoverable group flex items-center gap-1 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-                  onClick={() => setIsDropdownOpen(false)}
-                >
-                  <RxDashboard />
-                  My Posts
-                </Link>
-                <Link
-                  to="/dashboard/profile"
-                  className="hoverable group flex items-center gap-1 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95"
-                  onClick={() => setIsDropdownOpen(false)}
-                >
-                  <RiUserFill />
-                  Profile
-                </Link>
-
-                <button
-                  onClick={() => {
-                    setIsDropdownOpen(false);
-                    setShowLogoutModal(true);
-                  }}
-                  className="hoverable group w-full flex gap-1 items-center rounded-lg py-2 px-3 text-sm text-pink bg-transparent hover:bg-pink hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 cursor-pointer"
-                >
-                  <FaSignOutAlt />
-                  Sign Out
-                </button>
-              </div>
-            )}
-          </div>
+            <Button
+              onClick={() => setShowLogoutModal(true)}
+              className="w-full text-sm rounded-lg"
+              danger={true}
+            >
+              <FaSignOutAlt />
+              Sign Out
+            </Button>
+          </Dropdown>
         ) : (
           <Link
             to="/login"
