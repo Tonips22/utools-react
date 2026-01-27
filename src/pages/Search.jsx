@@ -10,6 +10,7 @@ import { getSearchedPosts, getAllCategories } from "@lib/db.js";
 import Skeleton from "@components/Skeleton.jsx";
 import SearchBar from "@components/SearchBar.tsx";
 import Dropdown from "@components/Dropdown.tsx";
+import { FaFilterCircleXmark } from "react-icons/fa6";
 
 function Search() {
   // Parámetros de url
@@ -106,6 +107,19 @@ function Search() {
     setOrderBy(order);
     setSearchParams(searchParams);
   }
+
+  const areFiltersApplied = () => {
+    return selectedCategories.length > 0 || orderBy !== "alphabetical-az" || limit !== 24;
+  }
+  const onClearFilters = () => {
+    setSelectedCategories([]);
+    setOrderBy("alphabetical-az");
+    setLimit(24);
+    searchParams.delete("orderBy");
+    searchParams.delete("limit");
+    searchParams.delete("category");
+    setSearchParams(searchParams);
+  }
   
 
   return (
@@ -117,7 +131,7 @@ function Search() {
       <section className="min-h-[75vh] flex flex-col items-center justify-center">
         <h1 className="font-primary text-7xl font-bold pointer-events-none mb-8">Utools</h1>
         <SearchBar searchText={searchTerm} setSearchText={setSearchTerm} searchParams={searchParams} setSearchParams={setSearchParams} />
-        <div className="mt-4 flex items-center gap-4 text-white">
+        <div className="relative mt-4 flex items-center gap-4 text-white">
           {/* Categories Dropdown */}
           <Dropdown label="Categories" width="w-[500px]" flexWrap={true}>
 
@@ -184,6 +198,16 @@ function Search() {
               onChange={() => handleInputLimitChange(-1)}
             />
           </Dropdown>
+          
+          
+          <button
+            className={`hoverable ${areFiltersApplied() ? 'opacity-100 bg-white text-dark' : 'opacity-50 pointer-events-none bg-dark text-white'} flex p-2 rounded-full hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out cursor-pointer`}
+            onClick={onClearFilters}
+            disabled={!areFiltersApplied()}
+            title="Clear filters"
+          >
+            <FaFilterCircleXmark className="text-lg" />
+          </button>
         </div>
       </section>
 
