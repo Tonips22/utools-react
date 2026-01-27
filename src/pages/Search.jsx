@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import Header from "@sections/Header.jsx";
 import Post from "@components/Post.jsx";
 // import Loader from "@components/Loader.jsx";
-// import Button from "@components/Button.jsx";
+import Button from "@components/Button.jsx";
 import InputCheck from "@components/InputCheck.tsx";
 import Footer from "@sections/Footer.jsx";
 import { getSearchedPosts, getAllCategories } from "@lib/db.js";
@@ -137,20 +137,6 @@ function Search() {
 
           {/* Order Dropdown */}
           <Dropdown label="Order">
-            {/* <InputCheck
-              type="radio"
-              name="order"
-              label="Newest First"
-              checked={orderBy === "newest"}
-              onChange={() => setOrderBy("newest")}
-            />
-            <InputCheck
-              type="radio"
-              name="order"
-              label="Oldest First"
-              checked={orderBy === "oldest"}
-              onChange={() => setOrderBy("oldest")}
-            /> */}
             <InputCheck
               type="radio"
               name="order"
@@ -190,6 +176,13 @@ function Search() {
               checked={limit === 96}
               onChange={() => handleInputLimitChange(96)}
             />
+            <InputCheck
+              type="radio"
+              name="limit"
+              label="All items"
+              checked={limit === -1}
+              onChange={() => handleInputLimitChange(-1)}
+            />
           </Dropdown>
         </div>
       </section>
@@ -219,17 +212,21 @@ function Search() {
       </main>
 
       <div className="flex justify-center mt-8">
-          {/* <Button
-            className="font-semibold z-[990] min-w-[120px] min-h-[48px] text-white"
-            onClick={() => {
-              const newLimit = parseInt(limit) * 2;
-              setLimit(newLimit);
-              searchParams.set("limit", newLimit);
-              setSearchParams(searchParams);
-            }}
+          <Button
+            className={`${limit === -1 || posts.length < limit ? "hidden" : ""} font-semibold z-[990] min-w-[120px] min-h-[48px] text-white`}
+            onClick={() => {{
+              if (limit === 96){
+                handleInputLimitChange(-1);
+              }else {
+                handleInputLimitChange(limit * 2);
+              }
+            }}}
           >
-            Load More
-          </Button> */}
+            {
+              loading ? "Loading..." :
+              limit === 96 && !loading ? "Load all" : "Load more"
+            }
+          </Button>
       </div>
 
       <Footer />

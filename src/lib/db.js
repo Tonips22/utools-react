@@ -39,6 +39,9 @@ export const getUserPostsCount = async (userId, state = "published") => {
 }
 
 export async function getSearchedPosts(searchTerm, page = 1, limit = 24, orderBy = "alphabetical-az", state = "published", categories = []) {
+  if (limit === -1) {
+    limit = 1000000; // un número grande para traer todos los ítems
+  }
   const offset = (page - 1) * limit;
 
   // Construir query base
