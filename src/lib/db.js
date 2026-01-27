@@ -38,21 +38,42 @@ export const getUserPostsCount = async (userId, state = "published") => {
   return count;
 }
 
-export async function getSearchedPosts(searchTerm, page = 1, limit = 24, orderBy = "alphabetical-az", state = "published") {
+export async function getSearchedPosts(searchTerm, page = 1, limit = 24, orderBy = "alphabetical-az", state = "published", categories = []) {
   const offset = (page - 1) * limit;
 
-  if (!searchTerm || searchTerm.trim() === "") {
-    return getAllPosts(page, limit, orderBy, state);
-  }
-
-  const { data, error } = await supabase
+  // Construir query base
+  let query = supabase
     .from("posts")
     .select("*, post_categories(categories(nombre, color))")
-    .eq("estado", state)
-    .ilike("titulo", `%${searchTerm}%`)
-    .order("titulo", { ascending: orderBy === "alphabetical-az" })
-    .range(offset, offset + limit - 1);
+    .eq("estado", state);
 
+  // Filtrar por título si hay searchTerm
+  if (searchTerm && searchTerm.trim() !== "") {
+    query = query.ilike("titulo", `%${searchTerm}%`);
+  }
+
+  // Ordenar
+  query = query.order("titulo", { ascending: orderBy === "alphabetical-az" });
+
+  // Si hay categorías, necesitamos traer todos y filtrar en cliente (AND)
+  if (categories.length > 0) {
+    const { data, error } = await query;
+    if (error) throw error;
+
+    // Filtrar: el post debe tener TODAS las categorías (AND)
+    const filtered = data.filter(post =>
+      categories.every(catName =>
+        post.post_categories.some(rel =>
+          rel.categories?.nombre.toLowerCase() === catName.toLowerCase()
+        )
+      )
+    );
+
+    return filtered.slice(offset, offset + limit);
+  }
+
+  // Sin categorías, aplicar paginación directa
+  const { data, error } = await query.range(offset, offset + limit - 1);
   if (error) throw error;
   return data;
 }
@@ -137,42 +158,6 @@ export const getAllCategories = async () => {
   if (error) throw error;
   return data;
 }
-
-/**
- * Filtra por todas las categorías indicadas (AND). 
- * Devuelve página `page` con tamaño `limit`.
- * Opcional: searchTerm (se filtra por titulo en cliente si se pasa).
- */
-export const getFilteredPostsByCategories = async (categories = [], page = 1, limit = 12, searchTerm = "") => {
-  if (!Array.isArray(categories) || categories.length === 0) return [];
-
-  // Traemos todos los posts publicados con sus relaciones (sin .range para no truncar antes del filtrado)
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*, post_categories(categories(nombre, color))')
-    .eq('estado', 'published')
-    .order('titulo', { ascending: true });
-
-  if (error) throw error;
-
-  // Filtrar: el post debe tener TODAS las categorías seleccionadas (AND)
-  const filteredData = data.filter(post =>
-    categories.every(categoryName =>
-      post.post_categories.some(rel =>
-        rel.categories && rel.categories.nombre === categoryName
-      )
-    )
-  );
-
-  // Si nos pasan searchTerm, filtramos por título también (cliente)
-  const finalFiltered = searchTerm
-    ? filteredData.filter(p => p.titulo && p.titulo.toLowerCase().includes(searchTerm.toLowerCase()))
-    : filteredData;
-
-  // Aplicar paginación después del filtrado
-  const offset = (page - 1) * limit;
-  return finalFiltered.slice(offset, offset + limit);
-};
 
 export const createNewPost = async (
   title, description, link, imageUrl, userId, estado = "pending"

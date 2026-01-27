@@ -24,7 +24,7 @@ function Search() {
   const [loading, setLoading] = useState(false);
   const [orderBy, setOrderBy] = useState(() => searchParams.get("orderBy") || "alphabetical-az");
   const [limit, setLimit] = useState(() => parseInt(searchParams.get("limit")) || 24);
-  const [selectedCategories, setSelectedCategories] = useState(() => searchParams.getAll("categories") || []);
+  const [selectedCategories, setSelectedCategories] = useState(() => searchParams.getAll("category") || []);
   
   // Constantes de paginación y esqueleto
   // const PAGINATION = 12;
@@ -42,7 +42,7 @@ function Search() {
       setLoading(true);
       try {
         let data = [];
-        data = await getSearchedPosts(searchTerm, 1, limit, orderBy);
+        data = await getSearchedPosts(searchTerm, 1, limit, orderBy, "published", selectedCategories);
         setPosts(data);
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -52,7 +52,7 @@ function Search() {
     };
 
     fetchPosts();
-  }, [searchTerm, limit, orderBy]);
+  }, [searchTerm, limit, orderBy, selectedCategories]);
 
   // useEffect para cargar las categrorías
   useEffect(() => {
@@ -71,6 +71,19 @@ function Search() {
 
   const isSelectedCategory = (categoryName) => {
     return selectedCategories.includes(categoryName.toLowerCase());
+  }
+
+  const handleCategoryChange = (categoryName) => {
+    const newSelectedCategories = isSelectedCategory(categoryName)
+      ? selectedCategories.filter(cat => cat !== categoryName.toLowerCase())
+      : [...selectedCategories, categoryName.toLowerCase()];
+    setSelectedCategories(newSelectedCategories);
+
+    // Actualizar los search params
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.delete("category");
+    newSelectedCategories.forEach(cat => newSearchParams.append("category", cat));
+    setSearchParams(newSearchParams);
   }
 
   // Handlers para cambios en los inputs de límite y orden
@@ -117,6 +130,7 @@ function Search() {
                   label={category.nombre}
                   color={category.color}
                   checked={isSelectedCategory(category.nombre)}
+                  onChange={() => handleCategoryChange(category.nombre)}
                 />
             ))}
           </Dropdown>
