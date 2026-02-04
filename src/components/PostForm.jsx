@@ -354,7 +354,7 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
           : "Are you sure you want to save the changes to this post? It will be resubmitted for review."}
         confirmText={isNewPost ? "Create" : "Save"}
         cancelText="Cancel"
-        danger={false}
+        danger={true}
       />
 
       <Modal
