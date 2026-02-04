@@ -58,6 +58,7 @@ export default function Modal({
                         <Button
                             onClick={onClose}
                             className="bg-white/10 text-white border-white/10"
+                            danger={danger}
                         >
                             {cancelText}
                         </Button>
@@ -66,7 +67,6 @@ export default function Modal({
                                 onConfirm();
                                 onClose();
                             }}
-                            danger={danger}
                         >
                             {confirmText}
                         </Button>
