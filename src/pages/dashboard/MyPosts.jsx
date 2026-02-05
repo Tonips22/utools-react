@@ -7,6 +7,7 @@ import Skeleton from "@components/Skeleton.jsx";
 import { getUserPosts } from "@lib/db.js";
 import PostForm from "@components/PostForm.jsx";
 import { FaMagic } from "react-icons/fa";
+import ScrollToButton from "@components/ScrollToButton";
 
 export default function MyPosts() {
     const navigate = useNavigate();
@@ -69,6 +70,7 @@ export default function MyPosts() {
 
     return (
         <div className="flex-1 p-8">
+            <ScrollToButton />
             <div className="mb-8 flex justify-between items-center">
                 <h1 className="font-primary text-5xl">My Posts</h1>
                 <Button

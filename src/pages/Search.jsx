@@ -11,6 +11,7 @@ import Skeleton from "@components/Skeleton.jsx";
 import SearchBar from "@components/SearchBar.tsx";
 import Dropdown from "@components/Dropdown.tsx";
 import { FaFilterCircleXmark } from "react-icons/fa6";
+import ScrollToButton from "@components/ScrollToButton.tsx";
 
 function Search() {
   // Parámetros de url
@@ -125,6 +126,8 @@ function Search() {
   return (
     <>
       <Header/>
+
+      <ScrollToButton />
 
       {/* Crear formulario de búsqueda, con funcion onSubmit que se ejecute cada vez que se cambie el valor del searchTerm o en su defecto al cambiar algún filtro */}
 
