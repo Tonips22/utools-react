@@ -45,7 +45,7 @@ export default function Home() {
     ];
 
     useEffect(() => {
-        document.title = "Home | Utools";
+        document.title = "Utools - Curated Developer Tools & Resources Platform";
     }, []);
 
     return (
