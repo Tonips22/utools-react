@@ -24,7 +24,7 @@ export default function Profile() {
         const fetchPublishedCount = async () => {
             try {
                 setLoadingCount(true);
-                const count = await getUserPostsCount(user.id);
+                const count = await getUserPostsCount(user.id, "published");
                 setPublishedPostsCount(count);
             } catch (error) {
                 console.error("Error al cargar posts publicados:", error);

@@ -16,29 +16,39 @@ export async function getAllPosts(page = 1, limit = 12, orderBy = "alphabetical-
 }
 
 // Obtener posts de un usuario específico
-export const getUserPosts = async (userId, state = "published") => {
-  const { data, error } = await supabase
+export const getUserPosts = async (userId, state = "all") => {
+  let query = supabase
     .from("posts")
     .select(`*, post_categories( categories (nombre, color) )`)
-    .eq("usuario_id", userId)
-    .eq("estado", state);
+    .eq("usuario_id", userId);
 
+  // Si se especifica estado, traer todos los posts del usuario con filtro por estado
+  if (state && state !== "all") {
+    query = query.eq("estado", state);
+  }
+
+  const { data, error } = await query;
   if (error) throw error;
   return data;
 }
 
 // Obtener número de posts publicados por un usuario
-export const getUserPostsCount = async (userId, state = "published") => {
-  const { count, error } = await supabase
+export const getUserPostsCount = async (userId, state = "all") => {
+  let query = supabase
     .from("posts")
     .select("id", { count: "exact", head: true })
-    .eq("usuario_id", userId)
-    .eq("estado", state);
+    .eq("usuario_id", userId);
+
+  if (state && state !== "all") {
+    query = query.eq("estado", state);
+  }
+
+  const { count, error } = await query;
   if (error) throw error;
   return count;
 }
 
-export async function getSearchedPosts(searchTerm, page = 1, limit = 24, orderBy = "alphabetical-az", state = "published", categories = []) {
+export async function getSearchedPosts(searchTerm, page = 1, limit = 24, orderBy = "alphabetical-az", state, categories = []) {
   if (limit === -1) {
     limit = 1000000; // un número grande para traer todos los ítems
   }
@@ -48,7 +58,11 @@ export async function getSearchedPosts(searchTerm, page = 1, limit = 24, orderBy
   let query = supabase
     .from("posts")
     .select("*, post_categories(categories(nombre, color))")
-    .eq("estado", state);
+    // .eq("estado", state);
+
+    if (state) {
+      query = query.eq("estado", state);
+    }
 
   // Filtrar por título si hay searchTerm
   if (searchTerm && searchTerm.trim() !== "") {

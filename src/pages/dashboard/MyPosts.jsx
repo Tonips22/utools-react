@@ -49,7 +49,7 @@ export default function MyPosts() {
       
         setLoading(true);
         try {
-          const data = await getUserPosts(user.id);
+          const data = await getUserPosts(user.id, "all");
           setPosts(data);
         } catch (error) {
           console.error("Error fetching posts:", error);
@@ -61,7 +61,7 @@ export default function MyPosts() {
       const refreshPosts = async () => {
         if (!user) return;
         try {
-          const data = await getUserPosts(user.id);
+          const data = await getUserPosts(user.id, "all");
           setPosts(data);
         } catch (error) {
           console.error("Error refreshing posts:", error);
