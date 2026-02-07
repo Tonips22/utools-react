@@ -141,8 +141,7 @@ export default function Profile() {
                     <h3 className="text-xl font-bold text-white mb-4">Account Actions</h3>
                     <Button 
                         onClick={() => setShowLogoutModal(true)}
-                        danger={true}
-                        className="bg-pink text-dark hover:bg-pink/50 hover:text-dark"
+                        type="danger"
                     >
                         <FaSignOutAlt />
                         <span>Sign Out</span>

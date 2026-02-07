@@ -86,7 +86,7 @@ export default function Header({ absolute = true }) {
             <Button
               onClick={() => setShowLogoutModal(true)}
               className="w-full text-sm rounded-lg"
-              danger={true}
+              type="danger"
             >
               <FaSignOutAlt />
               Sign Out

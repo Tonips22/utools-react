@@ -328,18 +328,16 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
         {/* Buttons */}
         <div className="flex gap-4">
           <Button
-            type="submit"
-            className="text-white hover:opacity-80 border-transparent"
-          >
-            {buttonText}
-          </Button>
-          <Button
-            type="button"
             onClick={handleCancelClick}
-            danger={true}
-            className="bg-pink text-dark hover:bg-pink/80 border-pink"
+            type="danger"
+            className="min-w-[100px]"
           >
             Cancel
+          </Button>
+          <Button
+            className="min-w-[100px]"
+          >
+            {buttonText}
           </Button>
         </div>
       </form>
@@ -354,7 +352,6 @@ export default function PostForm({ isNewPost = true, setActiveForm, postId = nul
           : "Are you sure you want to save the changes to this post? It will be resubmitted for review."}
         confirmText={isNewPost ? "Create" : "Save"}
         cancelText="Cancel"
-        danger={true}
       />
 
       <Modal

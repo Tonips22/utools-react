@@ -1,8 +1,13 @@
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  type?: "submit" | "danger" | "cancel"; // Submit --> Degradado, Danger --> Rojo, Cancel --> Gris
+
+}
+
 export default function Button({ 
   children, 
   onClick, 
   disabled = false,
-  danger = false, 
+  type = "submit",
   className = "",
   ...props 
 }) {
@@ -18,7 +23,12 @@ export default function Button({
       {...props}
     >
       {children}
-      <div className={`absolute -inset-[1px] rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-200 ease-in-out ${danger ? "bg-gradient-to-r from-red-500 via-pink-500 to-red-500" : "bg-gradient-to-r from-light-blue via-purple to-pink"}`}></div>
+      <div
+        className={`absolute -inset-[1px] rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-200 ease-in-out
+          ${type === "danger" ? "bg-gradient-to-r from-red-500 via-pink-500 to-red-500" : ""}
+          ${type === "submit" ? "bg-gradient-to-r from-light-blue via-purple to-pink" : ""}
+          ${type === "cancel" ? "bg-gradient-to-r from-gray-500 to-gray-700" : ""}
+        `}></div>
     </button>
   );
 }

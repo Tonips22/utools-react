@@ -8,6 +8,7 @@ import { deletePostCascade } from "@lib/db.js";
 import PostForm from "@components/PostForm.jsx";
 import Modal from "@components/Modal.jsx";
 import Dropdown from "@components/Dropdown.tsx";
+import Button from "@components/Button.jsx";
 
 export default function Post({id, title, link, children, image, categories = ["non-stablished"], name="", showStatus=false, status="pending", noLink=false, onPostDeleted, onPostUpdated}) {
     const statusColors = {
@@ -92,23 +93,23 @@ export default function Post({id, title, link, children, image, categories = ["n
                         </button>
                     }
                 >
-                    <button
-                        type="button"
+                    <Button
                         onClick={() => setActiveForm(true)}
-                        className="hoverable group w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-white bg-transparent hover:bg-white hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 cursor-pointer"
+                        className="w-full text-sm rounded-lg"
+                        type="submit"
                     >
                         <FaPen />
                         Edit post
-                    </button>
+                    </Button>
                     
-                    <button
-                        type="button"
+                    <Button
                         onClick={() => setShowDeleteModal(true)}
-                        className="hoverable group w-full flex items-center gap-2 rounded-lg py-2 px-3 text-sm text-pink bg-transparent hover:bg-pink hover:text-dark transition-all duration-200 ease-in-out hover:scale-105 active:scale-95 cursor-pointer"
+                        className="w-full text-sm rounded-lg"
+                        type="danger"
                     >
                         <FaTrashAlt />
                         Delete post
-                    </button>
+                    </Button>
                 </Dropdown>
             </div>
         )}

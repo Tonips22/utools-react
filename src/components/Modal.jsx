@@ -57,8 +57,8 @@ export default function Modal({
                     <div className="flex gap-2 justify-end">
                         <Button
                             onClick={onClose}
-                            className="bg-white/10 text-white border-white/10"
-                            danger={danger}
+                            className="min-w-[100px]"
+                            type="cancel"
                         >
                             {cancelText}
                         </Button>
@@ -67,6 +67,8 @@ export default function Modal({
                                 onConfirm();
                                 onClose();
                             }}
+                            type={danger ? "danger" : "submit"}
+                            className="min-w-[100px]"
                         >
                             {confirmText}
                         </Button>
