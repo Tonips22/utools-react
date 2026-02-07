@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@auth/AuthProvider.jsx";
+import { useAuthStore } from "@store/authStore.ts";
 import Post from "@components/Post.jsx";
 import Button from "@components/Button.jsx";
 import Skeleton from "@components/Skeleton.jsx";
@@ -11,7 +11,7 @@ import ScrollToButton from "@components/ScrollToButton";
 
 export default function MyPosts() {
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const user = useAuthStore((state) => state.user);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeForm, setActiveForm] = useState(false);

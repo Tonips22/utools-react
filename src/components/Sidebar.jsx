@@ -1,12 +1,12 @@
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
 import { FaHome } from "react-icons/fa";
-import { useAuth } from "@auth/AuthProvider.jsx";
+import { useAuthStore } from "@store/authStore.ts";
 import { RiSearchLine} from 'react-icons/ri';
 import Button from "@components/Button.jsx";
 
 export default function Sidebar() {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const location = useLocation();
 

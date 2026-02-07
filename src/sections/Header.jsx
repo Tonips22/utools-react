@@ -1,5 +1,5 @@
-import { useAuth } from "@auth/AuthProvider.jsx";
-import { useState, useEffect, useRef } from "react";
+import { useAuthStore } from "@store/authStore.ts";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RiUserFill } from "react-icons/ri";
 import { FaSignOutAlt } from "react-icons/fa";
@@ -9,7 +9,8 @@ import Button from "@components/Button.jsx";
 import Dropdown from "@components/Dropdown.tsx";
 
 export default function Header({ absolute = true }) {
-  const { user, logout } = useAuth();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 

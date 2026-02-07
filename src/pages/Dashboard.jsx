@@ -1,18 +1,19 @@
 import { useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
-import { useAuth } from "@auth/AuthProvider.jsx";
+import { useAuthStore } from "@store/authStore.ts";
 import Sidebar from "@components/Sidebar.jsx";
 import Footer from "@sections/Footer.jsx";
 
 export default function Dashboard() {
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const user = useAuthStore((state) => state.user);
+    const loading = useAuthStore((state) => state.loading);
 
     useEffect(() => {
-        if (!user) {
+        if (!loading && !user) {
           navigate("/login");
         }
-    }, [user, navigate]);
+    }, [user, loading, navigate]);
 
     if (!user) return null;
 

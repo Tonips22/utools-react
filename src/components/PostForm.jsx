@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { addToast } from "@heroui/react";
 import { getAllCategories, userCreatePost, getPostById, updatePost, updatePostCategories, deleteImage } from "@lib/db.js";
-import { useAuth } from "@auth/AuthProvider.jsx";
+import { useAuthStore } from "@store/authStore.ts";
 import Label from "@components/Label.jsx";
 import Button from "@components/Button.jsx";
 import Modal from "@components/Modal.jsx";
@@ -9,7 +9,7 @@ import { supabase } from '@lib/supabase.js'
 import Post from "@components/Post.jsx";
 
 export default function PostForm({ isNewPost = true, setActiveForm, postId = null, onPostCreated, onPostUpdated }) {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   const titleText = isNewPost ? "New Post" : "Edit Post";
   const buttonText = isNewPost ? "Create" : "Save";
 

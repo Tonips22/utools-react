@@ -1,23 +1,29 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@auth/AuthProvider.jsx";
+import { useAuthStore } from "@store/authStore.ts";
 import { FaEnvelope, FaCalendar, FaSignOutAlt, FaFileAlt } from "react-icons/fa";
 import Button from "@components/Button.jsx";
 import Modal from "@components/Modal.jsx";
 import { getUserPostsCount } from "@lib/db.js";
 
 export default function Profile() {
+    const user = useAuthStore((state) => state.user);
+    const loading = useAuthStore((state) => state.loading);
+    const logout = useAuthStore((state) => state.logout);
     const navigate = useNavigate();
-    const { user, logout } = useAuth();
     const [publishedPostsCount, setPublishedPostsCount] = useState(0);
     const [loadingCount, setLoadingCount] = useState(true);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     useEffect(() => {
-        if (!user) {
+        // Solo redirigir si ya terminó de cargar y no hay usuario
+        if (!loading && !user) {
           navigate("/login");
           return;
         }
+        
+        if (!user) return; // Esperar a que cargue el usuario
+        
         document.title = "Profile | Utools";
         
         // Cargar el conteo de posts publicados
@@ -34,7 +40,16 @@ export default function Profile() {
         };
         
         fetchPublishedCount();
-    }, [user, navigate]);
+    }, [user, loading, navigate]);
+
+    // Mostrar loading mientras carga
+    if (loading) {
+        return (
+            <div className="flex-1 flex items-center justify-center">
+                <p className="text-white/50">Loading...</p>
+            </div>
+        );
+    }
 
     if (!user) return null;
 

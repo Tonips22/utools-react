@@ -1,4 +1,4 @@
-import { useAuth } from "@auth/AuthProvider.jsx";
+import { useAuthStore } from "@store/authStore.ts";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AnimatedBg from "@components/AnimatedBg.jsx";
@@ -7,7 +7,8 @@ import Button from "@components/Button.jsx";
 import { FaGoogle, FaGithub, FaTwitch } from "react-icons/fa";
 
 export default function Login() {
-    const { user, loginWithProvider } = useAuth();
+    const user = useAuthStore((state) => state.user);
+    const loginWithProvider = useAuthStore((state) => state.loginWithProvider);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const title = "Login | Utools";
