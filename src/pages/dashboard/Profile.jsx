@@ -53,7 +53,7 @@ export default function Profile() {
 
     if (!user) return null;
 
-    const { user_metadata } = user;
+    const { user_metadata, app_metadata } = user;
     const joinDate = new Date(user.created_at).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
@@ -98,9 +98,16 @@ export default function Profile() {
                     <div className="pt-6 border-t border-white/10">
                         <p className="text-sm text-white/50 mb-2">Connected with</p>
                         <div className="flex items-center gap-2">
-                            <span className="px-3 py-1 bg-white/10 rounded-full text-sm text-white capitalize">
-                                {user.app_metadata.provider}
-                            </span>
+                            {
+                                app_metadata.providers.map((provider) => (
+                                    <span 
+                                        key={provider}
+                                        className="px-3 py-1 bg-white/10 rounded-full text-sm text-white capitalize"
+                                    >
+                                        {provider}
+                                    </span>
+                                ))
+                            }
                         </div>
                     </div>
                 </div>
