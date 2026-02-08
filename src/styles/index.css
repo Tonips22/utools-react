@@ -78,7 +78,7 @@
 
   /* — Selection — */
   ::selection {
-    background: var(--pink);
+    background: var(--white);
     color: var(--dark);
   }
 
