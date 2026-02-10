@@ -248,3 +248,15 @@ export const updatePostCategories = async (postId, newCategoryIds) => {
   if (insertErr) throw insertErr;
   return data;
 };
+
+
+export const getProfileById = async (userId) => {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .single()
+
+  if (error) throw error;
+  return data;
+}

@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { RiUserFill } from "react-icons/ri";
 import { FaSignOutAlt } from "react-icons/fa";
 import { RxDashboard } from "react-icons/rx";
+import { FaUserShield } from "react-icons/fa";
 import Modal from "@components/Modal.jsx";
 import Button from "@components/Button.jsx";
 import Dropdown from "@components/Dropdown.tsx";
 
 export default function Header({ absolute = true }) {
   const user = useAuthStore((state) => state.user);
+  const profile = useAuthStore((state) => state.profile);
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -75,6 +77,15 @@ export default function Header({ absolute = true }) {
               <RxDashboard />
               My Posts
             </Button>
+            {profile?.is_admin === true && (
+              <Button
+                onClick={() => navigate("/dashboard/admin")}
+                className="w-full text-sm rounded-lg"
+              >
+                <FaUserShield />
+                Admin
+              </Button>
+            )}
             <Button
               onClick={() => navigate("/dashboard/profile")}
               className="w-full text-sm rounded-lg"
@@ -82,6 +93,7 @@ export default function Header({ absolute = true }) {
               <RiUserFill />
               Profile
             </Button>
+
 
             <Button
               onClick={() => setShowLogoutModal(true)}

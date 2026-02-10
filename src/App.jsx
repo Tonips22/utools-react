@@ -7,6 +7,7 @@ const Login = lazy(() => import('@pages/Login.jsx'));
 const Dashboard = lazy(() => import('@pages/Dashboard.jsx'));
 const MyPosts = lazy(() => import('@pages/dashboard/MyPosts.jsx'));
 const Profile = lazy(() => import('@pages/dashboard/Profile.jsx'));
+const Admin = lazy(() => import('@pages/dashboard/Admin.jsx'));
 const NotFound = lazy(() => import('@pages/NotFound.jsx'));
 const Cursor = lazy(() => import('@components/Cursor.jsx'));
 const Privacy = lazy(() => import('@pages/terms/Privacy.jsx'));
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />}>
                     <Route index element={<Navigate to="/dashboard/my-posts" replace />} />
                     <Route path="my-posts" element={<MyPosts />} />
+                    <Route path="admin" element={<Admin />} />
                     <Route path="profile" element={<Profile />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
