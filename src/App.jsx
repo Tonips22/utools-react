@@ -1,6 +1,8 @@
 import { lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-// import Home from '@pages/Home.jsx';
+import { ToastProvider } from '@heroui/react';
+import { Analytics } from "@vercel/analytics/react";
+
 const Home = lazy(() => import('@pages/Home.jsx'));
 const Search = lazy(() => import('@pages/Search.jsx'));
 const Login = lazy(() => import('@pages/Login.jsx'));
@@ -12,11 +14,25 @@ const NotFound = lazy(() => import('@pages/NotFound.jsx'));
 const Cursor = lazy(() => import('@components/Cursor.jsx'));
 const Privacy = lazy(() => import('@pages/terms/Privacy.jsx'));
 const Service = lazy(() => import('@pages/terms/Service.jsx'));
-import { ToastProvider } from '@heroui/react';
-import { Analytics } from "@vercel/analytics/react";
+const Parking = lazy(() => import('@pages/Parking.jsx'));
 
+// Leer variable de entorno
+const isParkingMode = import.meta.env.VITE_PARKING === 'true';
 
 function App() {
+    // Parking mode activado
+    if (isParkingMode) {
+        return (
+            <Router>
+                <Cursor/>
+                <Routes>
+                    <Route path="*" element={<Parking />} />
+                </Routes>
+            </Router>
+        );
+    }
+
+    // Funcionamiento normal de la app
     return (
         <Router>
           <Cursor/>
