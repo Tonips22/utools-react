@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tailwind-animations";
 @plugin './hero.ts';
 @source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
@@ -9,7 +10,7 @@
     color-scheme: light dark;
 
     /* Colors */
-    --bg: #010005;
+    --bg: #100F14;
     --white: #FFFEFE;
     --dark: #141319;
     --blue: #173EF2;
@@ -34,7 +35,7 @@
     font-size: 16px;
     scroll-behavior: smooth;
     scrollbar-width: thin;
-    scrollbar-color: #FE4BA560 black;
+    scrollbar-color: var(--white) var(--bg);
   }
   body {
     margin: 0 auto;
@@ -42,11 +43,15 @@
     max-width: 1920px;
     font-family: var(--secondary-font);
     background-color: var(--bg);
-    background-image:
-      linear-gradient(#141319 2px, transparent 2px),
-      linear-gradient(to right, #141319 2px, transparent 2px);
-    background-size: 32px 32px;
     color: var(--white);
+    background: 
+            radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%),
+            radial-gradient(ellipse 100% 60% at 30% 10%, rgba(0, 255, 255, 0.12), transparent 60%),
+            radial-gradient(ellipse 90% 70% at 50% 0%, rgba(138, 43, 226, 0.18), transparent 65%),
+            radial-gradient(ellipse 110% 50% at 80% 30%, rgba(255, 215, 0, 0.08), transparent 40%),
+            var(--bg);
+    background-attachment: fixed;
+        
   }
 
   /* — Reset selectivo *sin* cargarte paddings/márgenes de Tailwind — */
@@ -73,7 +78,7 @@
 
   /* — Selection — */
   ::selection {
-    background: var(--pink);
+    background: var(--white);
     color: var(--dark);
   }
 
@@ -85,6 +90,35 @@
       transition-duration: 0 !important;
       scroll-behavior: auto !important;
     }
+  }
+
+  /* — Animations — */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .animate-scaleIn {
+    animation: scaleIn 0.2s ease-out;
   }
 }
 

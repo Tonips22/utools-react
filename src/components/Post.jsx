@@ -1,11 +1,14 @@
 import { useState } from "react";
 import Label from "@components/Label.jsx";
 import { TbDotsVertical } from "react-icons/tb";
-import { CiEdit } from "react-icons/ci";
+import { FaPen } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, addToast} from "@heroui/react";
+import { addToast } from "@heroui/react";
 import { deletePostCascade } from "@lib/db.js";
 import PostForm from "@components/PostForm.jsx";
+import Modal from "@components/Modal.jsx";
+import Dropdown from "@components/Dropdown.tsx";
+import Button from "@components/Button.jsx";
 
 export default function Post({id, title, link, children, image, categories = ["non-stablished"], name="", showStatus=false, status="pending", noLink=false, onPostDeleted, onPostUpdated}) {
     const statusColors = {
@@ -13,7 +16,7 @@ export default function Post({id, title, link, children, image, categories = ["n
         "published": "#53FA53cc",
         "rejected": "#F46058CC",
     };
-    const [openModal, setOpenModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [activeForm, setActiveForm] = useState(false);
 
     const handleDelete = async () => {
@@ -40,9 +43,12 @@ export default function Post({id, title, link, children, image, categories = ["n
 
     return (
         <>
-        <div className="relative">
-        <a target="_blank" href={link} className={`hoverable relative flex flex-col justify-start rounded-2xl bg-dark hover:opacity-80 transition-opacity duration-200 ease-in-out overflow-hidden cursor-pointer h-[425px] ${noLink ? "pointer-events-none" : ""}`}>
-            <img className=" w-full h-1/3 object-cover object-center rounded-tl-2xl rounded-tr-2xl" src={image} alt={title} />
+        <div className={`relative hoverable group hover:scale-105 ${showStatus ? "" : "active:scale-95"} border border-white/10 hover:border-white/30 rounded-2xl shadow-lg hover:shadow-2xl transition-scale duration-200 ease-in-out`}>
+        <a target="_blank" href={link} className={`relative flex flex-col justify-start rounded-2xl bg-dark  overflow-hidden cursor-pointer h-[425px]  ${noLink ? "pointer-events-none" : ""}`}>
+            {/* <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-40 -z-10 transition-opacity duration-200 ease-in-out"></div> */}
+            <div className="overflow-hidden rounded-tl-2xl rounded-tr-2xl h-1/3">
+                <img className="w-full h-full object-cover object-center transition-transform duration-200 ease-out group-hover:scale-105" src={image} alt={title} />
+            </div>
 
             <div className="flex flex-col justify-between p-4 h-2/3">
                 <div className="flex flex-col gap-4">
@@ -66,7 +72,7 @@ export default function Post({id, title, link, children, image, categories = ["n
         </a>
 
         {showStatus && (
-            <div className="absolute top-0 right-0 flex flex-row items-center justify-center bg-gray-50/40 backdrop-blur-xl backdrop-saturate-150 rounded-bl-2xl rounded-tr-2xl px-4 py-2 gap-4 cursor-default z-20">
+            <div className="absolute top-0 right-0 flex flex-row items-center justify-center bg-white/20 backdrop-blur-xs backdrop-saturate-150 rounded-bl-2xl rounded-tr-2xl px-4 py-2 gap-4 cursor-default z-20">
                 <Label
                     text={status}
                     color={statusColors[status]}
@@ -74,108 +80,51 @@ export default function Post({id, title, link, children, image, categories = ["n
                 />
 
                 <Dropdown
-                    classNames={{
-                        // wrapper del popover (el que tiene bg-content1)
-                        content: "bg-transparent backdrop-blur-md rounded-xl", 
-                        // puedes ocultar la flechita si quieres
-                        arrow: "hidden",
-                        base: "w-36 bg-transparent border-none outline-none",
-                        trigger: "flex items-center gap-2",
-                    }}
-                    
-                >
-                    <DropdownTrigger>
+                    position="right"
+                    width="w-40"
+                    top="top-8"
+                    customButton={
                         <button
                             type="button"
                             aria-label="post options"
-                            className="p-0 m-0 bg-transparent leading-none cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+                            className="hoverable p-0 m-0 bg-transparent leading-none cursor-pointer hover:scale-110 active:scale-95 transition-transform"
                         >
                             <TbDotsVertical className="text-dark text-xl" />
                         </button>
-                    </DropdownTrigger>
-                    <DropdownMenu 
-                        aria-label="Static Actions"
-                        classNames={{
-                            base: "bg-dark backdrop-blur-sm rounded-xl p-2",
-                            list: "flex flex-col gap-2",
-                        }}
-                        itemClasses={{
-                            base: "rounded-lg py-1 px-2 text-sm text-white hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out",
-                        }}
-                        variant="light"
+                    }
+                >
+                    <Button
+                        onClick={() => setActiveForm(true)}
+                        className="w-full text-sm rounded-lg"
+                        type="submit"
                     >
-                        <DropdownItem
-                            key="edit"
-                            textValue="Edit post"
-                            classNames={{ 
-                                base: "group flex flex-row items-center gap-2 bg-dark bg-transparent hover:bg-pink", 
-                                title: "text-sm text-white group-hover:text-dark",
-                            }}
-                        >
-
-                            <button
-                                type="button"
-                                aria-label="post options"
-                                className="flex flex-row items-center gap-2 cursor-pointer bg-transparent hover:bg-pink text-white transition-colors duration-200 ease-in-out"
-                                variant="light"
-                                onClick={() => setActiveForm(true)}
-                            >
-                                <CiEdit className="text-pink text-xl group-hover:text-dark rounded-md transition-colors duration-200 ease-in-out" />
-                                Edit post
-                            </button>
-                        </DropdownItem>
-                        <DropdownItem
-                            key="delete"
-                            textValue="Delete post"
-                            classNames={{ 
-                                base: "group flex flex-row items-center gap-2 bg-dark bg-transparent hover:bg-red-700 cursor-pointer", 
-                                title: "text-sm text-white",
-                            }}
-                        >
-                            <button
-                                type="button"
-                                aria-label="post options"
-                                className="flex flex-row items-center gap-2 cursor-pointer bg-transparent hover:bg-red-700 text-white transition-colors duration-200 ease-in-out"
-                                variant="light"
-                                onClick={() => setOpenModal(true)}
-                            >
-                                <FaTrashAlt className="text-red-700 text-lg group-hover:text-white rounded-md transition-colors duration-200 ease-in-out" />
-                                Delete post
-                            </button>
-                        </DropdownItem>
-                    </DropdownMenu>
+                        <FaPen />
+                        Edit post
+                    </Button>
+                    
+                    <Button
+                        onClick={() => setShowDeleteModal(true)}
+                        className="w-full text-sm rounded-lg"
+                        type="danger"
+                    >
+                        <FaTrashAlt />
+                        Delete post
+                    </Button>
                 </Dropdown>
             </div>
         )}
         </div>
 
-        {openModal && (
-            <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-[99999]">
-                <div className="bg-dark rounded-xl p-6 w-96 flex flex-col gap-4">
-                    <h2 className="text-2xl font-bold">Delete Post</h2>
-                    <p className="">Are you sure you want to delete <span className="font-bold">{title}</span>?</p>
-                    <div className="flex justify-end gap-2">
-                        <Button
-                            variant="light"
-                            color="default"
-                            onClick={() => setOpenModal(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            variant="flat"
-                            color="danger"
-                                onClick={() => {
-                                    handleDelete();
-                                    setOpenModal(false);
-                            }}
-                        >
-                            Delete
-                        </Button>
-                    </div>
-                </div>
-            </div>
-        )}
+        <Modal
+            isOpen={showDeleteModal}
+            onClose={() => setShowDeleteModal(false)}
+            onConfirm={handleDelete}
+            title="Delete Post"
+            message={`Are you sure you want to delete "${title}"? This action cannot be undone.`}
+            confirmText="Delete"
+            cancelText="Cancel"
+            danger={true}
+        />
 
         {activeForm && (
                 <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-[999]">

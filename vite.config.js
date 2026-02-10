@@ -20,6 +20,7 @@ export default defineConfig({
       '@lib': path.resolve(__dirname, 'src/lib'),
       '@auth': path.resolve(__dirname, 'src/auth'),
       '@pages': path.resolve(__dirname, 'src/pages'),
+      '@store': path.resolve(__dirname, 'src/store'),
     },
   },
   build: {

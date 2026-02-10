@@ -1,11 +1,14 @@
-import { useAuth } from "@auth/AuthProvider.jsx";
+import { useAuthStore } from "@store/authStore.ts";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AnimatedBg from "@components/AnimatedBg.jsx";
+import Loader from "@components/Loader.jsx";
+import Button from "@components/Button.jsx";
 import { FaGoogle, FaGithub, FaTwitch } from "react-icons/fa";
 
 export default function Login() {
-    const { user, loginWithProvider } = useAuth();
+    const user = useAuthStore((state) => state.user);
+    const loginWithProvider = useAuthStore((state) => state.loginWithProvider);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const title = "Login | Utools";
@@ -32,22 +35,22 @@ export default function Login() {
                 <a href="/" className="hoverable font-primary z-20 text-8xl">Utools</a>
             </section>
 
-            <section className="z-10 flex flex-col items-center justify-center gap-4 p-8">
+            <section className="z-10 flex flex-col items-center justify-center gap-6 p-8">
                 <h1 className="font-primary text-7xl">Sign In</h1>
-                <h2 className="font-bold">Choose a method to sign in.</h2>
-                {loading && <p>Loading...</p>} {/* Mensaje de carga */}
-                <button onClick={() => handleLogin("google")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-white rounded-lg px-4 py-2 text-dark min-w-60 hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out cursor-pointer">
+                <h2 className="font-bold text-white/80">Choose a method to sign in.</h2>
+                {loading && <Loader />}
+                <Button onClick={() => handleLogin("google")} disabled={loading} className="justify-start text-white min-w-60">
                     <FaGoogle className="size-5" />
                     <p className="self-center">Continue with Google</p>
-                </button>
-                <button onClick={() => handleLogin("github")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-white rounded-lg px-4 py-2 text-dark min-w-60 hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out cursor-pointer">
+                </Button>
+                <Button onClick={() => handleLogin("github")} disabled={loading} className="justify-start text-white min-w-60">
                     <FaGithub className="size-5" />
                     <p className="self-center">Continue with GitHub</p>
-                </button>
-                <button onClick={() => handleLogin("twitch")} disabled={loading} className="hoverable flex items-center justify-start gap-2 bg-white rounded-lg px-4 py-2 text-dark min-w-60 hover:scale-105 active:scale-95 transition-transform duration-200 ease-in-out cursor-pointer">
+                </Button>
+                <Button onClick={() => handleLogin("twitch")} disabled={loading} className="justify-start text-white min-w-60">
                     <FaTwitch className="size-5" />
                     <p className="self-center">Continue with Twitch</p>
-                </button>
+                </Button>
             </section>
         </main>
     );

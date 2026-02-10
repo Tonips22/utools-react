@@ -1,34 +1,37 @@
-import { useAuth } from "@auth/AuthProvider.jsx";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar } from "@heroui/react";
+import { useAuthStore } from "@store/authStore.ts";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { RiUserFill } from "react-icons/ri";
+import { FaSignOutAlt } from "react-icons/fa";
+import { RxDashboard } from "react-icons/rx";
+import { FaUserShield } from "react-icons/fa";
+import Modal from "@components/Modal.jsx";
+import Button from "@components/Button.jsx";
+import Dropdown from "@components/Dropdown.tsx";
 
-export default function Header({ transparent = true, absolute = true }) {
-  const { user, logout } = useAuth();
+export default function Header({ absolute = true }) {
+  const user = useAuthStore((state) => state.user);
+  const profile = useAuthStore((state) => state.profile);
+  const logout = useAuthStore((state) => state.logout);
+  const navigate = useNavigate();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
 
   return (
     <header
       id="header"
       className={`z-20 ${absolute ? "absolute" : "relative"} top-0 left-0 w-full flex justify-between items-center py-4 px-8 bg-transparent`}
     >
-      {
-        transparent === false && (
-          <div
-            className="absolute inset-0 z-0"
-            style={{
-              background: `
-                radial-gradient(ellipse 180% 120% at 70% 20%, rgba(255, 20, 147, 0.25), transparent 70%),
-                radial-gradient(ellipse 160% 100% at 30% 10%, rgba(0, 255, 255, 0.20), transparent 80%),
-                radial-gradient(ellipse 150% 110% at 50% 0%, rgba(138, 43, 226, 0.28), transparent 85%),
-                radial-gradient(ellipse 170% 80% at 80% 30%, rgba(255, 215, 0, 0.15), transparent 60%),
-                #000000
-              `,
-            }}
-          />
-        )
-      }
-      <a href="/" className="hoverable hover:scale-110 transition-transform relative active:scale-95">
+      {/* <a href="/" className="hoverable hover:scale-110 transition-transform relative active:scale-95">
         <img src="/logo.webp" alt="Utools Logo" className="w-12 h-12 z-10" />
         <img src="/logo.webp" alt="Utools Logo" className=" -z-10 w-12 h-12 blur-md absolute top-0 left-0" />
-      </a>
+      </a> */}
+
+      <Link to="/" className="hoverable hover:scale-105 transition-transform duration-200 ease-in-out relative active:scale-95 text-white font-bold text-2xl z-10 font-primary">
+        <img src="/utools-logo.png" alt="Utools Logo" className="w-24 h-auto" />
+      </Link>
+
+
 
       <nav className="flex items-center gap-4">
         <a
@@ -46,72 +49,64 @@ export default function Header({ transparent = true, absolute = true }) {
 
         {user ? (
           <Dropdown
-            placement="bottom-end"
-            classNames={{
-                // wrapper del popover (el que tiene bg-content1)
-                content: "bg-transparent backdrop-blur-md rounded-xl", 
-                // puedes ocultar la flechita si quieres
-                arrow: "hidden",
-            }}
-          >
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                classNames={{
-                    
-                  base: "hoverable relative transition-transform w-9 h-9 rounded-full hover:scale-110 active:scale-95 cursor-pointer",
-                  image: "rounded-full object-cover w-full h-full",
-
-                }}
-                src={user.user_metadata.avatar_url || "/user-icon.svg"}
-              />
-            </DropdownTrigger>
-
-            <DropdownMenu
-              aria-label="Profile Actions"
-              variant="light"
-              classNames={{
-                base: " rounded-xl bg-dark backdrop-blur-sm p-2", // contenedor principal
-                list: "flex flex-col gap-2",                             // lista UL interna
-              }}
-              itemClasses={{
-                base: "rounded-lg py-1 px-2 text-sm text-white hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out",
-              }}
-            >
-              <DropdownItem key="profile" textValue="Profile info" isReadOnly classNames={{ base: "h-14 gap-2 bg-transparent hover:scale-100 cursor-default" }}>
-                <p className="text-xs text-white/80">Signed in as</p>
-                <p className="text-sm text-white">{user.user_metadata.name || user.user_metadata.email}</p>
-              </DropdownItem>
-
-              <DropdownItem
-              key="dashboard"
-              textValue="Dashboard"
-              href="/dashboard"
-              classNames={{
-                base: "group bg-transparent hover:bg-white",
-                title: "text-sm text-white group-hover:text-dark",
-              }}
-            >
-              Dashboard
-            </DropdownItem>
-
-              <DropdownItem
-                key="logout"
-                textValue="Sign out"
-                classNames={{
-                  base: "group bg-transparent hover:bg-pink",
-                  title: "text-sm text-pink group-hover:text-dark",
-                }}
-                onPress={logout}
+            position="right"
+            width="w-56"
+            customButton={
+              <button
+                className="hoverable relative transition-transform duration-200 ease-in-out w-10 h-10 rounded-full hover:scale-105 active:scale-95 cursor-pointer overflow-hidden ring-2 ring-offset-2 ring-offset-bg ring-white/20"
               >
-                Sign Out
-              </DropdownItem>
-            </DropdownMenu>
+                <img
+                  src={user.user_metadata.avatar_url || "/user-icon.svg"}
+                  alt="User Avatar"
+                  className="rounded-full object-cover w-full h-full "
+                />
+              </button>
+            }
+          >
+            <div className="rounded-lg py-3 px-3 bg-transparent cursor-default">
+              <p className="text-xs text-white/80">Signed in as</p>
+              <p className="text-sm text-white truncate">{user.user_metadata.name || user.user_metadata.email}</p>
+            </div>
+
+            <hr className="my-2 border-white/10" />
+
+            <Button
+              onClick={() => navigate("/dashboard/my-posts")}
+              className="w-full text-sm rounded-lg"
+            >
+              <RxDashboard />
+              My Posts
+            </Button>
+            {profile?.is_admin === true && (
+              <Button
+                onClick={() => navigate("/dashboard/admin")}
+                className="w-full text-sm rounded-lg"
+              >
+                <FaUserShield />
+                Admin
+              </Button>
+            )}
+            <Button
+              onClick={() => navigate("/dashboard/profile")}
+              className="w-full text-sm rounded-lg"
+            >
+              <RiUserFill />
+              Profile
+            </Button>
+
+
+            <Button
+              onClick={() => setShowLogoutModal(true)}
+              className="w-full text-sm rounded-lg"
+              type="danger"
+            >
+              <FaSignOutAlt />
+              Sign Out
+            </Button>
           </Dropdown>
         ) : (
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="hoverable flex items-center gap-2 bg-dark backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/10 hover:border-white/30 hover:scale-105 transition-all duration-200 active:scale-95 relative group"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-all duration-200">
@@ -121,9 +116,20 @@ export default function Header({ transparent = true, absolute = true }) {
             </svg>
             <span className="text-white text-sm font-medium">Sign In</span>
             <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-50 -z-10 transition-opacity duration-300"></div>
-          </a>
+          </Link>
         )}
       </nav>
+
+      <Modal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={logout}
+        title="Sign Out"
+        message="Are you sure you want to sign out of your account?"
+        confirmText="Sign Out"
+        cancelText="Cancel"
+        danger={true}
+      />
     </header>
   );
 }
