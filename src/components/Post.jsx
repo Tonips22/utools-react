@@ -43,7 +43,7 @@ export default function Post({id, title, link, children, image, categories = ["n
 
     return (
         <>
-        <div className={`relative hoverable group hover:scale-105 ${showStatus ? "" : "active:scale-95"} border border-white/10 hover:border-white/30 rounded-2xl shadow-lg hover:shadow-2xl transition-scale duration-200 ease-in-out`}>
+        <div className={`relative hoverable group hover:scale-102 ${showStatus ? "" : "active:scale-98"} border border-white/10 hover:border-white/30 rounded-2xl shadow-lg hover:shadow-2xl transition-scale duration-200 ease-in-out`}>
         <a target="_blank" href={link} className={`relative flex flex-col justify-start rounded-2xl bg-dark  overflow-hidden cursor-pointer h-[425px]  ${noLink ? "pointer-events-none" : ""}`}>
             {/* <div className="absolute -inset-[1px] bg-gradient-to-r from-light-blue via-purple to-pink rounded-2xl blur-sm opacity-0 group-hover:opacity-40 -z-10 transition-opacity duration-200 ease-in-out"></div> */}
             <div className="overflow-hidden rounded-tl-2xl rounded-tr-2xl h-1/3">
